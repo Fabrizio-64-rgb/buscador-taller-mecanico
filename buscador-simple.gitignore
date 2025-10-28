@@ -1,0 +1,38 @@
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos temporales
+*.tmp
+*.temp
+*.log
+
+# Datos locales (no subir a GitHub)
+datos_locales/
+*.csv
+*.xlsx
+*.xls
+datos_personales/
+
+# Node y dependencias (si en futuro se agrega)
+node_modules/
+package-lock.json
+
+# Python (si se agrega en futuro)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+
+# Carpetas del sistema
+.git/
+.gitignore

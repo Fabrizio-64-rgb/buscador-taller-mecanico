@@ -52,7 +52,8 @@ function cargarArchivo() {
     if (!file) return;
 
     archivoActual = file;
-    leerArchivoConCodificacion('UTF-8');
+    // Intentar primero con Windows-1252 (común en Excel español)
+    leerArchivoConCodificacion('Windows-1252');
 }
 
 function leerArchivoConCodificacion(codificacion) {
@@ -85,6 +86,14 @@ function cargarDatos() {
     procesarCSV(texto);
 }
 
+// Función para detectar problemas de codificación
+function tieneProblemasDecodificacion(texto) {
+    // Buscar caracteres de reemplazo comunes en problemas de codificación
+    return texto.includes('�') ||
+           texto.includes('Ã') ||
+           /[\x80-\xFF]{2,}/.test(texto);
+}
+
 function procesarCSV(csv) {
     try {
         const lineas = csv.trim().split('\n');
@@ -101,6 +110,17 @@ function procesarCSV(csv) {
 
         // Procesar encabezados
         columnas = primeraLinea.split(delimitador).map(h => h.trim().replace(/"/g, ''));
+
+        // Detectar problemas de codificación
+        const textoCompleto = columnas.join(' ');
+        if (tieneProblemasDecodificacion(textoCompleto) && archivoActual) {
+            mostrarAdvertencia('Detectado problema de codificación. Intentando con UTF-8...');
+            // Reintentar con UTF-8
+            if (codificacionActual !== 'UTF-8') {
+                leerArchivoConCodificacion('UTF-8');
+                return;
+            }
+        }
 
         // Procesar datos
         datosOriginal = [];
@@ -124,7 +144,7 @@ function procesarCSV(csv) {
         }
 
         inicializarBusqueda();
-        mostrarExito(`Se cargaron ${datosOriginal.length} registros correctamente`);
+        mostrarExito(`Se cargaron ${datosOriginal.length} registros correctamente (${codificacionActual})`);
         limpiarError();
     } catch (error) {
         mostrarError('Error al procesar datos: ' + error.message);
@@ -260,9 +280,28 @@ function mostrarExito(mensaje) {
     setTimeout(() => successDiv.classList.remove('active'), 5000);
 }
 
+function mostrarAdvertencia(mensaje) {
+    const successDiv = document.getElementById('successMessage');
+    successDiv.textContent = '⚡ ' + mensaje;
+    successDiv.classList.add('active');
+    setTimeout(() => successDiv.classList.remove('active'), 3000);
+}
+
 function limpiarError() {
     const errorDiv = document.getElementById('errorMessage');
     errorDiv.classList.remove('active');
+}
+
+// Función para recargar con diferente codificación
+function cambiarCodificacion() {
+    if (!archivoActual) {
+        mostrarError('No hay archivo cargado');
+        return;
+    }
+
+    const nuevaCodificacion = codificacionActual === 'UTF-8' ? 'Windows-1252' : 'UTF-8';
+    mostrarAdvertencia(`Cambiando a codificación ${nuevaCodificacion}...`);
+    leerArchivoConCodificacion(nuevaCodificacion);
 }
 
 // Búsqueda en tiempo real mientras escribe

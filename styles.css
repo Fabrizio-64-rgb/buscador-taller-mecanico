@@ -326,6 +326,25 @@ body {
     background: var(--text-secondary);
 }
 
+.btn-encoding {
+    padding: 8px 16px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-encoding:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
+}
+
 .results-section {
     display: none;
 }

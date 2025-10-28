@@ -66,7 +66,12 @@
 
             <!-- Sección de búsqueda (oculta hasta cargar datos) -->
             <div class="search-section" id="searchSection">
-                <h2 style="margin-bottom: 10px; color: #2c3e50;">Buscar</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                    <h2 style="margin: 0; color: #2c3e50;">Buscar</h2>
+                    <button class="btn-encoding" onclick="cambiarCodificacion();" title="Si ves caracteres extraños (�, Ã), usa este botón">
+                        🔄 Cambiar Codificación
+                    </button>
+                </div>
                 <p style="margin-bottom: 15px; font-size: 13px; color: var(--text-secondary);">
                     💡 La búsqueda se actualiza automáticamente mientras escribes (busca con o sin acentos)
                 </p>

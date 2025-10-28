@@ -1,6 +1,16 @@
 let datosOriginal = [];
 let columnas = [];
 let codificacionActual = 'UTF-8';
+let searchTimeout = null;
+
+// Función para normalizar texto (quitar acentos y caracteres especiales)
+function normalizarTexto(texto) {
+    return texto
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+}
 
 // TAB: Cambiar entre pestañas
 function cambiarTab(event, tab) {
@@ -142,6 +152,8 @@ function inicializarBusqueda() {
     if (columnas.length > 0) {
         columnSelect.value = columnas[0];
         actualizarPlaceholder();
+        // Mostrar todos los datos al cargar
+        mostrarResultados(datosOriginal);
     }
 }
 
@@ -158,24 +170,42 @@ function actualizarPlaceholder() {
 
 function buscar() {
     const columnaSeleccionada = document.getElementById('columnSelect').value;
-    const textoBusqueda = document.getElementById('searchInput').value.toLowerCase();
+    const textoBusqueda = document.getElementById('searchInput').value.trim();
 
     if (!columnaSeleccionada) {
         mostrarError('Por favor selecciona un campo para buscar');
         return;
     }
 
+    // Si no hay texto de búsqueda, mostrar todos los resultados
     if (!textoBusqueda) {
-        mostrarError('Por favor escribe algo para buscar');
+        mostrarResultados(datosOriginal);
         return;
     }
 
+    // Normalizar texto de búsqueda
+    const textoBusquedaNormalizado = normalizarTexto(textoBusqueda);
+
     let resultados = datosOriginal.filter(row => {
-        const valorCelda = String(row[columnaSeleccionada] || '').toLowerCase();
-        return valorCelda.includes(textoBusqueda);
+        const valorCelda = String(row[columnaSeleccionada] || '');
+        const valorCeldaNormalizado = normalizarTexto(valorCelda);
+        return valorCeldaNormalizado.includes(textoBusquedaNormalizado);
     });
 
     mostrarResultados(resultados);
+}
+
+// Búsqueda en tiempo real con debounce
+function buscarEnTiempoReal() {
+    // Cancelar búsqueda anterior si existe
+    if (searchTimeout) {
+        clearTimeout(searchTimeout);
+    }
+
+    // Esperar 300ms después de que el usuario deje de escribir
+    searchTimeout = setTimeout(() => {
+        buscar();
+    }, 300);
 }
 
 function mostrarResultados(resultados) {
@@ -235,9 +265,24 @@ function limpiarError() {
     errorDiv.classList.remove('active');
 }
 
-// Permitir búsqueda con Enter
+// Búsqueda en tiempo real mientras escribe
+document.getElementById('searchInput')?.addEventListener('input', buscarEnTiempoReal);
+
+// También permitir búsqueda inmediata con Enter
 document.getElementById('searchInput')?.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
+        if (searchTimeout) {
+            clearTimeout(searchTimeout);
+        }
+        buscar();
+    }
+});
+
+// Búsqueda en tiempo real al cambiar de columna
+document.getElementById('columnSelect')?.addEventListener('change', () => {
+    actualizarPlaceholder();
+    const textoBusqueda = document.getElementById('searchInput').value.trim();
+    if (textoBusqueda) {
         buscar();
     }
 });

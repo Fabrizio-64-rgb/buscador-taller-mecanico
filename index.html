@@ -66,18 +66,20 @@
 
             <!-- Sección de búsqueda (oculta hasta cargar datos) -->
             <div class="search-section" id="searchSection">
-                <h2 style="margin-bottom: 20px; color: #2c3e50;">Buscar</h2>
+                <h2 style="margin-bottom: 10px; color: #2c3e50;">Buscar</h2>
+                <p style="margin-bottom: 15px; font-size: 13px; color: var(--text-secondary);">
+                    💡 La búsqueda se actualiza automáticamente mientras escribes (busca con o sin acentos)
+                </p>
 
                 <div class="search-box">
-                    <select id="columnSelect" onchange="actualizarPlaceholder()">
+                    <select id="columnSelect">
                         <option value="">-- Selecciona campo --</option>
                     </select>
-                    <input type="text" id="searchInput" placeholder="Escribe lo que buscas...">
+                    <input type="text" id="searchInput" placeholder="Escribe para buscar...">
                 </div>
 
                 <div class="search-buttons">
-                    <button class="btn-search" onclick="buscar();">🔍 Buscar</button>
-                    <button class="btn-search btn-clear" onclick="limpiar();">✕ Limpiar</button>
+                    <button class="btn-search btn-clear" onclick="limpiar();">✕ Limpiar búsqueda</button>
                 </div>
             </div>
 

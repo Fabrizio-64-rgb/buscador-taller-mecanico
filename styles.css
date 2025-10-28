@@ -357,6 +357,27 @@ body {
 
 .table-responsive {
     overflow-x: auto;
+    overflow-y: visible;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: var(--bg-section);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-dark);
 }
 
 table {
@@ -373,23 +394,46 @@ thead {
 }
 
 th {
-    padding: 15px;
+    padding: 12px 10px;
     text-align: left;
     font-weight: 600;
     color: var(--text-primary);
     border-bottom: 2px solid var(--border-color);
     text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-    word-break: break-word;
+    font-size: 11px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
     transition: all 0.3s ease;
+    position: relative;
+}
+
+th:hover {
+    overflow: visible;
+    white-space: normal;
+    word-break: break-word;
+    z-index: 10;
+    background: var(--bg-table-header);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 td {
-    padding: 15px;
+    padding: 12px 10px;
     border-bottom: 1px solid var(--border-color);
     color: var(--text-primary);
     transition: all 0.3s ease;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+td:hover {
+    overflow: visible;
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 tbody tr {

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador Taller Mecánico</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Cambiar tema">
+                <span id="themeIcon">🌙</span>
+            </button>
+            <h1>🔧 Buscador Taller Mecánico</h1>
+            <p>Carga tus datos y busca rápidamente por cualquier campo</p>
+        </div>
+
+        <div class="content">
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="cambiarTab(event, 'archivo')">📁 Cargar Archivo</button>
+                <button class="tab-btn" onclick="cambiarTab(event, 'pegar')">📋 Pegar Datos</button>
+            </div>
+
+            <!-- Mensaje de error/éxito -->
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <!-- TAB 1: Cargar archivo -->
+            <div id="archivo" class="tab-content active">
+                <div class="instructions">
+                    <strong>ℹ️ Instrucciones:</strong><br>
+                    1. Abre tu archivo Excel (1353.xlsx)<br>
+                    2. Guárdalo como <strong>CSV</strong> (Archivo → Guardar como → CSV)<br>
+                    3. Carga el archivo CSV aquí
+                </div>
+
+                <div class="upload-section" id="uploadSection">
+                    <div class="upload-icon">📁</div>
+                    <h3>Carga tu archivo CSV</h3>
+                    <p>Arrastra el archivo aquí o haz clic para seleccionar</p>
+                    <input type="file" id="fileInput" accept=".csv, .txt" />
+                    <button class="btn" onclick="document.getElementById('fileInput').click();">
+                        Seleccionar archivo
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 2: Pegar datos -->
+            <div id="pegar" class="tab-content">
+                <div class="instructions">
+                    <strong>ℹ️ Instrucciones:</strong><br>
+                    1. Abre tu Excel<br>
+                    2. Selecciona todos los datos (Ctrl+A)<br>
+                    3. Copia (Ctrl+C)<br>
+                    4. Pega aquí y haz clic en "Cargar datos"
+                </div>
+
+                <div class="paste-section">
+                    <label for="pasteArea">Pega tus datos aquí:</label>
+                    <textarea id="pasteArea" placeholder="Pega los datos del Excel aquí..."></textarea>
+                    <button class="btn" onclick="cargarDatos();">✓ Cargar datos</button>
+                </div>
+            </div>
+
+            <!-- Sección de búsqueda (oculta hasta cargar datos) -->
+            <div class="search-section" id="searchSection">
+                <h2 style="margin-bottom: 20px; color: #2c3e50;">Buscar</h2>
+
+                <div class="search-box">
+                    <select id="columnSelect" onchange="actualizarPlaceholder()">
+                        <option value="">-- Selecciona campo --</option>
+                    </select>
+                    <input type="text" id="searchInput" placeholder="Escribe lo que buscas...">
+                </div>
+
+                <div class="search-buttons">
+                    <button class="btn-search" onclick="buscar();">🔍 Buscar</button>
+                    <button class="btn-search btn-clear" onclick="limpiar();">✕ Limpiar</button>
+                </div>
+            </div>
+
+            <!-- Estadísticas -->
+            <div class="stats" id="stats" style="display: none;">
+                <div class="stat-card">
+                    <h4>Total registros</h4>
+                    <div class="number" id="totalRecords">0</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Resultados encontrados</h4>
+                    <div class="number" id="resultCount">0</div>
+                </div>
+            </div>
+
+            <!-- Sección de resultados (oculta hasta buscar) -->
+            <div class="results-section" id="resultsSection">
+                <div class="results-header">
+                    <h2 style="color: #2c3e50;">Resultados</h2>
+                    <div class="results-info">
+                        <strong id="showingCount">0</strong> de <strong id="totalCount">0</strong> registros
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="resultsTable">
+                        <thead id="tableHead"></thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="no-results" id="noResults" style="display: none;">
+                    <div style="font-size: 48px; margin-bottom: 10px;">🔍</div>
+                    <h3>Sin resultados</h3>
+                    <p>No se encontraron registros con ese criterio de búsqueda.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

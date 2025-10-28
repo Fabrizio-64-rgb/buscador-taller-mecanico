@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador Taller Mecánico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #95a5a6;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .upload-section {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-section:hover {
+            background: #f0f2ff;
+            border-color: #764ba2;
+        }
+
+        .upload-section input[type="file"] {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .upload-section h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .upload-section p {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+        }
+
+        .paste-section {
+            margin-bottom: 20px;
+        }
+
+        .paste-section label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .paste-section textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            resize: vertical;
+        }
+
+        .instructions {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .search-section {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .search-section.active {
+            display: block;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-box select,
+        .search-box input {
+            padding: 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .search-box select {
+            min-width: 200px;
+            flex: 0 0 auto;
+        }
+
+        .search-box input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-box select:focus,
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: #f8faff;
+        }
+
+        .search-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-search {
+            padding: 12px 25px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-search:hover {
+            background: #764ba2;
+        }
+
+        .btn-clear {
+            background: #95a5a6;
+        }
+
+        .btn-clear:hover {
+            background: #7f8c8d;
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .results-info {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .results-info strong {
+            color: #667eea;
+            font-size: 16px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead {
+            background: #f8f9fa;
+            position: sticky;
+            top: 0;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            word-break: break-word;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            color: #34495e;
+        }
+
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8faff;
+            box-shadow: inset 0 0 0 1px #ecf0f1;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #95a5a6;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card h4 {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .error-message {
+            background: #ffe5e5;
+            color: #c0392b;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c0392b;
+            display: none;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        .success-message {
+            background: #e8f8f5;
+            color: #27ae60;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid #27ae60;
+            display: none;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-box select,
+            .search-box input {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .search-buttons {
+                flex-direction: column;
+            }
+
+            .btn-search {
+                width: 100%;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Buscador Taller Mecánico</h1>
+            <p>Carga tus datos y busca rápidamente por cualquier campo</p>
+        </div>
+
+        <div class="content">
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="cambiarTab(event, 'archivo')">📁 Cargar Archivo</button>
+                <button class="tab-btn" onclick="cambiarTab(event, 'pegar')">📋 Pegar Datos</button>
+            </div>
+
+            <!-- Mensaje de error/éxito -->
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <!-- TAB 1: Cargar archivo -->
+            <div id="archivo" class="tab-content active">
+                <div class="instructions">
+                    <strong>ℹ️ Instrucciones:</strong><br>
+                    1. Abre tu archivo Excel (1353.xlsx)<br>
+                    2. Guárdalo como <strong>CSV</strong> (Archivo → Guardar como → CSV)<br>
+                    3. Carga el archivo CSV aquí
+                </div>
+
+                <div class="upload-section" id="uploadSection">
+                    <div class="upload-icon">📁</div>
+                    <h3>Carga tu archivo CSV</h3>
+                    <p>Arrastra el archivo aquí o haz clic para seleccionar</p>
+                    <input type="file" id="fileInput" accept=".csv, .txt" />
+                    <button class="btn" onclick="document.getElementById('fileInput').click();">
+                        Seleccionar archivo
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 2: Pegar datos -->
+            <div id="pegar" class="tab-content">
+                <div class="instructions">
+                    <strong>ℹ️ Instrucciones:</strong><br>
+                    1. Abre tu Excel<br>
+                    2. Selecciona todos los datos (Ctrl+A)<br>
+                    3. Copia (Ctrl+C)<br>
+                    4. Pega aquí y haz clic en "Cargar datos"
+                </div>
+
+                <div class="paste-section">
+                    <label for="pasteArea">Pega tus datos aquí:</label>
+                    <textarea id="pasteArea" placeholder="Pega los datos del Excel aquí..."></textarea>
+                    <button class="btn" onclick="cargarDatos();">✓ Cargar datos</button>
+                </div>
+            </div>
+
+            <!-- Sección de búsqueda (oculta hasta cargar datos) -->
+            <div class="search-section" id="searchSection">
+                <h2 style="margin-bottom: 20px; color: #2c3e50;">Buscar</h2>
+                
+                <div class="search-box">
+                    <select id="columnSelect" onchange="actualizarPlaceholder()">
+                        <option value="">-- Selecciona campo --</option>
+                    </select>
+                    <input type="text" id="searchInput" placeholder="Escribe lo que buscas...">
+                </div>
+
+                <div class="search-buttons">
+                    <button class="btn-search" onclick="buscar();">🔍 Buscar</button>
+                    <button class="btn-search btn-clear" onclick="limpiar();">✕ Limpiar</button>
+                </div>
+            </div>
+
+            <!-- Estadísticas -->
+            <div class="stats" id="stats" style="display: none;">
+                <div class="stat-card">
+                    <h4>Total registros</h4>
+                    <div class="number" id="totalRecords">0</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Resultados encontrados</h4>
+                    <div class="number" id="resultCount">0</div>
+                </div>
+            </div>
+
+            <!-- Sección de resultados (oculta hasta buscar) -->
+            <div class="results-section" id="resultsSection">
+                <div class="results-header">
+                    <h2 style="color: #2c3e50;">Resultados</h2>
+                    <div class="results-info">
+                        <strong id="showingCount">0</strong> de <strong id="totalCount">0</strong> registros
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="resultsTable">
+                        <thead id="tableHead"></thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="no-results" id="noResults" style="display: none;">
+                    <div style="font-size: 48px; margin-bottom: 10px;">🔍</div>
+                    <h3>Sin resultados</h3>
+                    <p>No se encontraron registros con ese criterio de búsqueda.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let datosOriginal = [];
+        let columnas = [];
+        let codificacionActual = 'UTF-8';
+
+        // TAB: Cambiar entre pestañas
+        function cambiarTab(event, tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Manejo de carga de archivo CSV
+        const fileInput = document.getElementById('fileInput');
+        const uploadSection = document.getElementById('uploadSection');
+        let archivoActual = null;
+
+        // Drag and drop
+        uploadSection.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadSection.style.background = '#f0f2ff';
+            uploadSection.style.borderColor = '#764ba2';
+        });
+
+        uploadSection.addEventListener('dragleave', () => {
+            uploadSection.style.background = '#f8f9fa';
+            uploadSection.style.borderColor = '#667eea';
+        });
+
+        uploadSection.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadSection.style.background = '#f8f9fa';
+            uploadSection.style.borderColor = '#667eea';
+            fileInput.files = e.dataTransfer.files;
+            cargarArchivo();
+        });
+
+        fileInput.addEventListener('change', cargarArchivo);
+
+        function cargarArchivo() {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            archivoActual = file;
+            leerArchivoConCodificacion('UTF-8');
+        }
+
+        function leerArchivoConCodificacion(codificacion) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    let csv = e.target.result;
+                    
+                    // Limpiar BOM si existe (problema común con archivos Excel)
+                    if (csv.charCodeAt(0) === 0xFEFF) {
+                        csv = csv.slice(1);
+                    }
+                    
+                    codificacionActual = codificacion;
+                    procesarCSV(csv);
+                } catch (error) {
+                    mostrarError('Error al cargar el archivo: ' + error.message);
+                }
+            };
+            
+            reader.readAsText(archivoActual, codificacion);
+        }
+
+        function cargarDatos() {
+            const texto = document.getElementById('pasteArea').value;
+            if (!texto.trim()) {
+                mostrarError('Por favor pega datos primero');
+                return;
+            }
+            procesarCSV(texto);
+        }
+
+        function procesarCSV(csv) {
+            try {
+                const lineas = csv.trim().split('\n');
+                if (lineas.length < 1) {
+                    mostrarError('El archivo está vacío');
+                    return;
+                }
+
+                // Detectar delimitador
+                const primeraLinea = lineas[0];
+                let delimitador = ',';
+                if (primeraLinea.includes('\t')) delimitador = '\t';
+                else if (primeraLinea.includes(';')) delimitador = ';';
+
+                // Procesar encabezados
+                columnas = primeraLinea.split(delimitador).map(h => h.trim().replace(/"/g, ''));
+
+                // Procesar datos
+                datosOriginal = [];
+                for (let i = 1; i < lineas.length; i++) {
+                    const linea = lineas[i].trim();
+                    if (!linea) continue;
+
+                    const valores = linea.split(delimitador).map(v => v.trim().replace(/"/g, ''));
+                    const fila = {};
+                    
+                    columnas.forEach((col, idx) => {
+                        fila[col] = valores[idx] || '';
+                    });
+                    
+                    datosOriginal.push(fila);
+                }
+
+                if (datosOriginal.length === 0) {
+                    mostrarError('No se encontraron datos en el archivo');
+                    return;
+                }
+
+                inicializarBusqueda();
+                mostrarExito(`Se cargaron ${datosOriginal.length} registros correctamente`);
+                limpiarError();
+            } catch (error) {
+                mostrarError('Error al procesar datos: ' + error.message);
+            }
+        }
+
+        function inicializarBusqueda() {
+            // Mostrar sección de búsqueda
+            document.getElementById('searchSection').classList.add('active');
+            document.getElementById('stats').style.display = 'grid';
+            document.getElementById('totalRecords').textContent = datosOriginal.length;
+
+            // Llenar el combobox con las columnas
+            const columnSelect = document.getElementById('columnSelect');
+            columnSelect.innerHTML = '<option value="">-- Selecciona campo --</option>';
+            
+            columnas.forEach(col => {
+                const option = document.createElement('option');
+                option.value = col;
+                option.textContent = col;
+                columnSelect.appendChild(option);
+            });
+
+            // Seleccionar primer columna por defecto
+            if (columnas.length > 0) {
+                columnSelect.value = columnas[0];
+                actualizarPlaceholder();
+            }
+        }
+
+        function actualizarPlaceholder() {
+            const columnSelect = document.getElementById('columnSelect');
+            const searchInput = document.getElementById('searchInput');
+            const columnaSeleccionada = columnSelect.value;
+            
+            if (columnaSeleccionada) {
+                searchInput.placeholder = `Buscar por ${columnaSeleccionada}...`;
+                searchInput.focus();
+            }
+        }
+
+        function buscar() {
+            const columnaSeleccionada = document.getElementById('columnSelect').value;
+            const textoBusqueda = document.getElementById('searchInput').value.toLowerCase();
+
+            if (!columnaSeleccionada) {
+                mostrarError('Por favor selecciona un campo para buscar');
+                return;
+            }
+
+            if (!textoBusqueda) {
+                mostrarError('Por favor escribe algo para buscar');
+                return;
+            }
+
+            let resultados = datosOriginal.filter(row => {
+                const valorCelda = String(row[columnaSeleccionada] || '').toLowerCase();
+                return valorCelda.includes(textoBusqueda);
+            });
+
+            mostrarResultados(resultados);
+        }
+
+        function mostrarResultados(resultados) {
+            const resultsSection = document.getElementById('resultsSection');
+            const tableHead = document.getElementById('tableHead');
+            const tableBody = document.getElementById('tableBody');
+            const noResults = document.getElementById('noResults');
+
+            resultsSection.classList.add('active');
+            document.getElementById('resultCount').textContent = resultados.length;
+            document.getElementById('showingCount').textContent = resultados.length;
+            document.getElementById('totalCount').textContent = datosOriginal.length;
+
+            if (resultados.length === 0) {
+                noResults.style.display = 'block';
+                tableBody.innerHTML = '';
+                return;
+            }
+
+            noResults.style.display = 'none';
+
+            // Crear encabezados
+            if (tableHead.innerHTML === '') {
+                tableHead.innerHTML = columnas.map(col => `<th>${col}</th>`).join('');
+            }
+
+            // Crear filas
+            tableBody.innerHTML = resultados.map(row => `
+                <tr>
+                    ${columnas.map(col => `<td>${row[col] || '-'}</td>`).join('')}
+                </tr>
+            `).join('');
+        }
+
+        function limpiar() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('resultsSection').classList.remove('active');
+            document.getElementById('searchInput').focus();
+        }
+
+        function mostrarError(mensaje) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = '⚠️ ' + mensaje;
+            errorDiv.classList.add('active');
+            setTimeout(() => errorDiv.classList.remove('active'), 5000);
+        }
+
+        function mostrarExito(mensaje) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = '✓ ' + mensaje;
+            successDiv.classList.add('active');
+            setTimeout(() => successDiv.classList.remove('active'), 5000);
+        }
+
+        function limpiarError() {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.classList.remove('active');
+        }
+
+        // Permitir búsqueda con Enter
+        document.getElementById('searchInput')?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                buscar();
+            }
+        });
+    </script>
+</body>
+</html>

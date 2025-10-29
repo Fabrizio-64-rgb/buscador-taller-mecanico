@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscador Taller Mecánico</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Google API Client Library -->
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- jsPDF para generar PDFs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- html2canvas para capturar el certificado -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -316,12 +326,21 @@ REVISIÓN TUERCA NEUMÁTICOS - BIEN"></textarea>
             </div>
             <div class="certificate-modal-footer">
                 <button class="btn btn-secondary" onclick="cerrarModalCertificado()">Cerrar</button>
+                <button class="btn-drive" onclick="guardarEnDrive()" id="btnGuardarDrive">
+                    💾 Guardar en Drive
+                </button>
                 <button class="btn-print" onclick="imprimirCertificado()">
                     🖨️ Imprimir
                 </button>
             </div>
         </div>
     </div>
+
+    <!-- Configuración de Google Drive -->
+    <script src="google-drive-config.js"></script>
+
+    <!-- Funciones de Google Drive -->
+    <script src="google-drive.js"></script>
 
     <script src="script.js"></script>
 </body>

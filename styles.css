@@ -950,6 +950,32 @@ td:hover {
     border-radius: 0 0 8px 8px;
 }
 
+.btn-drive {
+    background: #4285f4;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-drive:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
+    background: #357ae8;
+}
+
+.btn-drive:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
 .btn-print {
     background: var(--color-primary);
     color: white;

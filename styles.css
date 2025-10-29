@@ -1033,22 +1033,42 @@ td:hover {
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
     margin-bottom: 15px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
 }
 
 .cert-info-item {
-    padding: 6px 10px;
-    background: #f9fafb;
-    border-left: 2px solid #667eea;
-    border-radius: 3px;
+    padding: 8px 12px;
+    background: white;
+    border-left: 3px solid #667eea;
+    border-radius: 4px;
     font-size: 11px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.cert-info-item:hover {
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.15);
+    transform: translateY(-1px);
 }
 
 .cert-info-label {
     font-weight: bold;
     font-size: 10px;
-    color: #667eea;
-    margin-bottom: 2px;
+    color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 3px 8px;
+    margin: -8px -12px 4px -12px;
+    border-radius: 4px 4px 0 0;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cert-info-item > div:last-child {
+    color: #2c3e50;
+    font-weight: 500;
 }
 
 .cert-section-title {
@@ -1787,15 +1807,29 @@ td:hover {
     .cert-info-grid {
         gap: 6px;
         margin-bottom: 10px;
+        padding: 10px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 
     .cert-info-item {
-        padding: 4px 8px;
+        padding: 6px 10px;
         page-break-inside: avoid;
+        background: white !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 
     .cert-info-label {
         font-size: 9px;
+        color: white !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        padding: 2px 6px;
+        margin: -6px -10px 3px -10px;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 
     .cert-categoria {

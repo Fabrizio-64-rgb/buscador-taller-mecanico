@@ -1173,12 +1173,8 @@ function generarCertificado() {
         </div>
     `;
 
-    // Pie de página
-    const footerHTML = `
-        <div class="cert-footer">
-            ELAION TS 1040 4/4 1
-        </div>
-    `;
+    // Pie de página (vacío por solicitud del usuario)
+    const footerHTML = '';
 
     // Crear HTML del certificado
     const certificadoHTML = `

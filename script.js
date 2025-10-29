@@ -812,7 +812,7 @@ function renderizarBorradores() {
     }).join('');
 }
 
-function cargarBorrador(id) {
+async function cargarBorrador(id) {
     const borradores = JSON.parse(localStorage.getItem('borradores') || '[]');
     const borrador = borradores.find(b => b.id === id);
 
@@ -821,7 +821,14 @@ function cargarBorrador(id) {
         return;
     }
 
-    if (!confirm('¿Cargar este borrador? Los datos actuales se perderán si no los has guardado.')) {
+    const confirmado = await mostrarConfirmacion(
+        '¿Cargar este borrador? Los datos actuales del formulario se perderán si no los has guardado.',
+        'Confirmar carga de borrador',
+        'warning',
+        '📂'
+    );
+
+    if (!confirmado) {
         return;
     }
 
@@ -893,8 +900,15 @@ function restaurarEstadosInspeccion() {
     });
 }
 
-function eliminarBorrador(id) {
-    if (!confirm('¿Eliminar este borrador?')) {
+async function eliminarBorrador(id) {
+    const confirmado = await mostrarConfirmacion(
+        '¿Eliminar este borrador de forma permanente?',
+        'Confirmar eliminación',
+        'danger',
+        '🗑️'
+    );
+
+    if (!confirmado) {
         return;
     }
 
@@ -1775,4 +1789,141 @@ function exportarCSV() {
     document.body.removeChild(link);
 
     mostrarExito('Archivo CSV exportado correctamente');
+}
+
+// ============================================
+// MODAL DE CONFIRMACIÓN ESTILIZADO
+// ============================================
+
+let confirmModalCallback = null;
+
+/**
+ * Muestra el modal de confirmación estilizado
+ * @param {string} message - Mensaje a mostrar
+ * @param {string} title - Título del modal (opcional)
+ * @param {string} type - Tipo: 'default', 'warning', 'danger', 'success' (opcional)
+ * @param {string} icon - Icono emoji a mostrar (opcional)
+ * @returns {Promise<boolean>} - Promesa que resuelve true si confirma, false si cancela
+ */
+function mostrarConfirmacion(message, title = 'Confirmar acción', type = 'default', icon = '❓') {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('confirmModal');
+        const modalContent = modal.querySelector('.confirm-modal-content');
+        const titleElement = document.getElementById('confirmModalTitle');
+        const messageElement = document.getElementById('confirmModalMessage');
+        const iconElement = document.getElementById('confirmModalIconSpan');
+
+        // Configurar contenido
+        titleElement.textContent = title;
+        messageElement.textContent = message;
+        iconElement.textContent = icon;
+
+        // Remover clases de tipo previas
+        modalContent.classList.remove('warning', 'danger', 'success');
+
+        // Agregar clase de tipo si no es default
+        if (type !== 'default') {
+            modalContent.classList.add(type);
+        }
+
+        // Configurar callback
+        confirmModalCallback = (confirmed) => {
+            cerrarModalConfirm();
+            resolve(confirmed);
+        };
+
+        // Mostrar modal
+        modal.classList.add('active');
+
+        // Cerrar con ESC
+        const handleEsc = (e) => {
+            if (e.key === 'Escape') {
+                cerrarModalConfirm();
+                resolve(false);
+                document.removeEventListener('keydown', handleEsc);
+            }
+        };
+        document.addEventListener('keydown', handleEsc);
+
+        // Cerrar al hacer clic fuera del modal
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                cerrarModalConfirm();
+                resolve(false);
+            }
+        };
+    });
+}
+
+function cerrarModalConfirm() {
+    const modal = document.getElementById('confirmModal');
+    modal.classList.remove('active');
+    confirmModalCallback = null;
+    modal.onclick = null;
+}
+
+function confirmarAccionModal() {
+    if (confirmModalCallback) {
+        confirmModalCallback(true);
+    }
+}
+
+// Actualizar funciones existentes para usar el modal estilizado
+async function completarTodosEstado(estado) {
+    const iconos = {
+        'BIEN': '✅',
+        'REGULAR': '⚠️',
+        'MAL': '❌',
+        'NA': '➖'
+    };
+
+    const tipos = {
+        'BIEN': 'success',
+        'REGULAR': 'warning',
+        'MAL': 'danger',
+        'NA': 'default'
+    };
+
+    const confirmado = await mostrarConfirmacion(
+        `¿Marcar todos los items de inspección como "${estado}"?`,
+        'Confirmar actualización masiva',
+        tipos[estado] || 'default',
+        iconos[estado] || '❓'
+    );
+
+    if (!confirmado) return;
+
+    CATEGORIAS_INSPECCION.forEach((categoria, catIndex) => {
+        categoria.items.forEach((item, itemIndex) => {
+            const itemId = `item_${catIndex}_${itemIndex}`;
+            seleccionarEstado(itemId, estado);
+        });
+    });
+
+    mostrarExito(`Todos los items marcados como ${estado}`);
+}
+
+// Actualizar función limpiarTodosEstados
+async function limpiarTodosEstados() {
+    const confirmado = await mostrarConfirmacion(
+        '¿Limpiar todos los estados seleccionados en la inspección?',
+        'Confirmar limpieza',
+        'warning',
+        '🧹'
+    );
+
+    if (!confirmado) return;
+
+    datosInspeccion = {};
+
+    document.querySelectorAll('.btn-estado').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+
+    document.querySelectorAll('.input-personalizado').forEach(input => {
+        input.style.display = 'none';
+        input.value = '';
+    });
+
+    mostrarExito('Todos los estados han sido limpiados');
 }

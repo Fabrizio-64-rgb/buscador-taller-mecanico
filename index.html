@@ -441,6 +441,23 @@
         </div>
     </div>
 
+    <!-- Modal de Confirmación Estilizado -->
+    <div id="confirmModal" class="confirm-modal">
+        <div class="confirm-modal-content">
+            <div class="confirm-modal-icon">
+                <span id="confirmModalIconSpan">❓</span>
+            </div>
+            <div class="confirm-modal-body">
+                <h3 id="confirmModalTitle">Confirmar acción</h3>
+                <p id="confirmModalMessage">¿Está seguro de realizar esta acción?</p>
+            </div>
+            <div class="confirm-modal-footer">
+                <button class="btn-confirm-cancel" onclick="cerrarModalConfirm()">Cancelar</button>
+                <button class="btn-confirm-ok" id="confirmModalBtnOk" onclick="confirmarAccionModal()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Configuración de Google Drive -->
     <script src="google-drive-config.js"></script>
 

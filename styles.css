@@ -804,6 +804,152 @@ td:hover {
     transform: rotate(180deg) scale(0.95);
 }
 
+/* Modal de Confirmación Estilizado */
+.confirm-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+}
+
+.confirm-modal.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.confirm-modal-content {
+    background: var(--bg-container);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 450px;
+    width: 90%;
+    padding: 0;
+    animation: slideInUp 0.3s ease;
+    overflow: hidden;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.confirm-modal-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 30px;
+    text-align: center;
+}
+
+.confirm-modal-icon span {
+    font-size: 48px;
+    display: inline-block;
+    animation: scaleIn 0.4s ease;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.confirm-modal-body {
+    padding: 30px 25px 20px 25px;
+    text-align: center;
+}
+
+.confirm-modal-body h3 {
+    color: var(--text-primary);
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.confirm-modal-body p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.confirm-modal-footer {
+    padding: 20px 25px 25px 25px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.btn-confirm-cancel,
+.btn-confirm-ok {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.btn-confirm-cancel {
+    background: var(--text-tertiary);
+    color: white;
+}
+
+.btn-confirm-cancel:hover {
+    background: var(--text-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-confirm-ok {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-confirm-ok:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Variantes de color para diferentes tipos de confirmación */
+.confirm-modal-content.warning .confirm-modal-icon {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+}
+
+.confirm-modal-content.danger .confirm-modal-icon {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.confirm-modal-content.danger .btn-confirm-ok {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+}
+
+.confirm-modal-content.success .confirm-modal-icon {
+    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+}
+
+.confirm-modal-content.success .btn-confirm-ok {
+    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+}
+
 /* Estilos para formularios de configuración y certificado */
 .config-form {
     max-width: 800px;
@@ -823,7 +969,8 @@ td:hover {
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
     width: 100%;
     padding: 12px;
     border: 1px solid var(--border-input);
@@ -835,8 +982,25 @@ td:hover {
     transition: all 0.3s ease;
 }
 
+.form-group select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 40px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.form-group select:hover {
+    border-color: var(--color-primary);
+    background-color: var(--bg-hover);
+}
+
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
@@ -1177,9 +1341,9 @@ td:hover {
 
     .cert-info-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-bottom: 20px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        margin-bottom: 15px;
         page-break-inside: avoid;
     }
 

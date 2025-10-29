@@ -19,8 +19,7 @@
         <div class="content">
             <!-- Tabs -->
             <div class="tabs">
-                <button class="tab-btn active" onclick="cambiarTab(event, 'archivo')">📁 Cargar Archivo</button>
-                <button class="tab-btn" onclick="cambiarTab(event, 'pegar')">📋 Pegar Datos</button>
+                <button class="tab-btn active" onclick="cambiarTab(event, 'cargar')">📁 Cargar Datos</button>
                 <button class="tab-btn" onclick="cambiarTab(event, 'gestion')">👥 Gestión de Clientes</button>
                 <button class="tab-btn" onclick="cambiarTab(event, 'configuracion')">⚙️ Configuración</button>
                 <button class="tab-btn" onclick="cambiarTab(event, 'certificado')">📄 Certificado</button>
@@ -30,44 +29,45 @@
             <div class="error-message" id="errorMessage"></div>
             <div class="success-message" id="successMessage"></div>
 
-            <!-- TAB 1: Cargar archivo -->
-            <div id="archivo" class="tab-content active">
+            <!-- TAB 1: Cargar Datos (Archivo o Pegado) -->
+            <div id="cargar" class="tab-content active">
+                <h2 style="margin-bottom: 20px; color: #2c3e50;">📁 Cargar Datos</h2>
+
                 <div class="instructions">
                     <strong>ℹ️ Instrucciones:</strong><br>
-                    1. Abre tu archivo Excel (1353.xlsx)<br>
-                    2. Guárdalo como <strong>CSV</strong> (Archivo → Guardar como → CSV)<br>
-                    3. Carga el archivo CSV aquí
+                    Puedes cargar datos de dos formas:
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li><strong>Desde archivo CSV:</strong> Guarda tu Excel como CSV y cárgalo aquí</li>
+                        <li><strong>Copiar y pegar:</strong> Copia los datos de Excel y pégalos directamente</li>
+                    </ul>
                 </div>
 
-                <div class="upload-section" id="uploadSection">
-                    <div class="upload-icon">📁</div>
-                    <h3>Carga tu archivo CSV</h3>
-                    <p>Arrastra el archivo aquí o haz clic para seleccionar</p>
-                    <input type="file" id="fileInput" accept=".csv, .txt" />
-                    <button class="btn" onclick="document.getElementById('fileInput').click();">
-                        Seleccionar archivo
-                    </button>
+                <!-- Opción 1: Cargar Archivo -->
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">📁 Opción 1: Cargar Archivo CSV</h3>
+                    <div class="upload-section" id="uploadSection">
+                        <div class="upload-icon">📁</div>
+                        <h3>Carga tu archivo CSV</h3>
+                        <p>Arrastra el archivo aquí o haz clic para seleccionar</p>
+                        <input type="file" id="fileInput" accept=".csv, .txt" />
+                        <button class="btn" onclick="document.getElementById('fileInput').click();">
+                            Seleccionar archivo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Opción 2: Pegar Datos -->
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 15px;">📋 Opción 2: Copiar y Pegar</h3>
+                    <div class="paste-section">
+                        <label for="pasteArea">Pega tus datos de Excel aquí:</label>
+                        <textarea id="pasteArea" placeholder="Copia datos de Excel (Ctrl+C) y pégalos aquí (Ctrl+V)..."></textarea>
+                        <button class="btn" onclick="cargarDatos();">✓ Cargar datos</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- TAB 2: Pegar datos -->
-            <div id="pegar" class="tab-content">
-                <div class="instructions">
-                    <strong>ℹ️ Instrucciones:</strong><br>
-                    1. Abre tu Excel<br>
-                    2. Selecciona todos los datos (Ctrl+A)<br>
-                    3. Copia (Ctrl+C)<br>
-                    4. Pega aquí y haz clic en "Cargar datos"
-                </div>
-
-                <div class="paste-section">
-                    <label for="pasteArea">Pega tus datos aquí:</label>
-                    <textarea id="pasteArea" placeholder="Pega los datos del Excel aquí..."></textarea>
-                    <button class="btn" onclick="cargarDatos();">✓ Cargar datos</button>
-                </div>
-            </div>
-
-            <!-- TAB 3: Gestión de Clientes -->
+            <!-- TAB 2: Gestión de Clientes -->
             <div id="gestion" class="tab-content">
                 <h2 style="margin-bottom: 20px; color: #2c3e50;">👥 Gestión de Clientes</h2>
 

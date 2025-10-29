@@ -291,14 +291,18 @@ function mostrarResultados(resultados) {
 
     noResults.style.display = 'none';
 
-    // Crear encabezados con columna de acciones
+    // Reordenar columnas según prioridad
+    const columnasOrdenadas = ordenarColumnas(columnas);
+
+    // Crear encabezados con columna de acciones A LA DERECHA
     if (tableHead.innerHTML === '') {
-        tableHead.innerHTML = '<th>Acciones</th>' + columnas.map(col => `<th>${col}</th>`).join('');
+        tableHead.innerHTML = columnasOrdenadas.map(col => `<th>${col}</th>`).join('') + '<th class="actions-header">Acciones</th>';
     }
 
-    // Crear filas con evento click y botones de acción
+    // Crear filas con evento click y botones de acción A LA DERECHA
     tableBody.innerHTML = resultadosLimitados.map((row, index) => `
         <tr data-index="${index}" class="row-clickable">
+            ${columnasOrdenadas.map(col => `<td>${row[col] || '-'}</td>`).join('')}
             <td class="actions-cell">
                 <button class="btn-action btn-select" onclick="seleccionarCliente(${index})" title="Seleccionar para certificado">
                     ✓
@@ -310,7 +314,6 @@ function mostrarResultados(resultados) {
                     🗑️
                 </button>
             </td>
-            ${columnas.map(col => `<td>${row[col] || '-'}</td>`).join('')}
         </tr>
     `).join('');
 
@@ -318,6 +321,46 @@ function mostrarResultados(resultados) {
     if (resultados.length > 100) {
         mostrarAdvertencia(`Mostrando 100 de ${resultados.length} resultados. Refina tu búsqueda para ver más.`);
     }
+}
+
+// Función para ordenar columnas según prioridad
+function ordenarColumnas(cols) {
+    // Orden prioritario de columnas
+    const ordenPrioridad = [
+        'nombre', 'apellido', 'nro. de documento', 'documento', 'nro documento',
+        'correo electrónico', 'correo electronico', 'email', 'mail',
+        'celular', 'telefono', 'teléfono', 'cel',
+        'patente', 'dominio', 'placa',
+        'marca',
+        'modelo'
+    ];
+
+    const columnasPrioritarias = [];
+    const columnasRestantes = [];
+
+    // Separar columnas prioritarias de las restantes
+    cols.forEach(col => {
+        const colNormalizada = normalizarTexto(col);
+        let encontrada = false;
+
+        for (let prioridad of ordenPrioridad) {
+            if (colNormalizada.includes(prioridad) || prioridad.includes(colNormalizada)) {
+                columnasPrioritarias.push({ original: col, prioridad: ordenPrioridad.indexOf(prioridad) });
+                encontrada = true;
+                break;
+            }
+        }
+
+        if (!encontrada) {
+            columnasRestantes.push(col);
+        }
+    });
+
+    // Ordenar columnas prioritarias según su índice de prioridad
+    columnasPrioritarias.sort((a, b) => a.prioridad - b.prioridad);
+
+    // Devolver columnas prioritarias primero, luego las restantes
+    return [...columnasPrioritarias.map(c => c.original), ...columnasRestantes];
 }
 
 function limpiar() {

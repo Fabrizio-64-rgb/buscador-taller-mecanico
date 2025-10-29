@@ -408,9 +408,18 @@ body {
     padding: 8px !important;
     min-width: 120px;
     position: sticky;
-    left: 0;
+    right: 0;
     background: inherit;
     z-index: 1;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.actions-header {
+    position: sticky;
+    right: 0;
+    background: inherit;
+    z-index: 2;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .btn-action {
@@ -983,103 +992,138 @@ tbody tr:hover {
 }
 
 @media print {
-    body * {
-        visibility: hidden;
-    }
-
-    .certificate-modal {
-        display: block !important;
-        position: static;
-        background: white;
-        padding: 0;
-    }
-
-    .certificate-modal-header,
-    .certificate-modal-footer,
-    .certificate-modal-close {
+    /* Ocultar todo excepto el certificado */
+    body > *:not(.certificate-modal) {
         display: none !important;
     }
 
-    .certificate-modal-content {
-        box-shadow: none;
-        max-width: 100%;
+    body {
         margin: 0;
+        padding: 0;
+        background: white;
+    }
+
+    /* Mostrar solo el modal y el certificado */
+    .certificate-modal {
+        display: block !important;
+        position: static !important;
+        background: white !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+
+    .certificate-modal-content {
+        box-shadow: none !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        background: white !important;
+    }
+
+    /* Ocultar controles del modal */
+    .certificate-modal-header,
+    .certificate-modal-footer,
+    .certificate-modal-close,
+    .toast-container {
+        display: none !important;
     }
 
     .certificate-modal-body {
-        padding: 0;
+        padding: 0 !important;
+        background: white !important;
     }
 
-    .certificate-print, .certificate-print * {
-        visibility: visible;
-    }
-    body * {
-        visibility: hidden;
-    }
-
-    .certificate-print, .certificate-print * {
-        visibility: visible;
-    }
-
+    /* Mostrar el certificado */
     .certificate-print {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        padding: 20px;
-        font-family: Arial, sans-serif;
-        font-size: 12px;
-        line-height: 1.4;
+        display: block !important;
+        visibility: visible !important;
+        position: static !important;
+        background: white !important;
+        padding: 30px !important;
+        font-family: Arial, sans-serif !important;
+        font-size: 12pt !important;
+        line-height: 1.6 !important;
+        color: #000 !important;
+        width: 100% !important;
+        page-break-after: avoid !important;
     }
 
+    .certificate-print * {
+        visibility: visible !important;
+        color: #000 !important;
+    }
+
+    /* Estilos específicos para impresión */
     .cert-header {
         text-align: center;
-        border-bottom: 2px solid #000;
-        padding-bottom: 15px;
-        margin-bottom: 15px;
+        border-bottom: 3px solid #000;
+        padding-bottom: 20px;
+        margin-bottom: 25px;
+        page-break-after: avoid;
     }
 
     .cert-title {
-        font-size: 18px;
+        font-size: 18pt;
         font-weight: bold;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
+        color: #000 !important;
     }
 
     .cert-subtitle {
-        font-size: 14px;
+        font-size: 14pt;
         font-weight: bold;
+        color: #000 !important;
     }
 
     .cert-info-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-        margin-bottom: 15px;
+        gap: 10px;
+        margin-bottom: 20px;
+        page-break-inside: avoid;
     }
 
     .cert-info-item {
-        padding: 5px;
-        border-bottom: 1px solid #ccc;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        page-break-inside: avoid;
+        background: white !important;
     }
 
     .cert-info-label {
         font-weight: bold;
-        font-size: 11px;
+        font-size: 10pt;
+        color: #000 !important;
+        margin-bottom: 3px;
     }
 
     .cert-section-title {
-        background: #f0f0f0;
-        padding: 8px;
+        background: #e0e0e0 !important;
+        color: #000 !important;
+        padding: 10px;
         font-weight: bold;
-        margin: 15px 0 10px 0;
-        border-left: 4px solid #667eea;
+        margin: 20px 0 15px 0;
+        border-left: 4px solid #000;
+        page-break-after: avoid;
     }
 
     .cert-revision-item {
-        padding: 5px 0;
-        border-bottom: 1px dotted #ccc;
+        padding: 8px 0;
+        border-bottom: 1px solid #ccc;
         display: flex;
         justify-content: space-between;
+        page-break-inside: avoid;
+    }
+
+    .cert-revision-item:last-child {
+        border-bottom: none;
+    }
+
+    /* Forzar impresión en colores */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
     }
 }
 

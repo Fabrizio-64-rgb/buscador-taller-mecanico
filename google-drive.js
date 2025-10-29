@@ -14,25 +14,30 @@ function initializeGoogleDrive() {
         return;
     }
 
-    // Verificar que las librerías estén cargadas
-    if (typeof gapi === 'undefined') {
-        console.error('❌ Google API library no cargada');
-        return;
-    }
-
-    if (typeof google === 'undefined') {
-        console.error('❌ Google Sign-In library no cargada');
-        return;
-    }
-
     console.log('🔧 Inicializando Google Drive API...');
+
+    // Esperar a que gapi esté disponible
+    if (typeof gapi === 'undefined') {
+        console.log('⏳ Esperando a que gapi se cargue...');
+        setTimeout(initializeGoogleDrive, 500);
+        return;
+    }
+
+    // Cargar el cliente de Google API
     gapi.load('client', initializeGapiClient);
 
-    // Esperar a que google.accounts esté disponible
-    if (google.accounts && google.accounts.oauth2) {
+    // Esperar a que google.accounts esté disponible antes de inicializar token client
+    waitForGoogleAccounts();
+}
+
+// Esperar a que google.accounts esté disponible
+function waitForGoogleAccounts() {
+    if (typeof google !== 'undefined' && google.accounts && google.accounts.oauth2) {
+        console.log('✓ Google Accounts API disponible');
         initTokenClient();
     } else {
-        setTimeout(initTokenClient, 1000);
+        console.log('⏳ Esperando Google Accounts API...');
+        setTimeout(waitForGoogleAccounts, 500);
     }
 }
 
@@ -52,6 +57,10 @@ async function initializeGapiClient() {
 // Inicializar Token Client (OAuth 2.0)
 function initTokenClient() {
     try {
+        if (typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2) {
+            throw new Error('Google Accounts API no está disponible');
+        }
+
         tokenClient = google.accounts.oauth2.initTokenClient({
             client_id: GOOGLE_CLIENT_ID,
             scope: GOOGLE_SCOPES,
@@ -65,8 +74,12 @@ function initTokenClient() {
                 console.log('✓ Token de acceso obtenido');
             },
         });
+
+        console.log('✓ Token Client inicializado correctamente');
+        gisInited = true;
     } catch (error) {
-        console.error('Error inicializando token client:', error);
+        console.error('❌ Error inicializando token client:', error);
+        mostrarError('Error al inicializar autenticación de Google: ' + error.message);
     }
 }
 
@@ -77,6 +90,13 @@ async function guardarEnDrive() {
     // Validar que la configuración esté completa
     if (typeof GOOGLE_CLIENT_ID === 'undefined' || GOOGLE_CLIENT_ID === 'TU_CLIENT_ID_AQUI') {
         mostrarError('⚠️ Configura primero el Client ID de Google en google-drive-config.js');
+        return;
+    }
+
+    // Validar que tokenClient esté inicializado
+    if (!tokenClient) {
+        mostrarError('⚠️ Google Drive aún se está inicializando. Espera unos segundos y vuelve a intentar.');
+        console.error('tokenClient no inicializado');
         return;
     }
 

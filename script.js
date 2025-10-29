@@ -1020,6 +1020,7 @@ function generarCertificado() {
     const garantiaServicio = document.getElementById('garantiaServicio').value.trim();
     const mecanicoAsignado = document.getElementById('mecanicoAsignado').value.trim();
     const metodoPago = document.getElementById('metodoPago').value;
+    const observaciones = document.getElementById('observaciones').value.trim();
 
     // Validar campos requeridos con mensajes específicos
     const camposFaltantes = [];
@@ -1196,6 +1197,21 @@ function generarCertificado() {
         </div>
     `;
 
+    // Generar sección de observaciones
+    let observacionesHTML = '';
+    if (observaciones) {
+        observacionesHTML = `
+            <div class="cert-observaciones">
+                <h3 class="cert-observaciones-titulo">OBSERVACIONES Y RECOMENDACIONES</h3>
+                <div class="cert-observaciones-contenido">
+                    ${observaciones.split('\n').filter(l => l.trim()).map(linea =>
+                        `<div class="cert-observacion-item">${linea}</div>`
+                    ).join('')}
+                </div>
+            </div>
+        `;
+    }
+
     // Pie de página (vacío por solicitud del usuario)
     const footerHTML = '';
 
@@ -1295,6 +1311,8 @@ function generarCertificado() {
             ${referenciasHTML}
 
             ${certificadoProductoHTML}
+
+            ${observacionesHTML}
 
             ${disclaimerHTML}
 

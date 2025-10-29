@@ -564,34 +564,155 @@ tbody tr:hover {
     font-weight: bold;
 }
 
-.error-message {
-    background: var(--bg-error);
-    color: var(--color-error);
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    border-left: 4px solid var(--color-error);
-    display: none;
-    transition: all 0.3s ease;
+/* Contenedor de notificaciones flotantes (toast) */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
 }
 
-.error-message.active {
-    display: block;
+/* Estilos base para toast */
+.toast {
+    background: white;
+    color: #333;
+    padding: 16px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 300px;
+    animation: slideIn 0.3s ease-out;
+    position: relative;
+    border-left: 4px solid #ccc;
 }
 
+.toast.removing {
+    animation: slideOut 0.3s ease-out forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+
+/* Iconos de toast */
+.toast-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.toast-message {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.toast-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+/* Tipos de toast */
+.toast.success {
+    border-left-color: #10b981;
+}
+
+.toast.success .toast-icon {
+    background: #d1fae5;
+    color: #10b981;
+}
+
+.toast.error {
+    border-left-color: #ef4444;
+}
+
+.toast.error .toast-icon {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+.toast.warning {
+    border-left-color: #f59e0b;
+}
+
+.toast.warning .toast-icon {
+    background: #fef3c7;
+    color: #f59e0b;
+}
+
+.toast.info {
+    border-left-color: #3b82f6;
+}
+
+.toast.info .toast-icon {
+    background: #dbeafe;
+    color: #3b82f6;
+}
+
+/* Tema oscuro para toasts */
+[data-theme="dark"] .toast {
+    background: #2d3748;
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .toast-close {
+    color: #a0aec0;
+}
+
+[data-theme="dark"] .toast-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+}
+
+/* Mantener mensajes antiguos ocultos por compatibilidad */
+.error-message,
 .success-message {
-    background: var(--bg-success);
-    color: var(--color-success);
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    border-left: 4px solid var(--color-success);
     display: none;
-    transition: all 0.3s ease;
-}
-
-.success-message.active {
-    display: block;
 }
 
 /* Botón de toggle de tema */
@@ -689,12 +810,209 @@ tbody tr:hover {
     background: var(--text-secondary) !important;
 }
 
-/* Estilos para certificado imprimible */
-.certificate-print {
+/* Modal para certificado */
+.certificate-modal {
     display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.certificate-modal.active {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.certificate-modal-content {
+    background: white;
+    max-width: 900px;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    margin: 20px auto;
+}
+
+.certificate-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 2px solid #e5e7eb;
+    background: var(--color-primary);
+    color: white;
+    border-radius: 8px 8px 0 0;
+}
+
+.certificate-modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.certificate-modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.certificate-modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.certificate-modal-body {
+    padding: 30px;
+}
+
+.certificate-modal-footer {
+    padding: 20px;
+    border-top: 2px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    background: #f9fafb;
+    border-radius: 0 0 8px 8px;
+}
+
+.btn-print {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-print:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Estilos para certificado (visible en modal) */
+.certificate-print {
+    background: white;
+    padding: 30px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.cert-header {
+    text-align: center;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.cert-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #667eea;
+}
+
+.cert-subtitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.cert-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.cert-info-item {
+    padding: 10px;
+    background: #f9fafb;
+    border-left: 3px solid #667eea;
+    border-radius: 4px;
+}
+
+.cert-info-label {
+    font-weight: bold;
+    font-size: 12px;
+    color: #667eea;
+    margin-bottom: 3px;
+}
+
+.cert-section-title {
+    background: #667eea;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    margin: 20px 0 15px 0;
+    border-radius: 4px;
+}
+
+.cert-revision-item {
+    padding: 8px 0;
+    border-bottom: 1px dotted #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cert-revision-item:last-child {
+    border-bottom: none;
 }
 
 @media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .certificate-modal {
+        display: block !important;
+        position: static;
+        background: white;
+        padding: 0;
+    }
+
+    .certificate-modal-header,
+    .certificate-modal-footer,
+    .certificate-modal-close {
+        display: none !important;
+    }
+
+    .certificate-modal-content {
+        box-shadow: none;
+        max-width: 100%;
+        margin: 0;
+    }
+
+    .certificate-modal-body {
+        padding: 0;
+    }
+
+    .certificate-print, .certificate-print * {
+        visibility: visible;
+    }
     body * {
         visibility: hidden;
     }

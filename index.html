@@ -295,6 +295,28 @@ REVISIÓN TUERCA NEUMÁTICOS - BIEN"></textarea>
         </div>
     </div>
 
+    <!-- Contenedor de notificaciones toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Modal para mostrar certificado -->
+    <div class="certificate-modal" id="certificateModal">
+        <div class="certificate-modal-content">
+            <div class="certificate-modal-header">
+                <h2>📄 Certificado de Servicio</h2>
+                <button class="certificate-modal-close" onclick="cerrarModalCertificado()">×</button>
+            </div>
+            <div class="certificate-modal-body" id="certificateModalBody">
+                <!-- El certificado se cargará aquí -->
+            </div>
+            <div class="certificate-modal-footer">
+                <button class="btn btn-secondary" onclick="cerrarModalCertificado()">Cerrar</button>
+                <button class="btn-print" onclick="imprimirCertificado()">
+                    🖨️ Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

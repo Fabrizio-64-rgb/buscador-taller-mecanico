@@ -326,25 +326,68 @@ function limpiar() {
     document.getElementById('searchInput').focus();
 }
 
+// ============================================
+// SISTEMA DE NOTIFICACIONES TOAST
+// ============================================
+
+function mostrarToast(mensaje, tipo = 'info', duracion = 5000) {
+    const container = document.getElementById('toastContainer');
+    if (!container) return;
+
+    // Crear elemento toast
+    const toast = document.createElement('div');
+    toast.className = `toast ${tipo}`;
+
+    // Iconos según tipo
+    const iconos = {
+        success: '✓',
+        error: '✕',
+        warning: '⚠',
+        info: 'ℹ'
+    };
+
+    const icono = iconos[tipo] || 'ℹ';
+
+    toast.innerHTML = `
+        <div class="toast-icon">${icono}</div>
+        <div class="toast-message">${mensaje}</div>
+        <button class="toast-close" onclick="cerrarToast(this)">×</button>
+    `;
+
+    container.appendChild(toast);
+
+    // Auto-remover después de la duración
+    setTimeout(() => {
+        cerrarToast(toast.querySelector('.toast-close'));
+    }, duracion);
+}
+
+function cerrarToast(btn) {
+    const toast = btn.closest ? btn.closest('.toast') : btn;
+    if (!toast) return;
+
+    toast.classList.add('removing');
+    setTimeout(() => {
+        if (toast.parentElement) {
+            toast.parentElement.removeChild(toast);
+        }
+    }, 300);
+}
+
 function mostrarError(mensaje) {
-    const errorDiv = document.getElementById('errorMessage');
-    errorDiv.textContent = '⚠️ ' + mensaje;
-    errorDiv.classList.add('active');
-    setTimeout(() => errorDiv.classList.remove('active'), 5000);
+    mostrarToast(mensaje, 'error', 5000);
 }
 
 function mostrarExito(mensaje) {
-    const successDiv = document.getElementById('successMessage');
-    successDiv.textContent = '✓ ' + mensaje;
-    successDiv.classList.add('active');
-    setTimeout(() => successDiv.classList.remove('active'), 5000);
+    mostrarToast(mensaje, 'success', 4000);
 }
 
 function mostrarAdvertencia(mensaje) {
-    const successDiv = document.getElementById('successMessage');
-    successDiv.textContent = '⚡ ' + mensaje;
-    successDiv.classList.add('active');
-    setTimeout(() => successDiv.classList.remove('active'), 3000);
+    mostrarToast(mensaje, 'warning', 4000);
+}
+
+function mostrarInfo(mensaje) {
+    mostrarToast(mensaje, 'info', 4000);
 }
 
 function limpiarError() {
@@ -472,26 +515,52 @@ function generarCertificado() {
     const configGuardada = localStorage.getItem('tallerConfig');
 
     if (!configGuardada) {
-        mostrarError('Por favor configura primero los datos del taller en la pestaña "Configuración"');
+        mostrarError('⚙️ Por favor configura primero los datos del taller en la pestaña "Configuración"');
+        // Cambiar a pestaña de configuración
+        const configTab = Array.from(document.querySelectorAll('.tab-btn')).find(btn =>
+            btn.textContent.includes('Configuración')
+        );
+        if (configTab) {
+            setTimeout(() => configTab.click(), 1000);
+        }
         return;
     }
 
     const config = JSON.parse(configGuardada);
 
-    // Obtener datos del formulario de certificado
-    const nombreCliente = document.getElementById('nombreCliente').value;
-    const patenteVehiculo = document.getElementById('patenteVehiculo').value;
-    const marcaVehiculo = document.getElementById('marcaVehiculo').value;
-    const modeloVehiculo = document.getElementById('modeloVehiculo').value;
-    const tipoTecnico = document.getElementById('tipoTecnico').value;
-    const kilometrajeActual = document.getElementById('kilometrajeActual').value;
-    const proximoServicioKm = document.getElementById('proximoServicioKm').value;
-    const fechaProximoServicio = document.getElementById('fechaProximoServicio').value;
-    const puntosRevision = document.getElementById('puntosRevision').value;
+    // Validar que la configuración tenga datos requeridos
+    if (!config.nombreTaller || !config.telefonoTaller) {
+        mostrarError('⚠️ Faltan datos del taller (nombre y teléfono son requeridos). Completa la configuración.');
+        return;
+    }
 
-    // Validar campos requeridos
-    if (!nombreCliente || !patenteVehiculo || !marcaVehiculo || !modeloVehiculo || !kilometrajeActual) {
-        mostrarError('Por favor completa todos los campos requeridos');
+    // Obtener datos del formulario de certificado
+    const nombreCliente = document.getElementById('nombreCliente').value.trim();
+    const patenteVehiculo = document.getElementById('patenteVehiculo').value.trim();
+    const marcaVehiculo = document.getElementById('marcaVehiculo').value.trim();
+    const modeloVehiculo = document.getElementById('modeloVehiculo').value.trim();
+    const tipoTecnico = document.getElementById('tipoTecnico').value.trim();
+    const kilometrajeActual = document.getElementById('kilometrajeActual').value.trim();
+    const proximoServicioKm = document.getElementById('proximoServicioKm').value.trim();
+    const fechaProximoServicio = document.getElementById('fechaProximoServicio').value;
+    const puntosRevision = document.getElementById('puntosRevision').value.trim();
+
+    // Validar campos requeridos con mensajes específicos
+    const camposFaltantes = [];
+    if (!nombreCliente) camposFaltantes.push('Nombre del cliente');
+    if (!patenteVehiculo) camposFaltantes.push('Patente del vehículo');
+    if (!marcaVehiculo) camposFaltantes.push('Marca del vehículo');
+    if (!modeloVehiculo) camposFaltantes.push('Modelo del vehículo');
+    if (!kilometrajeActual) camposFaltantes.push('Kilometraje actual');
+
+    if (camposFaltantes.length > 0) {
+        mostrarError(`⚠️ Faltan datos requeridos:<br>• ${camposFaltantes.join('<br>• ')}`);
+        return;
+    }
+
+    // Validar que el kilometraje sea un número válido
+    if (isNaN(parseInt(kilometrajeActual))) {
+        mostrarError('⚠️ El kilometraje actual debe ser un número válido');
         return;
     }
 
@@ -587,22 +656,26 @@ function generarCertificado() {
         </div>
     `;
 
-    // Eliminar certificado anterior si existe
-    const certificadoAnterior = document.getElementById('certificadoPrint');
-    if (certificadoAnterior) {
-        certificadoAnterior.remove();
+    // Mostrar certificado en el modal
+    const modalBody = document.getElementById('certificateModalBody');
+    if (modalBody) {
+        modalBody.innerHTML = certificadoHTML;
+        document.getElementById('certificateModal').classList.add('active');
+        mostrarExito('✓ Certificado generado correctamente. Revisa y luego imprime.');
+    } else {
+        mostrarError('Error al mostrar el certificado');
     }
+}
 
-    // Agregar el certificado al body
-    document.body.insertAdjacentHTML('beforeend', certificadoHTML);
+function cerrarModalCertificado() {
+    const modal = document.getElementById('certificateModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
 
-    // Mostrar mensaje de éxito
-    mostrarExito('Certificado generado. Abriendo vista de impresión...');
-
-    // Esperar un momento y abrir diálogo de impresión
-    setTimeout(() => {
-        window.print();
-    }, 500);
+function imprimirCertificado() {
+    window.print();
 }
 
 function limpiarFormularioCertificado() {

@@ -14,8 +14,26 @@ function initializeGoogleDrive() {
         return;
     }
 
+    // Verificar que las librerías estén cargadas
+    if (typeof gapi === 'undefined') {
+        console.error('❌ Google API library no cargada');
+        return;
+    }
+
+    if (typeof google === 'undefined') {
+        console.error('❌ Google Sign-In library no cargada');
+        return;
+    }
+
+    console.log('🔧 Inicializando Google Drive API...');
     gapi.load('client', initializeGapiClient);
-    initTokenClient();
+
+    // Esperar a que google.accounts esté disponible
+    if (google.accounts && google.accounts.oauth2) {
+        initTokenClient();
+    } else {
+        setTimeout(initTokenClient, 1000);
+    }
 }
 
 // Inicializar GAPI Client
@@ -113,11 +131,23 @@ async function guardarEnDrive() {
 
 // Generar PDF del certificado usando html2canvas + jsPDF
 async function generarPDFCertificado() {
+    // Verificar que html2canvas esté disponible
+    if (typeof html2canvas === 'undefined') {
+        throw new Error('html2canvas no está cargado. Verifica tu conexión a internet.');
+    }
+
+    // Verificar que jsPDF esté disponible
+    if (typeof window.jspdf === 'undefined') {
+        throw new Error('jsPDF no está cargado. Verifica tu conexión a internet.');
+    }
+
     const certificado = document.querySelector('.certificate-print');
 
     if (!certificado) {
-        throw new Error('No se encontró el certificado');
+        throw new Error('No se encontró el certificado. Genera un certificado primero.');
     }
+
+    console.log('📸 Capturando certificado...');
 
     // Capturar el certificado como imagen
     const canvas = await html2canvas(certificado, {
@@ -126,6 +156,8 @@ async function generarPDFCertificado() {
         logging: false,
         backgroundColor: '#ffffff'
     });
+
+    console.log('✓ Certificado capturado');
 
     // Convertir canvas a imagen
     const imgData = canvas.toDataURL('image/png');
@@ -144,12 +176,20 @@ async function generarPDFCertificado() {
 
     pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
+    console.log('✓ PDF generado');
+
     // Convertir PDF a Blob
     return pdf.output('blob');
 }
 
 // Subir archivo a Google Drive
 async function subirADrive(blob) {
+    console.log('☁️ Preparando subida a Drive...');
+
+    if (!accessToken) {
+        throw new Error('No hay token de acceso. Reintenta la autorización.');
+    }
+
     // Obtener datos del certificado para el nombre del archivo
     const nombreCliente = document.getElementById('nombreCliente').value || 'Cliente';
     const patenteVehiculo = document.getElementById('patenteVehiculo').value || 'SinPatente';
@@ -157,6 +197,8 @@ async function subirADrive(blob) {
 
     const nombreLimpio = nombreCliente.replace(/\s+/g, '_');
     const fileName = `Certificado_${patenteVehiculo}_${nombreLimpio}_${fecha}.pdf`;
+
+    console.log(`📝 Nombre del archivo: ${fileName}`);
 
     // Metadata del archivo
     const metadata = {
@@ -169,6 +211,8 @@ async function subirADrive(blob) {
     form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
     form.append('file', blob);
 
+    console.log('🚀 Subiendo archivo...');
+
     // Subir archivo
     const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
         method: 'POST',
@@ -178,12 +222,31 @@ async function subirADrive(blob) {
         body: form
     });
 
+    console.log('📡 Respuesta recibida:', response.status);
+
     if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error.message || 'Error subiendo archivo');
+        let errorMsg = 'Error subiendo archivo a Drive';
+        try {
+            const error = await response.json();
+            errorMsg = error.error.message || errorMsg;
+            console.error('❌ Error de Drive:', error);
+
+            // Mensajes de error más específicos
+            if (response.status === 401) {
+                errorMsg = 'Token expirado. Reintenta y autoriza nuevamente.';
+            } else if (response.status === 403) {
+                errorMsg = 'Sin permisos. Verifica que hayas autorizado el acceso a Drive.';
+            } else if (response.status === 404) {
+                errorMsg = 'API no encontrada. Verifica que Google Drive API esté habilitada.';
+            }
+        } catch (e) {
+            console.error('Error parseando respuesta:', e);
+        }
+        throw new Error(errorMsg);
     }
 
     const result = await response.json();
+    console.log('✓ Archivo subido con ID:', result.id);
     return result.id;
 }
 

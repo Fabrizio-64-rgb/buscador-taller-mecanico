@@ -360,3 +360,192 @@ function loadTheme() {
 
 // Cargar tema al iniciar la página
 loadTheme();
+
+// ============================================
+// FUNCIONES PARA CONFIGURACIÓN DEL TALLER
+// ============================================
+
+// Guardar configuración del taller
+document.getElementById('configForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const config = {
+        nombreTaller: document.getElementById('nombreTaller').value,
+        direccionTaller: document.getElementById('direccionTaller').value,
+        telefonoTaller: document.getElementById('telefonoTaller').value,
+        emailTaller: document.getElementById('emailTaller').value,
+        ciudadTaller: document.getElementById('ciudadTaller').value
+    };
+
+    localStorage.setItem('tallerConfig', JSON.stringify(config));
+    mostrarExito('Configuración guardada correctamente');
+});
+
+// Cargar configuración del taller
+function cargarConfiguracion() {
+    const configGuardada = localStorage.getItem('tallerConfig');
+
+    if (configGuardada) {
+        const config = JSON.parse(configGuardada);
+
+        document.getElementById('nombreTaller').value = config.nombreTaller || '';
+        document.getElementById('direccionTaller').value = config.direccionTaller || '';
+        document.getElementById('telefonoTaller').value = config.telefonoTaller || '';
+        document.getElementById('emailTaller').value = config.emailTaller || '';
+        document.getElementById('ciudadTaller').value = config.ciudadTaller || '';
+
+        mostrarExito('Configuración cargada');
+    } else {
+        mostrarAdvertencia('No hay configuración guardada');
+    }
+}
+
+// Cargar configuración al iniciar
+window.addEventListener('DOMContentLoaded', cargarConfiguracion);
+
+// ============================================
+// FUNCIONES PARA GENERAR CERTIFICADO
+// ============================================
+
+function generarCertificado() {
+    // Obtener configuración del taller
+    const configGuardada = localStorage.getItem('tallerConfig');
+
+    if (!configGuardada) {
+        mostrarError('Por favor configura primero los datos del taller en la pestaña "Configuración"');
+        return;
+    }
+
+    const config = JSON.parse(configGuardada);
+
+    // Obtener datos del formulario de certificado
+    const nombreCliente = document.getElementById('nombreCliente').value;
+    const patenteVehiculo = document.getElementById('patenteVehiculo').value;
+    const marcaVehiculo = document.getElementById('marcaVehiculo').value;
+    const modeloVehiculo = document.getElementById('modeloVehiculo').value;
+    const tipoTecnico = document.getElementById('tipoTecnico').value;
+    const kilometrajeActual = document.getElementById('kilometrajeActual').value;
+    const proximoServicioKm = document.getElementById('proximoServicioKm').value;
+    const fechaProximoServicio = document.getElementById('fechaProximoServicio').value;
+    const puntosRevision = document.getElementById('puntosRevision').value;
+
+    // Validar campos requeridos
+    if (!nombreCliente || !patenteVehiculo || !marcaVehiculo || !modeloVehiculo || !kilometrajeActual) {
+        mostrarError('Por favor completa todos los campos requeridos');
+        return;
+    }
+
+    // Obtener fecha y hora actual
+    const ahora = new Date();
+    const fechaHora = ahora.toLocaleString('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    // Formatear fecha próximo servicio
+    const fechaProximoFormat = fechaProximoServicio ?
+        new Date(fechaProximoServicio + 'T00:00:00').toLocaleDateString('es-AR') :
+        'No especificada';
+
+    // Procesar puntos de revisión
+    const puntosArray = puntosRevision.split('\n').filter(p => p.trim());
+
+    // Crear HTML del certificado
+    const certificadoHTML = `
+        <div class="certificate-print" id="certificadoPrint">
+            <div class="cert-header">
+                <div class="cert-title">CERTIFICADO DE SERVICIO - SERVICIO COMPLETO</div>
+                <div class="cert-subtitle">${config.nombreTaller}</div>
+                <div>Teléfono: ${config.telefonoTaller}</div>
+                ${config.emailTaller ? `<div>Email: ${config.emailTaller}</div>` : ''}
+            </div>
+
+            <div class="cert-info-grid">
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Nombre:</div>
+                    <div>${nombreCliente}</div>
+                </div>
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Patente:</div>
+                    <div>${patenteVehiculo}</div>
+                </div>
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Marca:</div>
+                    <div>${marcaVehiculo}</div>
+                </div>
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Modelo:</div>
+                    <div>${modeloVehiculo}</div>
+                </div>
+                ${tipoTecnico ? `
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Tipo Técnico:</div>
+                    <div>${tipoTecnico}</div>
+                </div>` : ''}
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Fecha-Hora:</div>
+                    <div>${fechaHora}</div>
+                </div>
+                ${config.direccionTaller ? `
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Dirección:</div>
+                    <div>${config.direccionTaller}</div>
+                </div>` : ''}
+                ${config.ciudadTaller ? `
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Ciudad:</div>
+                    <div>${config.ciudadTaller}</div>
+                </div>` : ''}
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Kilometraje actual:</div>
+                    <div>${parseInt(kilometrajeActual).toLocaleString()} km</div>
+                </div>
+                ${proximoServicioKm ? `
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Próximo servicio (Km):</div>
+                    <div>${parseInt(proximoServicioKm).toLocaleString()} km</div>
+                </div>` : ''}
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Fecha próximo servicio:</div>
+                    <div>${fechaProximoFormat}</div>
+                </div>
+            </div>
+
+            <div class="cert-section-title">Puntos de Revisión</div>
+            ${puntosArray.map(punto => {
+                const partes = punto.split('-');
+                const descripcion = partes[0].trim();
+                const estado = partes.length > 1 ? partes[1].trim() : '';
+                return `<div class="cert-revision-item">
+                    <span>${descripcion}</span>
+                    <strong>${estado}</strong>
+                </div>`;
+            }).join('')}
+        </div>
+    `;
+
+    // Eliminar certificado anterior si existe
+    const certificadoAnterior = document.getElementById('certificadoPrint');
+    if (certificadoAnterior) {
+        certificadoAnterior.remove();
+    }
+
+    // Agregar el certificado al body
+    document.body.insertAdjacentHTML('beforeend', certificadoHTML);
+
+    // Mostrar mensaje de éxito
+    mostrarExito('Certificado generado. Abriendo vista de impresión...');
+
+    // Esperar un momento y abrir diálogo de impresión
+    setTimeout(() => {
+        window.print();
+    }, 500);
+}
+
+function limpiarFormularioCertificado() {
+    document.getElementById('certificadoForm').reset();
+    mostrarAdvertencia('Formulario limpiado');
+}

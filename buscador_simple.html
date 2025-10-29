@@ -21,6 +21,8 @@
             <div class="tabs">
                 <button class="tab-btn active" onclick="cambiarTab(event, 'archivo')">📁 Cargar Archivo</button>
                 <button class="tab-btn" onclick="cambiarTab(event, 'pegar')">📋 Pegar Datos</button>
+                <button class="tab-btn" onclick="cambiarTab(event, 'configuracion')">⚙️ Configuración</button>
+                <button class="tab-btn" onclick="cambiarTab(event, 'certificado')">📄 Certificado</button>
             </div>
 
             <!-- Mensaje de error/éxito -->
@@ -61,6 +63,134 @@
                     <label for="pasteArea">Pega tus datos aquí:</label>
                     <textarea id="pasteArea" placeholder="Pega los datos del Excel aquí..."></textarea>
                     <button class="btn" onclick="cargarDatos();">✓ Cargar datos</button>
+                </div>
+            </div>
+
+            <!-- TAB 3: Configuración -->
+            <div id="configuracion" class="tab-content">
+                <div class="config-section">
+                    <h2 style="margin-bottom: 20px; color: #2c3e50;">⚙️ Configuración del Taller</h2>
+
+                    <div class="instructions">
+                        <strong>ℹ️ Información:</strong><br>
+                        Estos datos se usarán para generar los certificados de servicio. Se guardan en tu navegador.
+                    </div>
+
+                    <form id="configForm" class="config-form">
+                        <div class="form-group">
+                            <label for="nombreTaller">Nombre del Taller / Box:</label>
+                            <input type="text" id="nombreTaller" placeholder="Ej: 1353 - SEEWALD CENTRO SA" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="direccionTaller">Dirección:</label>
+                            <input type="text" id="direccionTaller" placeholder="Ej: Av. San Martín 2646" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefonoTaller">Teléfono:</label>
+                            <input type="tel" id="telefonoTaller" placeholder="Ej: 3743418154" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emailTaller">Correo Electrónico:</label>
+                            <input type="email" id="emailTaller" placeholder="Ej: contacto@taller.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ciudadTaller">Ciudad:</label>
+                            <input type="text" id="ciudadTaller" placeholder="Ej: Misiones / Puerto Rico">
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="submit" class="btn">💾 Guardar Configuración</button>
+                            <button type="button" class="btn btn-secondary" onclick="cargarConfiguracion();">🔄 Recargar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 4: Generar Certificado -->
+            <div id="certificado" class="tab-content">
+                <div class="certificate-section">
+                    <h2 style="margin-bottom: 20px; color: #2c3e50;">📄 Generar Certificado de Servicio</h2>
+
+                    <div class="instructions">
+                        <strong>ℹ️ Instrucciones:</strong><br>
+                        1. Primero configura los datos del taller en la pestaña "Configuración"<br>
+                        2. Busca el vehículo en la pestaña de búsqueda<br>
+                        3. Vuelve aquí y completa los datos del servicio<br>
+                        4. Haz clic en "Generar Certificado" para imprimir
+                    </div>
+
+                    <form id="certificadoForm" class="config-form">
+                        <h3 style="color: #667eea; margin: 20px 0 15px 0;">Datos del Cliente y Vehículo</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nombreCliente">Nombre Cliente:</label>
+                                <input type="text" id="nombreCliente" placeholder="Ej: MAURO MOLINA" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="patenteVehiculo">Patente:</label>
+                                <input type="text" id="patenteVehiculo" placeholder="Ej: HST338" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="marcaVehiculo">Marca:</label>
+                                <input type="text" id="marcaVehiculo" placeholder="Ej: VOLKSWAGEN" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="modeloVehiculo">Modelo:</label>
+                                <input type="text" id="modeloVehiculo" placeholder="Ej: GOL TREND" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tipoTecnico">Tipo Técnico:</label>
+                                <input type="text" id="tipoTecnico" placeholder="Ej: 168VNAFTA">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="kilometrajeActual">Kilometraje Actual:</label>
+                                <input type="number" id="kilometrajeActual" placeholder="Ej: 156000" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="proximoServicioKm">Próximo Servicio (Km):</label>
+                                <input type="number" id="proximoServicioKm" placeholder="Ej: 166000">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fechaProximoServicio">Fecha Próximo Servicio:</label>
+                                <input type="date" id="fechaProximoServicio">
+                            </div>
+                        </div>
+
+                        <h3 style="color: #667eea; margin: 20px 0 15px 0;">Puntos de Revisión</h3>
+
+                        <div class="form-group">
+                            <label for="puntosRevision">Puntos de Revisión (uno por línea):</label>
+                            <textarea id="puntosRevision" rows="10" placeholder="Ejemplo:
+ELEMENTOS DE SEGURIDAD - BIEN
+FLUIDOS DEL VEHICULO - BIEN
+LUBRICANTES Y FILTROS - BIEN
+REVISIÓN Y REPOSICIÓN LUCES EXTERIORES Y BAÚL - BIEN
+REVISIÓN TUERCA NEUMÁTICOS - BIEN"></textarea>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="button" class="btn" onclick="generarCertificado();">📄 Generar Certificado</button>
+                            <button type="button" class="btn btn-secondary" onclick="limpiarFormularioCertificado();">🗑️ Limpiar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 

@@ -1248,3 +1248,332 @@ td:hover {
         font-size: 12px;
     }
 }
+
+/* ============================================
+   ESTILOS PARA INTERFAZ DE INSPECCIÓN
+   ============================================ */
+
+.inspeccion-container {
+    max-width: 100%;
+    margin-top: 20px;
+}
+
+.categoria-inspeccion {
+    background: var(--bg-section);
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.categoria-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    transition: all 0.3s ease;
+}
+
+.categoria-header:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #6a3d8f 100%);
+}
+
+.categoria-header h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.toggle-icon {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+}
+
+.categoria-items {
+    padding: 15px;
+}
+
+.item-inspeccion {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: var(--bg-container);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.item-inspeccion:hover {
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+    border-color: var(--color-primary);
+}
+
+.item-nombre {
+    flex: 1;
+    font-weight: 500;
+    color: var(--text-primary);
+    padding-right: 15px;
+    line-height: 1.5;
+}
+
+.item-controles {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 400px;
+}
+
+.estado-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-estado {
+    padding: 8px 12px;
+    border: 2px solid transparent;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--bg-section);
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.btn-estado:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-estado.selected {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-bien {
+    border-color: #27ae60;
+    color: #27ae60;
+}
+
+.btn-bien.selected {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-regular {
+    border-color: #f39c12;
+    color: #f39c12;
+}
+
+.btn-regular.selected {
+    background: #f39c12;
+    color: white;
+}
+
+.btn-mal {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+
+.btn-mal.selected {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-na {
+    border-color: #95a5a6;
+    color: #95a5a6;
+}
+
+.btn-na.selected {
+    background: #95a5a6;
+    color: white;
+}
+
+.btn-personalizado {
+    border-color: #3498db;
+    color: #3498db;
+}
+
+.btn-personalizado.selected {
+    background: #3498db;
+    color: white;
+}
+
+.input-personalizado {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #3498db;
+    border-radius: 6px;
+    font-size: 14px;
+    background: var(--bg-container);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.input-personalizado:focus {
+    outline: none;
+    border-color: #2980b9;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+/* ============================================
+   ESTILOS PARA CERTIFICADO MEJORADO
+   ============================================ */
+
+.cert-categoria {
+    margin: 25px 0;
+    page-break-inside: avoid;
+}
+
+.cert-categoria-titulo {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 20px;
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 6px 6px 0 0;
+    letter-spacing: 1px;
+}
+
+.cert-tabla {
+    border: 2px solid #667eea;
+    border-radius: 0 0 6px 6px;
+    overflow: hidden;
+}
+
+.cert-tabla-header {
+    display: flex;
+    background: #f8f9fa;
+    font-weight: 700;
+    border-bottom: 2px solid #667eea;
+    color: #2c3e50;
+}
+
+.cert-tabla-row {
+    display: flex;
+    border-bottom: 1px solid #ecf0f1;
+    transition: background 0.2s ease;
+}
+
+.cert-tabla-row:hover {
+    background: #f8faff;
+}
+
+.cert-tabla-row:last-child {
+    border-bottom: none;
+}
+
+.cert-tabla-col-item {
+    flex: 2;
+    padding: 12px 15px;
+    border-right: 1px solid #ecf0f1;
+}
+
+.cert-tabla-col-estado {
+    flex: 1;
+    padding: 12px 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.cert-warning {
+    padding: 20px;
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: 8px;
+    color: #856404;
+    text-align: center;
+    font-weight: 600;
+    margin: 20px 0;
+}
+
+/* Estilos para impresión del certificado mejorado */
+@media print {
+    .cert-categoria {
+        page-break-inside: avoid;
+    }
+
+    .cert-categoria-titulo {
+        background: #667eea !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .cert-tabla {
+        border-color: #667eea !important;
+    }
+
+    .cert-tabla-header {
+        background: #f8f9fa !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .cert-tabla-row {
+        border-bottom: 1px solid #ecf0f1 !important;
+    }
+
+    .cert-tabla-col-item,
+    .cert-tabla-col-estado {
+        border-right: 1px solid #ecf0f1 !important;
+    }
+}
+
+/* Responsive para interfaz de inspección */
+@media (max-width: 992px) {
+    .item-controles {
+        min-width: 300px;
+    }
+
+    .estado-buttons {
+        flex-direction: column;
+    }
+
+    .btn-estado {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .item-inspeccion {
+        flex-direction: column;
+    }
+
+    .item-nombre {
+        padding-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .item-controles {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .cert-tabla-header,
+    .cert-tabla-row {
+        flex-direction: column;
+    }
+
+    .cert-tabla-col-item,
+    .cert-tabla-col-estado {
+        border-right: none;
+        border-bottom: 1px solid #ecf0f1;
+        text-align: left;
+    }
+}

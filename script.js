@@ -5,6 +5,97 @@ let searchTimeout = null;
 let clienteSeleccionado = null;
 let filaSeleccionadaIndex = null;
 
+// ============================================
+// ESTRUCTURA DE DATOS PARA CERTIFICADO
+// ============================================
+
+const ESTADOS_INSPECCION = {
+    BIEN: { label: 'BIEN', descripcion: 'No Requiere Atención Inmediata', color: '#27ae60' },
+    REGULAR: { label: 'REGULAR', descripcion: 'Podría Requerir Atención Futura', color: '#f39c12' },
+    MAL: { label: 'MAL', descripcion: 'Requiere Atención Inmediata', color: '#e74c3c' },
+    NA: { label: 'N/A', descripcion: 'No accesible, se recomienda revisar con su mecánico', color: '#95a5a6' },
+    PERSONALIZADO: { label: 'PERSONALIZADO', descripcion: 'Permite el ingreso manual de estado', color: '#3498db' }
+};
+
+const CATEGORIAS_INSPECCION = [
+    {
+        nombre: 'ELEMENTOS DE SEGURIDAD',
+        items: [
+            'REVISIÓN Y REPOSICIÓN LUCES EXTERIORES Y BAÚL',
+            'REVISIÓN TUERCA NEUMÁTICOS',
+            'REVISAR / REEMPLAZAR ESCOBILLAS LIMPIAPARABRISAS',
+            'PROFUNDIDAD DIBUJO NEUMÁTICO-TI (MML)',
+            'PROFUNDIDAD DIBUJO NEUMÁTICO-TD (MML)',
+            'PROFUNDIDAD DIBUJO NEUMÁTICO-DI (MML)',
+            'PROFUNDIDAD DIBUJO NEUMÁTICO-DD (MML)',
+            'PASTILLAS DE FRENO',
+            'FLEXIBLES DE FRENOS',
+            'DISCOS DE FRENOS',
+            'AMORTIGUADORES',
+            'AJUSTE PRESIÓN NEUMÁTICO (T = TRASEROS)-PSI',
+            'AJUSTE PRESIÓN NEUMÁTICO (D = DELANTEROS)-PSI'
+        ]
+    },
+    {
+        nombre: 'FLUIDOS DEL VEHICULO',
+        items: [
+            'BATERIA',
+            'LÍQUIDO DIRECCIÓN HIDRAULICA',
+            'LÍQUIDO LIMPIAPARABRISAS',
+            'PUNTO DE CONGELAMIENTO',
+            'REVISIÓN LÍQ. REFRIGERANTE/ANTICONGELANTE',
+            'REVISIÓN LÍQUIDO DE FRENOS'
+        ]
+    },
+    {
+        nombre: 'LUBRICANTES Y FILTROS',
+        items: [
+            'REVISIÓN FILTRO DE COMBUSTIBLE',
+            'REVISIÓN ACEITE DIFERENCIAL',
+            'REVISIÓN ACEITE CAJA DE TRANSFERENCIA',
+            'REVISIÓN ACEITE CAJA DE CAMBIOS',
+            'REEMPLAZO DE FILTRO DE AIRE',
+            'CAMBIO DE ACEITE Y FILTRO'
+        ]
+    },
+    {
+        nombre: 'PARTES MECANICAS',
+        items: [
+            'ARANDELA TAPÓN DE CARTER',
+            'BISAGRAS DE PUERTAS Y ENGRASE RETENEDOR DE PUERTAS',
+            'CAÑO DE ESCAPE',
+            'CORREA ALTERNADOR',
+            'CORREA AIRE ACONDICIONADO',
+            'CORREA DIRECCIÓN ASISTIDA',
+            'GUARDAPOLVOS Y HOLGURAS DE TRANSMISIÓN',
+            'REVISIÓN DE MANGUERAS'
+        ]
+    },
+    {
+        nombre: 'PRUEBA DINAMICA',
+        items: [
+            'CINTURONES DE SEGURIDAD (COMPROBAR FUNCIONAMIENTO INERCIAL)'
+        ]
+    },
+    {
+        nombre: 'SERVICIO DE ESCANEO',
+        items: [
+            'ABS',
+            'AIRBAG',
+            'CLIMATIZACIÓN',
+            'HISTORIAL DE FALLAS',
+            'INSTRUMENTAL',
+            'INYECCIÓN',
+            'RESETEO SERVICE',
+            'SENSORES Y ACTUADORES',
+            'SONDA LAMBDA'
+        ]
+    }
+];
+
+// Objeto para almacenar el estado de cada item (inicializado vacío)
+let datosInspeccion = {};
+
 // Función para normalizar texto (quitar acentos y caracteres especiales)
 function normalizarTexto(texto) {
     return texto
@@ -619,7 +710,192 @@ function cargarConfiguracion() {
 }
 
 // Cargar configuración al iniciar
-window.addEventListener('DOMContentLoaded', cargarConfiguracion);
+window.addEventListener('DOMContentLoaded', () => {
+    cargarConfiguracion();
+    inicializarInspeccion();
+});
+
+// ============================================
+// FUNCIONES PARA INSPECCIÓN DE CERTIFICADO
+// ============================================
+
+// Inicializar la interfaz de inspección
+function inicializarInspeccion() {
+    const container = document.getElementById('inspeccionContainer');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    CATEGORIAS_INSPECCION.forEach((categoria, catIndex) => {
+        // Crear sección de categoría
+        const categoriaDiv = document.createElement('div');
+        categoriaDiv.className = 'categoria-inspeccion';
+        categoriaDiv.innerHTML = `
+            <div class="categoria-header" onclick="toggleCategoria(${catIndex})">
+                <h4>${categoria.nombre}</h4>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="categoria-items" id="categoria_${catIndex}">
+                ${categoria.items.map((item, itemIndex) => crearItemHTML(item, catIndex, itemIndex)).join('')}
+            </div>
+        `;
+        container.appendChild(categoriaDiv);
+    });
+}
+
+// Crear HTML para un item de inspección
+function crearItemHTML(item, catIndex, itemIndex) {
+    const itemId = `item_${catIndex}_${itemIndex}`;
+
+    return `
+        <div class="item-inspeccion" id="${itemId}_container">
+            <div class="item-nombre">${item}</div>
+            <div class="item-controles">
+                <div class="estado-buttons">
+                    <button type="button" class="btn-estado btn-bien"
+                            onclick="seleccionarEstado('${itemId}', 'BIEN')"
+                            title="${ESTADOS_INSPECCION.BIEN.descripcion}">
+                        ✓ BIEN
+                    </button>
+                    <button type="button" class="btn-estado btn-regular"
+                            onclick="seleccionarEstado('${itemId}', 'REGULAR')"
+                            title="${ESTADOS_INSPECCION.REGULAR.descripcion}">
+                        ⚠ REGULAR
+                    </button>
+                    <button type="button" class="btn-estado btn-mal"
+                            onclick="seleccionarEstado('${itemId}', 'MAL')"
+                            title="${ESTADOS_INSPECCION.MAL.descripcion}">
+                        ✕ MAL
+                    </button>
+                    <button type="button" class="btn-estado btn-na"
+                            onclick="seleccionarEstado('${itemId}', 'NA')"
+                            title="${ESTADOS_INSPECCION.NA.descripcion}">
+                        ⊗ N/A
+                    </button>
+                    <button type="button" class="btn-estado btn-personalizado"
+                            onclick="seleccionarEstado('${itemId}', 'PERSONALIZADO')"
+                            title="${ESTADOS_INSPECCION.PERSONALIZADO.descripcion}">
+                        ✏️ PERSONALIZADO
+                    </button>
+                </div>
+                <input type="text"
+                       class="input-personalizado"
+                       id="${itemId}_custom"
+                       placeholder="Ingresa estado personalizado..."
+                       style="display: none;"
+                       onblur="guardarEstadoPersonalizado('${itemId}')">
+            </div>
+        </div>
+    `;
+}
+
+// Seleccionar estado para un item
+function seleccionarEstado(itemId, estado) {
+    const container = document.getElementById(`${itemId}_container`);
+    const customInput = document.getElementById(`${itemId}_custom`);
+    const buttons = container.querySelectorAll('.btn-estado');
+
+    // Remover selección previa
+    buttons.forEach(btn => btn.classList.remove('selected'));
+
+    // Marcar botón seleccionado
+    const btnSelector = {
+        'BIEN': '.btn-bien',
+        'REGULAR': '.btn-regular',
+        'MAL': '.btn-mal',
+        'NA': '.btn-na',
+        'PERSONALIZADO': '.btn-personalizado'
+    };
+
+    const btnSeleccionado = container.querySelector(btnSelector[estado]);
+    if (btnSeleccionado) {
+        btnSeleccionado.classList.add('selected');
+    }
+
+    // Mostrar/ocultar input personalizado
+    if (estado === 'PERSONALIZADO') {
+        customInput.style.display = 'block';
+        customInput.focus();
+    } else {
+        customInput.style.display = 'none';
+        customInput.value = '';
+
+        // Guardar estado
+        datosInspeccion[itemId] = {
+            estado: estado,
+            valor: ESTADOS_INSPECCION[estado].label
+        };
+    }
+}
+
+// Guardar estado personalizado
+function guardarEstadoPersonalizado(itemId) {
+    const customInput = document.getElementById(`${itemId}_custom`);
+    const valor = customInput.value.trim();
+
+    if (valor) {
+        datosInspeccion[itemId] = {
+            estado: 'PERSONALIZADO',
+            valor: valor
+        };
+    } else {
+        // Si está vacío, remover la selección
+        delete datosInspeccion[itemId];
+        const container = document.getElementById(`${itemId}_container`);
+        const buttons = container.querySelectorAll('.btn-estado');
+        buttons.forEach(btn => btn.classList.remove('selected'));
+        customInput.style.display = 'none';
+    }
+}
+
+// Toggle de categoría (expandir/colapsar)
+function toggleCategoria(catIndex) {
+    const categoriaItems = document.getElementById(`categoria_${catIndex}`);
+    const header = categoriaItems.previousElementSibling;
+    const icon = header.querySelector('.toggle-icon');
+
+    if (categoriaItems.style.display === 'none') {
+        categoriaItems.style.display = 'block';
+        icon.textContent = '▼';
+    } else {
+        categoriaItems.style.display = 'none';
+        icon.textContent = '▶';
+    }
+}
+
+// Completar todos con un estado específico
+function completarTodosEstado(estado) {
+    if (!confirm(`¿Marcar todos los items como "${estado}"?`)) {
+        return;
+    }
+
+    CATEGORIAS_INSPECCION.forEach((categoria, catIndex) => {
+        categoria.items.forEach((item, itemIndex) => {
+            const itemId = `item_${catIndex}_${itemIndex}`;
+            seleccionarEstado(itemId, estado);
+        });
+    });
+
+    mostrarExito(`Todos los items marcados como ${estado}`);
+}
+
+// Limpiar todos los estados
+function limpiarTodosEstados() {
+    if (!confirm('¿Limpiar todos los estados seleccionados?')) {
+        return;
+    }
+
+    datosInspeccion = {};
+
+    // Limpiar visualmente
+    document.querySelectorAll('.btn-estado').forEach(btn => btn.classList.remove('selected'));
+    document.querySelectorAll('.input-personalizado').forEach(input => {
+        input.style.display = 'none';
+        input.value = '';
+    });
+
+    mostrarAdvertencia('Estados limpiados');
+}
 
 // ============================================
 // FUNCIONES PARA GENERAR CERTIFICADO
@@ -658,7 +934,6 @@ function generarCertificado() {
     const kilometrajeActual = document.getElementById('kilometrajeActual').value.trim();
     const proximoServicioKm = document.getElementById('proximoServicioKm').value.trim();
     const fechaProximoServicio = document.getElementById('fechaProximoServicio').value;
-    const puntosRevision = document.getElementById('puntosRevision').value.trim();
 
     // Validar campos requeridos con mensajes específicos
     const camposFaltantes = [];
@@ -694,8 +969,50 @@ function generarCertificado() {
         new Date(fechaProximoServicio + 'T00:00:00').toLocaleDateString('es-AR') :
         'No especificada';
 
-    // Procesar puntos de revisión
-    const puntosArray = puntosRevision.split('\n').filter(p => p.trim());
+    // Generar HTML de las categorías de inspección
+    let categoriasHTML = '';
+
+    CATEGORIAS_INSPECCION.forEach((categoria, catIndex) => {
+        // Recopilar items de esta categoría que tengan estado
+        const itemsConEstado = [];
+
+        categoria.items.forEach((item, itemIndex) => {
+            const itemId = `item_${catIndex}_${itemIndex}`;
+            if (datosInspeccion[itemId]) {
+                itemsConEstado.push({
+                    nombre: item,
+                    estado: datosInspeccion[itemId].valor
+                });
+            }
+        });
+
+        // Solo mostrar categoría si tiene items con estado
+        if (itemsConEstado.length > 0) {
+            categoriasHTML += `
+                <div class="cert-categoria">
+                    <div class="cert-categoria-titulo">★ ${categoria.nombre}</div>
+                    <div class="cert-tabla">
+                        <div class="cert-tabla-header">
+                            <div class="cert-tabla-col-item">Puntos de Revisión</div>
+                            <div class="cert-tabla-col-estado">Estado</div>
+                        </div>
+                        ${itemsConEstado.map(item => `
+                            <div class="cert-tabla-row">
+                                <div class="cert-tabla-col-item">${item.nombre}</div>
+                                <div class="cert-tabla-col-estado">${item.estado}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+    });
+
+    // Si no hay datos de inspección, mostrar advertencia
+    if (!categoriasHTML) {
+        mostrarAdvertencia('⚠️ No has seleccionado ningún punto de inspección. El certificado no tendrá información de revisión.');
+        categoriasHTML = '<div class="cert-warning">⚠️ Sin puntos de inspección configurados</div>';
+    }
 
     // Crear HTML del certificado
     const certificadoHTML = `
@@ -758,16 +1075,7 @@ function generarCertificado() {
                 </div>
             </div>
 
-            <div class="cert-section-title">Puntos de Revisión</div>
-            ${puntosArray.map(punto => {
-                const partes = punto.split('-');
-                const descripcion = partes[0].trim();
-                const estado = partes.length > 1 ? partes[1].trim() : '';
-                return `<div class="cert-revision-item">
-                    <span>${descripcion}</span>
-                    <strong>${estado}</strong>
-                </div>`;
-            }).join('')}
+            ${categoriasHTML}
         </div>
     `;
 
@@ -796,6 +1104,7 @@ function imprimirCertificado() {
 function limpiarFormularioCertificado() {
     document.getElementById('certificadoForm').reset();
     clienteSeleccionado = null;
+    limpiarTodosEstados();
     mostrarAdvertencia('Formulario limpiado');
 }
 

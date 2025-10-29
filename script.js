@@ -716,7 +716,18 @@ function cargarConfiguracion() {
 window.addEventListener('DOMContentLoaded', () => {
     cargarConfiguracion();
     inicializarInspeccion();
+    inicializarFechaServicio();
 });
+
+// Inicializar fecha del servicio con la fecha actual
+function inicializarFechaServicio() {
+    const fechaServicioInput = document.getElementById('fechaServicio');
+    if (fechaServicioInput) {
+        const hoy = new Date();
+        const fechaStr = hoy.toISOString().split('T')[0];
+        fechaServicioInput.value = fechaStr;
+    }
+}
 
 // ============================================
 // FUNCIONES PARA INSPECCIÓN DE CERTIFICADO
@@ -1003,6 +1014,13 @@ function generarCertificado() {
     const fechaProximoServicio = document.getElementById('fechaProximoServicio').value;
     const lubriexperto = document.getElementById('lubriexperto').value.trim();
 
+    // Nuevos campos de información del servicio
+    const numeroOrden = document.getElementById('numeroOrden').value.trim();
+    const fechaServicio = document.getElementById('fechaServicio').value;
+    const garantiaServicio = document.getElementById('garantiaServicio').value.trim();
+    const mecanicoAsignado = document.getElementById('mecanicoAsignado').value.trim();
+    const metodoPago = document.getElementById('metodoPago').value;
+
     // Validar campos requeridos con mensajes específicos
     const camposFaltantes = [];
     if (!nombreCliente) camposFaltantes.push('Nombre del cliente');
@@ -1037,6 +1055,11 @@ function generarCertificado() {
     const fechaProximoFormat = fechaProximoServicio ?
         new Date(fechaProximoServicio + 'T00:00:00').toLocaleDateString('es-AR') :
         'No especificada';
+
+    // Formatear fecha del servicio
+    const fechaServicioFormat = fechaServicio ?
+        new Date(fechaServicio + 'T00:00:00').toLocaleDateString('es-AR') :
+        null;
 
     // Generar HTML de las categorías de inspección
     let categoriasHTML = '';
@@ -1235,6 +1258,36 @@ function generarCertificado() {
                     <div class="cert-info-label">Fecha próximo servicio:</div>
                     <div>${fechaProximoFormat}</div>
                 </div>
+                ${numeroOrden ? `
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Nro. Orden/Factura:</div>
+                    <div>${numeroOrden}</div>
+                </div>` : ''}
+                ${fechaServicioFormat ? `
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Fecha Servicio:</div>
+                    <div>${fechaServicioFormat}</div>
+                </div>` : ''}
+                ${garantiaServicio ? `
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Garantía:</div>
+                    <div>${garantiaServicio}</div>
+                </div>` : ''}
+                ${mecanicoAsignado ? `
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Mecánico:</div>
+                    <div>${mecanicoAsignado}</div>
+                </div>` : ''}
+                ${lubriexperto ? `
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Lubriexperto:</div>
+                    <div>${lubriexperto}</div>
+                </div>` : ''}
+                ${metodoPago ? `
+                <div class="cert-info-item">
+                    <div class="cert-info-label">Método Pago:</div>
+                    <div>${metodoPago}</div>
+                </div>` : ''}
             </div>
 
             ${categoriasHTML}
@@ -1277,6 +1330,7 @@ function limpiarFormularioCertificado() {
     limpiarTodosEstados();
     productosConsumidos = [];
     renderizarProductos();
+    inicializarFechaServicio(); // Reinicializar con fecha actual
     mostrarAdvertencia('Formulario limpiado');
 }
 

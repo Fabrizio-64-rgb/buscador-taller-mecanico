@@ -154,6 +154,18 @@ function procesarCSV(csv) {
 }
 
 function inicializarBusqueda() {
+    // Ocultar la sección de carga automáticamente
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+    // Crear un tab temporal para búsqueda si no existe
+    // Como no hay tab específico de búsqueda, mantenemos visible el tab actual
+    // pero ocultamos el contenido de carga
+    const cargarTab = document.getElementById('cargar');
+    if (cargarTab) {
+        cargarTab.style.display = 'none';
+    }
+
     // Mostrar sección de búsqueda
     document.getElementById('searchSection').classList.add('active');
     document.getElementById('stats').style.display = 'grid';
@@ -180,6 +192,11 @@ function inicializarBusqueda() {
 
     // Crear formularios dinámicos para gestión de clientes
     crearFormulariosGestion();
+
+    // Dar foco al campo de búsqueda
+    setTimeout(() => {
+        document.getElementById('searchInput')?.focus();
+    }, 100);
 }
 
 // Crear formularios dinámicos
@@ -321,6 +338,60 @@ function mostrarResultados(resultados) {
     if (resultados.length > 100) {
         mostrarAdvertencia(`Mostrando 100 de ${resultados.length} resultados. Refina tu búsqueda para ver más.`);
     }
+
+    // Sincronizar scroll horizontal superior con inferior
+    sincronizarScrolls();
+}
+
+// Función para sincronizar los scrolls horizontal superior e inferior
+function sincronizarScrolls() {
+    const tableResponsive = document.getElementById('tableResponsive');
+    const tableScrollTop = document.getElementById('tableScrollTop');
+    const tableScrollTopInner = document.getElementById('tableScrollTopInner');
+    const table = document.getElementById('resultsTable');
+
+    if (!tableResponsive || !tableScrollTop || !tableScrollTopInner || !table) return;
+
+    // Ajustar el ancho del scroll superior para que coincida con el ancho de la tabla
+    const tableWidth = table.scrollWidth;
+    tableScrollTopInner.style.width = tableWidth + 'px';
+
+    // Mostrar el scroll superior solo si hay scroll horizontal
+    if (tableWidth > tableResponsive.clientWidth) {
+        tableScrollTop.style.display = 'block';
+    } else {
+        tableScrollTop.style.display = 'none';
+        return;
+    }
+
+    // Remover event listeners previos para evitar duplicados
+    const newTableResponsive = tableResponsive.cloneNode(false);
+    const newTableScrollTop = tableScrollTop.cloneNode(false);
+
+    // Mantener el contenido
+    while (tableResponsive.firstChild) {
+        newTableResponsive.appendChild(tableResponsive.firstChild);
+    }
+    while (tableScrollTop.firstChild) {
+        newTableScrollTop.appendChild(tableScrollTop.firstChild);
+    }
+
+    tableResponsive.parentNode.replaceChild(newTableResponsive, tableResponsive);
+    tableScrollTop.parentNode.replaceChild(newTableScrollTop, tableScrollTop);
+
+    // Obtener referencias actualizadas
+    const tableResponsiveUpdated = document.getElementById('tableResponsive');
+    const tableScrollTopUpdated = document.getElementById('tableScrollTop');
+
+    // Sincronizar scroll superior -> inferior
+    tableScrollTopUpdated.addEventListener('scroll', () => {
+        tableResponsiveUpdated.scrollLeft = tableScrollTopUpdated.scrollLeft;
+    });
+
+    // Sincronizar scroll inferior -> superior
+    tableResponsiveUpdated.addEventListener('scroll', () => {
+        tableScrollTopUpdated.scrollLeft = tableResponsiveUpdated.scrollLeft;
+    });
 }
 
 // Función para ordenar columnas según prioridad

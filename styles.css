@@ -374,6 +374,22 @@ body {
     font-size: 16px;
 }
 
+/* Contenedor doble para scroll horizontal arriba y abajo */
+.table-scroll-wrapper {
+    position: relative;
+}
+
+.table-scroll-top {
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 20px;
+    margin-bottom: 5px;
+}
+
+.table-scroll-top > div {
+    height: 1px;
+}
+
 .table-responsive {
     overflow-x: auto;
     overflow-y: auto;
@@ -383,22 +399,26 @@ body {
     position: relative;
 }
 
-.table-responsive::-webkit-scrollbar {
+.table-responsive::-webkit-scrollbar,
+.table-scroll-top::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
-.table-responsive::-webkit-scrollbar-track {
+.table-responsive::-webkit-scrollbar-track,
+.table-scroll-top::-webkit-scrollbar-track {
     background: var(--bg-section);
     border-radius: 4px;
 }
 
-.table-responsive::-webkit-scrollbar-thumb {
+.table-responsive::-webkit-scrollbar-thumb,
+.table-scroll-top::-webkit-scrollbar-thumb {
     background: var(--color-primary);
     border-radius: 4px;
 }
 
-.table-responsive::-webkit-scrollbar-thumb:hover {
+.table-responsive::-webkit-scrollbar-thumb:hover,
+.table-scroll-top::-webkit-scrollbar-thumb:hover {
     background: var(--color-primary-dark);
 }
 
@@ -422,17 +442,30 @@ body {
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Asegurar fondo opaco en filas de tabla */
+/* Asegurar fondo opaco en filas de tabla con zebra striping */
 tbody tr {
     background: var(--bg-section);
+    transition: all 0.2s ease;
+}
+
+/* Zebra striping - filas alternadas con color más visible */
+tbody tr:nth-child(even) {
+    background: var(--bg-hover);
 }
 
 tbody tr:nth-child(even) .actions-cell {
-    background: var(--bg-section);
+    background: var(--bg-hover);
+}
+
+/* Hover más pronunciado */
+tbody tr:hover {
+    background: rgba(102, 126, 234, 0.12) !important;
+    box-shadow: inset 0 0 0 2px var(--color-primary) !important;
+    transform: scale(1.001);
 }
 
 tbody tr:hover .actions-cell {
-    background: var(--bg-section);
+    background: rgba(102, 126, 234, 0.12) !important;
 }
 
 .btn-action {
@@ -479,10 +512,6 @@ tbody tr:hover .actions-cell {
 
 .row-clickable {
     cursor: pointer;
-}
-
-.row-clickable:hover {
-    background: var(--bg-hover) !important;
 }
 
 table {
@@ -539,15 +568,6 @@ td:hover {
     overflow: visible;
     white-space: normal;
     word-wrap: break-word;
-}
-
-tbody tr {
-    transition: all 0.2s ease;
-}
-
-tbody tr:hover {
-    background: var(--bg-hover);
-    box-shadow: inset 0 0 0 1px var(--border-color);
 }
 
 .no-results {

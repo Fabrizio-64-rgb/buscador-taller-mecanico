@@ -312,8 +312,9 @@ function mostrarResultados(resultados) {
     const columnasOrdenadas = ordenarColumnas(columnas);
 
     // Crear encabezados con columna de acciones A LA DERECHA
+    // Agregar data-title para tooltip en hover
     if (tableHead.innerHTML === '') {
-        tableHead.innerHTML = columnasOrdenadas.map(col => `<th>${col}</th>`).join('') + '<th class="actions-header">Acciones</th>';
+        tableHead.innerHTML = columnasOrdenadas.map(col => `<th data-title="${col}">${col}</th>`).join('') + '<th class="actions-header" data-title="Acciones sobre el cliente">Acciones</th>';
     }
 
     // Crear filas con evento click y botones de acción A LA DERECHA
@@ -892,7 +893,10 @@ function eliminarCliente(index) {
     const cliente = datosOriginal[index];
     const nombre = cliente[columnas[0]] || 'este cliente';
 
-    if (!confirm(`¿Estás seguro de eliminar a ${nombre}?`)) {
+    const mensaje = `¿Estás seguro de eliminar a ${nombre}?\n\n⚠️ ATENCIÓN: Esta acción modificará los datos en memoria.\nDebes exportar el CSV para guardar los cambios permanentemente.`;
+
+    if (!confirm(mensaje)) {
+        mostrarAdvertencia('Eliminación cancelada');
         return;
     }
 
@@ -902,13 +906,20 @@ function eliminarCliente(index) {
     // Actualizar la búsqueda para refrescar la tabla
     buscar();
 
-    mostrarExito('Cliente eliminado correctamente');
+    mostrarExito('✓ Cliente eliminado. Recuerda exportar el CSV para guardar los cambios.');
 }
 
 // Guardar edición de cliente
 function guardarEdicionCliente() {
     if (filaSeleccionadaIndex === null || filaSeleccionadaIndex < 0) {
         mostrarError('No hay cliente seleccionado para editar');
+        return;
+    }
+
+    const mensaje = '¿Guardar los cambios realizados?\n\n⚠️ ATENCIÓN: Los cambios se aplicarán en memoria.\nDebes exportar el CSV para guardar permanentemente.';
+
+    if (!confirm(mensaje)) {
+        mostrarAdvertencia('Edición cancelada');
         return;
     }
 
@@ -926,7 +937,7 @@ function guardarEdicionCliente() {
     // Actualizar tabla
     buscar();
 
-    mostrarExito('Cliente actualizado correctamente');
+    mostrarExito('✓ Cliente actualizado. Recuerda exportar el CSV para guardar los cambios.');
 }
 
 // Cancelar edición
@@ -956,6 +967,14 @@ function agregarNuevoCliente() {
         return;
     }
 
+    // Pedir confirmación
+    const mensaje = '¿Confirmar agregar este nuevo cliente?\n\n⚠️ ATENCIÓN: El cliente se agregará en memoria.\nDebes exportar el CSV para guardar los cambios permanentemente.';
+
+    if (!confirm(mensaje)) {
+        mostrarAdvertencia('Operación cancelada');
+        return;
+    }
+
     // Agregar al array
     datosOriginal.push(nuevoCliente);
 
@@ -965,10 +984,13 @@ function agregarNuevoCliente() {
         if (input) input.value = '';
     });
 
+    // Ocultar formulario
+    document.getElementById('addClienteSection').style.display = 'none';
+
     // Actualizar tabla
     buscar();
 
-    mostrarExito('Cliente agregado correctamente');
+    mostrarExito('✓ Cliente agregado. Recuerda exportar el CSV para guardar los cambios.');
 }
 
 // Mostrar formulario para agregar cliente

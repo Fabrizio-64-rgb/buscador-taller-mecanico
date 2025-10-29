@@ -540,17 +540,35 @@ th {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 200px;
-    transition: all 0.3s ease;
+    transition: background 0.3s ease;
     position: relative;
 }
 
-th:hover {
-    overflow: visible;
+/* Tooltip en hover para cabeceras */
+th:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
     white-space: normal;
-    word-break: break-word;
-    z-index: 10;
+    word-wrap: break-word;
+    max-width: 300px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    margin-top: 5px;
+    font-weight: normal;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+th:hover {
     background: var(--bg-table-header);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    filter: brightness(0.95);
 }
 
 td {

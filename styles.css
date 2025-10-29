@@ -409,7 +409,7 @@ body {
     min-width: 120px;
     position: sticky;
     right: 0;
-    background: inherit;
+    background: var(--bg-section);
     z-index: 1;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 }
@@ -417,9 +417,22 @@ body {
 .actions-header {
     position: sticky;
     right: 0;
-    background: inherit;
+    background: var(--bg-section);
     z-index: 2;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Asegurar fondo opaco en filas de tabla */
+tbody tr {
+    background: var(--bg-section);
+}
+
+tbody tr:nth-child(even) .actions-cell {
+    background: var(--bg-section);
+}
+
+tbody tr:hover .actions-cell {
+    background: var(--bg-section);
 }
 
 .btn-action {

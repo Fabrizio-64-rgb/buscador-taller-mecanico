@@ -998,53 +998,57 @@ td:hover {
 /* Estilos para certificado (visible en modal) */
 .certificate-print {
     background: white;
-    padding: 30px;
+    padding: 20px;
     font-family: Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 12px;
+    line-height: 1.4;
     color: #333;
+    max-width: 210mm; /* A4 width */
 }
 
 .cert-header {
     text-align: center;
-    border-bottom: 3px solid #667eea;
-    padding-bottom: 20px;
-    margin-bottom: 25px;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
 }
 
 .cert-title {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     color: #667eea;
+    letter-spacing: 0.5px;
 }
 
 .cert-subtitle {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
     color: #333;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 .cert-info-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
 }
 
 .cert-info-item {
-    padding: 10px;
+    padding: 6px 10px;
     background: #f9fafb;
-    border-left: 3px solid #667eea;
-    border-radius: 4px;
+    border-left: 2px solid #667eea;
+    border-radius: 3px;
+    font-size: 11px;
 }
 
 .cert-info-label {
     font-weight: bold;
-    font-size: 12px;
+    font-size: 10px;
     color: #667eea;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
+    text-transform: uppercase;
 }
 
 .cert-section-title {
@@ -1515,25 +1519,26 @@ td:hover {
    ============================================ */
 
 .cert-categoria {
-    margin: 25px 0;
+    margin: 12px 0;
     page-break-inside: avoid;
 }
 
 .cert-categoria-titulo {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 12px 20px;
+    padding: 6px 12px;
     font-weight: 700;
-    font-size: 16px;
-    border-radius: 6px 6px 0 0;
-    letter-spacing: 1px;
+    font-size: 13px;
+    border-radius: 4px 4px 0 0;
+    letter-spacing: 0.5px;
 }
 
 .cert-tabla {
     width: 100%;
-    border: 2px solid #667eea;
+    border: 1px solid #667eea;
     border-collapse: collapse;
-    border-radius: 0 0 6px 6px;
+    border-radius: 0 0 4px 4px;
+    font-size: 11px;
 }
 
 .cert-tabla-header {
@@ -1542,23 +1547,20 @@ td:hover {
 }
 
 .cert-tabla-header th {
-    padding: 12px 15px;
+    padding: 6px 10px;
     text-align: left;
-    border-bottom: 2px solid #667eea;
+    border-bottom: 1px solid #667eea;
     border-right: 1px solid #ecf0f1;
+    font-size: 11px;
 }
 
 .cert-tabla-header th:last-child {
     border-right: none;
+    width: 30%;
 }
 
 .cert-tabla-row {
     border-bottom: 1px solid #ecf0f1;
-    transition: background 0.2s ease;
-}
-
-.cert-tabla-row:hover {
-    background: #f8faff;
 }
 
 .cert-tabla-row:last-child {
@@ -1566,14 +1568,16 @@ td:hover {
 }
 
 .cert-tabla-col-item {
-    padding: 12px 15px;
+    padding: 5px 10px;
     border-right: 1px solid #ecf0f1;
+    line-height: 1.3;
 }
 
 .cert-tabla-col-estado {
-    padding: 12px 15px;
+    padding: 5px 10px;
     font-weight: 600;
     text-align: center;
+    line-height: 1.3;
 }
 
 .cert-warning {
@@ -1589,48 +1593,50 @@ td:hover {
 
 /* Referencias de estados */
 .cert-referencias {
-    margin: 40px 0 30px 0;
-    padding: 25px;
+    margin: 15px 0;
+    padding: 12px;
     background: #f8f9fa;
-    border-radius: 8px;
-    border: 2px solid #ecf0f1;
+    border-radius: 4px;
+    border: 1px solid #ecf0f1;
     page-break-inside: avoid;
 }
 
 .cert-referencias-titulo {
     color: #2c3e50;
-    font-size: 18px;
+    font-size: 13px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
 .cert-referencias-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
 }
 
 .cert-referencia-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 12px;
+    gap: 8px;
+    padding: 6px 8px;
     background: white;
-    border-radius: 6px;
+    border-radius: 3px;
     border: 1px solid #ecf0f1;
+    font-size: 10px;
 }
 
 .cert-referencia-icono {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 12px;
+    flex-shrink: 0;
 }
 
 .cert-referencia-icono.bien {
@@ -1655,37 +1661,38 @@ td:hover {
 
 /* Certificado de Producto */
 .cert-producto {
-    margin: 40px 0;
-    padding: 30px;
+    margin: 20px 0;
+    padding: 15px;
     background: #f8f9fa;
-    border-radius: 8px;
-    border: 2px solid #667eea;
-    page-break-before: always;
+    border-radius: 4px;
+    border: 1px solid #667eea;
+    page-break-before: auto;
 }
 
 .cert-producto-titulo {
     color: #2c3e50;
-    font-size: 22px;
+    font-size: 15px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
-    letter-spacing: 1.5px;
-    border-bottom: 3px solid #667eea;
-    padding-bottom: 15px;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 8px;
 }
 
 .cert-producto-texto {
-    font-size: 16px;
-    line-height: 1.8;
+    font-size: 11px;
+    line-height: 1.5;
     color: #2c3e50;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .cert-tabla-productos {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
+    margin: 10px 0;
     background: white;
+    font-size: 11px;
 }
 
 .cert-tabla-productos thead {
@@ -1694,14 +1701,15 @@ td:hover {
 }
 
 .cert-tabla-productos th {
-    padding: 15px;
+    padding: 6px 10px;
     text-align: left;
     font-weight: 600;
     border: 1px solid #ecf0f1;
+    font-size: 11px;
 }
 
 .cert-tabla-productos td {
-    padding: 12px 15px;
+    padding: 5px 10px;
     border: 1px solid #ecf0f1;
 }
 
@@ -1709,66 +1717,109 @@ td:hover {
     background: #f8f9fa;
 }
 
-.cert-tabla-productos tbody tr:hover {
-    background: #e8f4f8;
-}
-
 /* Disclaimer */
 .cert-disclaimer {
-    margin: 30px 0;
-    padding: 25px;
+    margin: 15px 0;
+    padding: 12px;
     background: #fff3cd;
-    border-left: 5px solid #f39c12;
-    border-radius: 6px;
+    border-left: 3px solid #f39c12;
+    border-radius: 3px;
     page-break-inside: avoid;
 }
 
 .cert-disclaimer h4 {
     color: #856404;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 700;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
 .cert-disclaimer p {
     color: #856404;
-    font-size: 13px;
-    line-height: 1.8;
+    font-size: 9px;
+    line-height: 1.5;
     text-align: justify;
 }
 
 /* Footer */
 .cert-footer {
-    margin-top: 40px;
-    padding: 20px;
+    margin-top: 15px;
+    padding: 10px;
     text-align: center;
-    font-size: 14px;
+    font-size: 11px;
     font-weight: 600;
     color: #7f8c8d;
-    border-top: 2px solid #ecf0f1;
+    border-top: 1px solid #ecf0f1;
     page-break-inside: avoid;
 }
 
 /* Estilos para impresión del certificado mejorado */
 @media print {
+    @page {
+        size: A4;
+        margin: 15mm 10mm;
+    }
+
+    .certificate-print {
+        padding: 0;
+        font-size: 10px;
+        line-height: 1.3;
+        max-width: 100%;
+    }
+
+    .cert-header {
+        padding-bottom: 8px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #667eea !important;
+    }
+
+    .cert-title {
+        font-size: 16px;
+        margin-bottom: 4px;
+    }
+
+    .cert-subtitle {
+        font-size: 12px;
+    }
+
+    .cert-info-grid {
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+
+    .cert-info-item {
+        padding: 4px 8px;
+        page-break-inside: avoid;
+    }
+
+    .cert-info-label {
+        font-size: 9px;
+    }
+
     .cert-categoria {
+        margin: 8px 0;
         page-break-inside: avoid;
     }
 
     .cert-categoria-titulo {
         background: #667eea !important;
+        padding: 4px 10px;
+        font-size: 12px;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
     }
 
     .cert-tabla {
         border-color: #667eea !important;
+        font-size: 10px;
     }
 
     .cert-tabla-header th {
         background: #f8f9fa !important;
+        padding: 4px 8px;
+        font-size: 10px;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
     }
@@ -1779,14 +1830,37 @@ td:hover {
 
     .cert-tabla-col-item,
     .cert-tabla-col-estado {
+        padding: 3px 8px;
         border-right: 1px solid #ecf0f1 !important;
     }
 
     .cert-referencias {
+        margin: 10px 0;
+        padding: 8px;
         page-break-inside: avoid;
         background: #f8f9fa !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
+    }
+
+    .cert-referencias-titulo {
+        font-size: 11px;
+        margin-bottom: 6px;
+    }
+
+    .cert-referencias-grid {
+        gap: 5px;
+    }
+
+    .cert-referencia-item {
+        padding: 4px 6px;
+        font-size: 9px;
+    }
+
+    .cert-referencia-icono {
+        width: 20px;
+        height: 20px;
+        font-size: 11px;
     }
 
     .cert-referencia-icono.bien {
@@ -1814,26 +1888,68 @@ td:hover {
     }
 
     .cert-producto {
-        page-break-before: always;
+        margin: 12px 0;
+        padding: 10px;
+        page-break-before: auto;
         background: #f8f9fa !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
     }
 
+    .cert-producto-titulo {
+        font-size: 13px;
+        padding-bottom: 6px;
+        margin-bottom: 8px;
+    }
+
+    .cert-producto-texto {
+        font-size: 10px;
+        margin-bottom: 8px;
+    }
+
+    .cert-tabla-productos {
+        margin: 8px 0;
+        font-size: 10px;
+    }
+
+    .cert-tabla-productos th {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+
+    .cert-tabla-productos td {
+        padding: 3px 8px;
+    }
+
     .cert-tabla-productos thead {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        background: #667eea !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
     }
 
     .cert-disclaimer {
+        margin: 10px 0;
+        padding: 8px;
         page-break-inside: avoid;
         background: #fff3cd !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
     }
 
+    .cert-disclaimer h4 {
+        font-size: 10px;
+        margin-bottom: 5px;
+    }
+
+    .cert-disclaimer p {
+        font-size: 8px;
+        line-height: 1.4;
+    }
+
     .cert-footer {
+        margin-top: 10px;
+        padding: 6px;
+        font-size: 10px;
         page-break-inside: avoid;
     }
 }
@@ -1890,16 +2006,20 @@ td:hover {
         width: 100%;
     }
 
+    .cert-info-grid {
+        grid-template-columns: 1fr;
+    }
+
     .cert-referencias-grid {
         grid-template-columns: 1fr;
     }
 
     .cert-tabla-productos {
-        font-size: 12px;
+        font-size: 10px;
     }
 
     .cert-tabla-productos th,
     .cert-tabla-productos td {
-        padding: 8px;
+        padding: 6px;
     }
 }

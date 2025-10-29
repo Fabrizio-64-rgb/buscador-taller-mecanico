@@ -187,6 +187,24 @@
                             </div>
                         </div>
 
+                        <!-- Sección de Historial de Servicios -->
+                        <div class="historial-section" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #dee2e6;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <h3 style="color: #667eea; margin: 0;">📋 Historial de Servicios</h3>
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                <input type="text" id="buscarHistorialPatente" placeholder="Buscar por patente..." style="flex: 1; padding: 10px; border: 1px solid #dee2e6; border-radius: 6px;">
+                                <button type="button" class="btn btn-small" onclick="buscarHistorialVehiculo();" title="Buscar historial del vehículo">
+                                    🔍 Buscar
+                                </button>
+                            </div>
+                            <div id="historialContainer" class="historial-container">
+                                <div style="text-align: center; color: #7f8c8d; padding: 20px; font-style: italic;">
+                                    Ingrese una patente para ver el historial de servicios
+                                </div>
+                            </div>
+                        </div>
+
                         <h3 style="color: #667eea; margin: 20px 0 15px 0;">Datos del Cliente y Vehículo</h3>
 
                         <div class="form-row">

@@ -1752,6 +1752,118 @@ td:hover {
 }
 
 /* ============================================
+   ESTILOS PARA HISTORIAL DE SERVICIOS
+   ============================================ */
+
+.historial-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.historial-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: var(--bg-container);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    border-left: 4px solid #667eea;
+}
+
+.historial-item:hover {
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+    transform: translateY(-1px);
+}
+
+.historial-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.historial-fecha {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.historial-detalles {
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.historial-detalle-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.historial-estadisticas {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+}
+
+.historial-stat {
+    text-align: center;
+}
+
+.historial-stat-value {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.historial-stat-label {
+    font-size: 11px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.historial-acciones {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.historial-alerta {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 6px;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #856404;
+}
+
+.historial-alerta-icon {
+    font-size: 24px;
+}
+
+.historial-alerta-text {
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+/* ============================================
    ESTILOS PARA CERTIFICADO MEJORADO
    ============================================ */
 

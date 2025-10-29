@@ -718,6 +718,7 @@ window.addEventListener('DOMContentLoaded', () => {
     inicializarInspeccion();
     inicializarFechaServicio();
     renderizarBorradores();
+    inicializarHistorial();
 });
 
 // Inicializar fecha del servicio con la fecha actual
@@ -727,6 +728,32 @@ function inicializarFechaServicio() {
         const hoy = new Date();
         const fechaStr = hoy.toISOString().split('T')[0];
         fechaServicioInput.value = fechaStr;
+    }
+}
+
+// Inicializar event listeners para historial
+function inicializarHistorial() {
+    // Evento Enter en input de búsqueda de historial
+    const inputPatente = document.getElementById('buscarHistorialPatente');
+    if (inputPatente) {
+        inputPatente.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                buscarHistorialVehiculo();
+            }
+        });
+    }
+
+    // Auto-buscar historial cuando se ingresa patente en formulario principal
+    const patenteVehiculoInput = document.getElementById('patenteVehiculo');
+    if (patenteVehiculoInput) {
+        patenteVehiculoInput.addEventListener('blur', () => {
+            const patente = patenteVehiculoInput.value.toUpperCase().trim();
+            if (patente && inputPatente) {
+                inputPatente.value = patente;
+                buscarHistorialVehiculo();
+            }
+        });
     }
 }
 
@@ -1517,6 +1544,31 @@ function generarCertificado() {
         modalBody.innerHTML = certificadoHTML;
         document.getElementById('certificateModal').classList.add('active');
         mostrarExito('✓ Certificado generado correctamente. Revisa y luego imprime.');
+
+        // Guardar en historial de servicios
+        const datosCertificado = {
+            nombreCliente,
+            patenteVehiculo,
+            marcaVehiculo,
+            modeloVehiculo,
+            tipoTecnico,
+            kilometrajeActual,
+            proximoServicioKm,
+            fechaProximoServicio,
+            lubriexperto,
+            numeroOrden,
+            fechaServicio,
+            garantiaServicio,
+            mecanicoAsignado,
+            metodoPago,
+            observaciones,
+            inspeccion: {...datosInspeccion},
+            productos: [...productosConsumidos],
+            config: {...config},
+            certificadoHTML: certificadoHTML
+        };
+
+        guardarEnHistorial(datosCertificado);
     } else {
         mostrarError('Error al mostrar el certificado');
     }
@@ -1926,4 +1978,292 @@ async function limpiarTodosEstados() {
     });
 
     mostrarExito('Todos los estados han sido limpiados');
+}
+
+// ============================================
+// HISTORIAL DE SERVICIOS
+// ============================================
+
+/**
+ * Guarda un certificado generado en el historial de servicios
+ * @param {Object} datosCertificado - Datos del certificado generado
+ */
+function guardarEnHistorial(datosCertificado) {
+    const patente = datosCertificado.patenteVehiculo.toUpperCase().trim();
+
+    if (!patente) return;
+
+    // Crear registro de servicio
+    const registroServicio = {
+        id: Date.now(),
+        fecha: new Date().toISOString(),
+        fechaFormato: new Date().toLocaleString('es-AR'),
+        patente: patente,
+        nombreCliente: datosCertificado.nombreCliente,
+        marcaVehiculo: datosCertificado.marcaVehiculo,
+        modeloVehiculo: datosCertificado.modeloVehiculo,
+        kilometraje: parseInt(datosCertificado.kilometrajeActual) || 0,
+        fechaServicio: datosCertificado.fechaServicio || new Date().toISOString().split('T')[0],
+        numeroOrden: datosCertificado.numeroOrden || '',
+        mecanicoAsignado: datosCertificado.mecanicoAsignado || '',
+        // Guardar todos los datos para poder regenerar el certificado
+        datosCertificado: datosCertificado
+    };
+
+    // Obtener historial existente
+    let historial = JSON.parse(localStorage.getItem('historialServicios') || '{}');
+
+    // Crear array para esta patente si no existe
+    if (!historial[patente]) {
+        historial[patente] = [];
+    }
+
+    // Agregar nuevo servicio
+    historial[patente].push(registroServicio);
+
+    // Ordenar por fecha (más reciente primero)
+    historial[patente].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+    // Guardar en localStorage
+    localStorage.setItem('historialServicios', JSON.stringify(historial));
+
+    console.log(`✓ Certificado guardado en historial para patente ${patente}`);
+}
+
+/**
+ * Busca y muestra el historial de un vehículo por patente
+ */
+function buscarHistorialVehiculo() {
+    const input = document.getElementById('buscarHistorialPatente');
+    const patente = input.value.toUpperCase().trim();
+
+    if (!patente) {
+        mostrarAdvertencia('Por favor ingrese una patente para buscar');
+        return;
+    }
+
+    // Obtener historial
+    const historial = JSON.parse(localStorage.getItem('historialServicios') || '{}');
+    const servicios = historial[patente] || [];
+
+    renderizarHistorial(patente, servicios);
+}
+
+/**
+ * Renderiza el historial de servicios en la interfaz
+ * @param {string} patente - Patente del vehículo
+ * @param {Array} servicios - Array de servicios del vehículo
+ */
+function renderizarHistorial(patente, servicios) {
+    const container = document.getElementById('historialContainer');
+
+    if (servicios.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; color: #7f8c8d; padding: 30px; font-style: italic;">
+                <div style="font-size: 48px; margin-bottom: 10px;">📋</div>
+                <div>No hay servicios registrados para la patente <strong>${patente}</strong></div>
+            </div>
+        `;
+        return;
+    }
+
+    // Calcular estadísticas
+    const estadisticas = calcularEstadisticas(servicios);
+
+    // Construir HTML con estadísticas
+    let html = '';
+
+    // Mostrar estadísticas generales
+    html += `
+        <div class="historial-estadisticas">
+            <div class="historial-stat">
+                <div class="historial-stat-value">${servicios.length}</div>
+                <div class="historial-stat-label">Servicios</div>
+            </div>
+            ${estadisticas.kmRecorridos > 0 ? `
+            <div class="historial-stat">
+                <div class="historial-stat-value">${estadisticas.kmRecorridos.toLocaleString()}</div>
+                <div class="historial-stat-label">Km Recorridos</div>
+            </div>
+            ` : ''}
+            ${estadisticas.diasDesdeUltimo > 0 ? `
+            <div class="historial-stat">
+                <div class="historial-stat-value">${estadisticas.diasDesdeUltimo}</div>
+                <div class="historial-stat-label">Días desde último</div>
+            </div>
+            ` : ''}
+            ${estadisticas.kmUltimo > 0 ? `
+            <div class="historial-stat">
+                <div class="historial-stat-value">${estadisticas.kmUltimo.toLocaleString()}</div>
+                <div class="historial-stat-label">Km actual</div>
+            </div>
+            ` : ''}
+        </div>
+    `;
+
+    // Mostrar alerta si hace mucho tiempo desde el último servicio
+    if (estadisticas.diasDesdeUltimo > 180) {
+        html += `
+            <div class="historial-alerta">
+                <div class="historial-alerta-icon">⚠️</div>
+                <div class="historial-alerta-text">
+                    <strong>Atención:</strong> Han pasado más de 6 meses desde el último servicio.
+                    Se recomienda realizar una inspección preventiva.
+                </div>
+            </div>
+        `;
+    }
+
+    // Listar servicios
+    servicios.forEach((servicio, index) => {
+        const kmRecorridos = index < servicios.length - 1
+            ? servicio.kilometraje - servicios[index + 1].kilometraje
+            : 0;
+
+        html += `
+            <div class="historial-item">
+                <div class="historial-info">
+                    <div class="historial-fecha">📅 ${servicio.fechaFormato}</div>
+                    <div class="historial-detalles">
+                        <div class="historial-detalle-item">
+                            <span>🚗</span>
+                            <span>${servicio.marcaVehiculo} ${servicio.modeloVehiculo}</span>
+                        </div>
+                        <div class="historial-detalle-item">
+                            <span>🛣️</span>
+                            <span>${servicio.kilometraje.toLocaleString()} km</span>
+                        </div>
+                        ${kmRecorridos > 0 ? `
+                        <div class="historial-detalle-item">
+                            <span>📊</span>
+                            <span>+${kmRecorridos.toLocaleString()} km desde anterior</span>
+                        </div>
+                        ` : ''}
+                        ${servicio.numeroOrden ? `
+                        <div class="historial-detalle-item">
+                            <span>📄</span>
+                            <span>Orden: ${servicio.numeroOrden}</span>
+                        </div>
+                        ` : ''}
+                        ${servicio.mecanicoAsignado ? `
+                        <div class="historial-detalle-item">
+                            <span>👨‍🔧</span>
+                            <span>${servicio.mecanicoAsignado}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                <div class="historial-acciones">
+                    <button type="button" class="btn-action btn-select" onclick="verCertificadoHistorial(${servicio.id})" title="Ver certificado">
+                        👁️ Ver
+                    </button>
+                    <button type="button" class="btn-action btn-delete" onclick="eliminarServicioHistorial('${patente}', ${servicio.id})" title="Eliminar">
+                        🗑️
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
+/**
+ * Calcula estadísticas del historial de servicios
+ * @param {Array} servicios - Array de servicios
+ * @returns {Object} - Estadísticas calculadas
+ */
+function calcularEstadisticas(servicios) {
+    if (servicios.length === 0) {
+        return { kmRecorridos: 0, diasDesdeUltimo: 0, kmUltimo: 0 };
+    }
+
+    const servicioMasReciente = servicios[0];
+    const servicioMasAntiguo = servicios[servicios.length - 1];
+
+    const kmRecorridos = servicioMasReciente.kilometraje - servicioMasAntiguo.kilometraje;
+    const fechaUltimo = new Date(servicioMasReciente.fecha);
+    const hoy = new Date();
+    const diasDesdeUltimo = Math.floor((hoy - fechaUltimo) / (1000 * 60 * 60 * 24));
+    const kmUltimo = servicioMasReciente.kilometraje;
+
+    return {
+        kmRecorridos: kmRecorridos > 0 ? kmRecorridos : 0,
+        diasDesdeUltimo,
+        kmUltimo
+    };
+}
+
+/**
+ * Abre el modal para ver un certificado del historial
+ * @param {number} servicioId - ID del servicio
+ */
+function verCertificadoHistorial(servicioId) {
+    // Buscar el servicio en el historial
+    const historial = JSON.parse(localStorage.getItem('historialServicios') || '{}');
+    let servicioEncontrado = null;
+
+    // Buscar en todas las patentes
+    Object.keys(historial).forEach(patente => {
+        const servicio = historial[patente].find(s => s.id === servicioId);
+        if (servicio) {
+            servicioEncontrado = servicio;
+        }
+    });
+
+    if (!servicioEncontrado) {
+        mostrarError('Servicio no encontrado en el historial');
+        return;
+    }
+
+    // Obtener el HTML guardado del certificado
+    const certificadoHTML = servicioEncontrado.datosCertificado.certificadoHTML;
+
+    if (!certificadoHTML) {
+        mostrarError('No se pudo recuperar el certificado');
+        return;
+    }
+
+    // Mostrar en el modal
+    const modalBody = document.getElementById('certificateModalBody');
+    if (modalBody) {
+        modalBody.innerHTML = certificadoHTML;
+        document.getElementById('certificateModal').classList.add('active');
+    } else {
+        mostrarError('Error al mostrar el certificado');
+    }
+}
+
+/**
+ * Elimina un servicio del historial
+ * @param {string} patente - Patente del vehículo
+ * @param {number} servicioId - ID del servicio a eliminar
+ */
+async function eliminarServicioHistorial(patente, servicioId) {
+    const confirmado = await mostrarConfirmacion(
+        '¿Eliminar este servicio del historial de forma permanente?',
+        'Confirmar eliminación',
+        'danger',
+        '🗑️'
+    );
+
+    if (!confirmado) return;
+
+    let historial = JSON.parse(localStorage.getItem('historialServicios') || '{}');
+
+    if (historial[patente]) {
+        historial[patente] = historial[patente].filter(s => s.id !== servicioId);
+
+        // Si no quedan servicios para esta patente, eliminar la patente
+        if (historial[patente].length === 0) {
+            delete historial[patente];
+        }
+
+        localStorage.setItem('historialServicios', JSON.stringify(historial));
+
+        // Refrescar la visualización
+        buscarHistorialVehiculo();
+
+        mostrarExito('✓ Servicio eliminado del historial');
+    }
 }

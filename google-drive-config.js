@@ -2,9 +2,8 @@
 // CONFIGURACIÓN DE GOOGLE DRIVE API
 // ============================================
 
-// 🔑 IMPORTANTE: Reemplaza 'TU_CLIENT_ID_AQUI' con tu Client ID de Google Cloud Console
-// Ejemplo: '123456789-abcdefg.apps.googleusercontent.com'
-const GOOGLE_CLIENT_ID = 'TU_CLIENT_ID_AQUI';
+// 🔑 Client ID de Google Cloud Console
+const GOOGLE_CLIENT_ID = '942549841643-i4mec66elneg49livphadiqm1du70lsj.apps.googleusercontent.com';
 
 // Scope necesario para subir archivos a Drive
 const GOOGLE_SCOPES = 'https://www.googleapis.com/auth/drive.file';

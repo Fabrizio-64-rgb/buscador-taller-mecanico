@@ -2,6 +2,8 @@ let datosOriginal = [];
 let columnas = [];
 let codificacionActual = 'UTF-8';
 let searchTimeout = null;
+let clienteSeleccionado = null;
+let filaSeleccionadaIndex = null;
 
 // Función para normalizar texto (quitar acentos y caracteres especiales)
 function normalizarTexto(texto) {
@@ -175,6 +177,43 @@ function inicializarBusqueda() {
         // Mostrar todos los datos al cargar
         mostrarResultados(datosOriginal);
     }
+
+    // Crear formularios dinámicos para gestión de clientes
+    crearFormulariosGestion();
+}
+
+// Crear formularios dinámicos
+function crearFormulariosGestion() {
+    const editForm = document.getElementById('editClienteForm');
+    const addForm = document.getElementById('addClienteForm');
+
+    if (!editForm || !addForm) return;
+
+    // Limpiar formularios existentes
+    editForm.innerHTML = '';
+    addForm.innerHTML = '';
+
+    // Crear campos de edición
+    columnas.forEach(col => {
+        const editGroup = document.createElement('div');
+        editGroup.className = 'form-group';
+        editGroup.innerHTML = `
+            <label for="edit_${col}">${col}:</label>
+            <input type="text" id="edit_${col}" placeholder="${col}">
+        `;
+        editForm.appendChild(editGroup);
+    });
+
+    // Crear campos para agregar nuevo
+    columnas.forEach(col => {
+        const addGroup = document.createElement('div');
+        addGroup.className = 'form-group';
+        addGroup.innerHTML = `
+            <label for="new_${col}">${col}:</label>
+            <input type="text" id="new_${col}" placeholder="${col}">
+        `;
+        addForm.appendChild(addGroup);
+    });
 }
 
 function actualizarPlaceholder() {
@@ -236,7 +275,12 @@ function mostrarResultados(resultados) {
 
     resultsSection.classList.add('active');
     document.getElementById('resultCount').textContent = resultados.length;
-    document.getElementById('showingCount').textContent = resultados.length;
+
+    // Limitar a 100 filas para mejor rendimiento
+    const resultadosLimitados = resultados.slice(0, 100);
+    const mostrandoCantidad = resultadosLimitados.length;
+
+    document.getElementById('showingCount').textContent = mostrandoCantidad;
     document.getElementById('totalCount').textContent = datosOriginal.length;
 
     if (resultados.length === 0) {
@@ -247,17 +291,33 @@ function mostrarResultados(resultados) {
 
     noResults.style.display = 'none';
 
-    // Crear encabezados
+    // Crear encabezados con columna de acciones
     if (tableHead.innerHTML === '') {
-        tableHead.innerHTML = columnas.map(col => `<th>${col}</th>`).join('');
+        tableHead.innerHTML = '<th>Acciones</th>' + columnas.map(col => `<th>${col}</th>`).join('');
     }
 
-    // Crear filas
-    tableBody.innerHTML = resultados.map(row => `
-        <tr>
+    // Crear filas con evento click y botones de acción
+    tableBody.innerHTML = resultadosLimitados.map((row, index) => `
+        <tr data-index="${index}" class="row-clickable">
+            <td class="actions-cell">
+                <button class="btn-action btn-select" onclick="seleccionarCliente(${index})" title="Seleccionar para certificado">
+                    ✓
+                </button>
+                <button class="btn-action btn-edit" onclick="editarCliente(${index})" title="Editar">
+                    ✏️
+                </button>
+                <button class="btn-action btn-delete" onclick="eliminarCliente(${index})" title="Eliminar">
+                    🗑️
+                </button>
+            </td>
             ${columnas.map(col => `<td>${row[col] || '-'}</td>`).join('')}
         </tr>
     `).join('');
+
+    // Mostrar advertencia si hay más de 100 resultados
+    if (resultados.length > 100) {
+        mostrarAdvertencia(`Mostrando 100 de ${resultados.length} resultados. Refina tu búsqueda para ver más.`);
+    }
 }
 
 function limpiar() {
@@ -547,5 +607,233 @@ function generarCertificado() {
 
 function limpiarFormularioCertificado() {
     document.getElementById('certificadoForm').reset();
+    clienteSeleccionado = null;
     mostrarAdvertencia('Formulario limpiado');
+}
+
+// ============================================
+// FUNCIONES PARA GESTIÓN DE CLIENTES
+// ============================================
+
+// Seleccionar cliente y cargar datos en certificado
+function seleccionarCliente(index) {
+    if (index < 0 || index >= datosOriginal.length) {
+        mostrarError('Cliente no encontrado');
+        return;
+    }
+
+    clienteSeleccionado = datosOriginal[index];
+    filaSeleccionadaIndex = index;
+
+    // Buscar campos comunes para autocompletar
+    const mapearCampo = (posiblesNombres) => {
+        for (let nombre of posiblesNombres) {
+            const col = columnas.find(c => normalizarTexto(c).includes(normalizarTexto(nombre)));
+            if (col && clienteSeleccionado[col]) {
+                return clienteSeleccionado[col];
+            }
+        }
+        return '';
+    };
+
+    // Autocompletar formulario de certificado
+    const nombreCliente = mapearCampo(['nombre', 'cliente', 'titular', 'propietario']);
+    const patenteVehiculo = mapearCampo(['patente', 'dominio', 'placa']);
+    const marcaVehiculo = mapearCampo(['marca']);
+    const modeloVehiculo = mapearCampo(['modelo']);
+    const tipoTecnico = mapearCampo(['tipo', 'tipo tecnico', 'tipo_tecnico']);
+    const kilometraje = mapearCampo(['kilometraje', 'km', 'kilometros']);
+
+    // Llenar formulario
+    if (nombreCliente) document.getElementById('nombreCliente').value = nombreCliente;
+    if (patenteVehiculo) document.getElementById('patenteVehiculo').value = patenteVehiculo;
+    if (marcaVehiculo) document.getElementById('marcaVehiculo').value = marcaVehiculo;
+    if (modeloVehiculo) document.getElementById('modeloVehiculo').value = modeloVehiculo;
+    if (tipoTecnico) document.getElementById('tipoTecnico').value = tipoTecnico;
+    if (kilometraje) document.getElementById('kilometrajeActual').value = kilometraje;
+
+    // Cambiar a la pestaña de certificado
+    const certificadoTab = Array.from(document.querySelectorAll('.tab-btn')).find(btn =>
+        btn.textContent.includes('Certificado')
+    );
+    if (certificadoTab) {
+        certificadoTab.click();
+    }
+
+    mostrarExito('Cliente seleccionado. Completa los datos faltantes y genera el certificado.');
+}
+
+// Editar cliente
+function editarCliente(index) {
+    if (index < 0 || index >= datosOriginal.length) {
+        mostrarError('Cliente no encontrado');
+        return;
+    }
+
+    const cliente = datosOriginal[index];
+    filaSeleccionadaIndex = index;
+
+    // Cambiar a pestaña de gestión
+    const gestionTab = Array.from(document.querySelectorAll('.tab-btn')).find(btn =>
+        btn.textContent.includes('Gestión')
+    );
+    if (gestionTab) {
+        gestionTab.click();
+    }
+
+    // Llenar formulario de edición con los datos del cliente
+    columnas.forEach(col => {
+        const input = document.getElementById(`edit_${col}`);
+        if (input) {
+            input.value = cliente[col] || '';
+        }
+    });
+
+    document.getElementById('editClienteSection').style.display = 'block';
+    document.getElementById('addClienteSection').style.display = 'none';
+
+    mostrarAdvertencia('Editando cliente. Modifica los campos y guarda los cambios.');
+}
+
+// Eliminar cliente
+function eliminarCliente(index) {
+    if (index < 0 || index >= datosOriginal.length) {
+        mostrarError('Cliente no encontrado');
+        return;
+    }
+
+    const cliente = datosOriginal[index];
+    const nombre = cliente[columnas[0]] || 'este cliente';
+
+    if (!confirm(`¿Estás seguro de eliminar a ${nombre}?`)) {
+        return;
+    }
+
+    // Eliminar del array
+    datosOriginal.splice(index, 1);
+
+    // Actualizar la búsqueda para refrescar la tabla
+    buscar();
+
+    mostrarExito('Cliente eliminado correctamente');
+}
+
+// Guardar edición de cliente
+function guardarEdicionCliente() {
+    if (filaSeleccionadaIndex === null || filaSeleccionadaIndex < 0) {
+        mostrarError('No hay cliente seleccionado para editar');
+        return;
+    }
+
+    // Actualizar datos del cliente
+    columnas.forEach(col => {
+        const input = document.getElementById(`edit_${col}`);
+        if (input) {
+            datosOriginal[filaSeleccionadaIndex][col] = input.value;
+        }
+    });
+
+    filaSeleccionadaIndex = null;
+    document.getElementById('editClienteSection').style.display = 'none';
+
+    // Actualizar tabla
+    buscar();
+
+    mostrarExito('Cliente actualizado correctamente');
+}
+
+// Cancelar edición
+function cancelarEdicion() {
+    filaSeleccionadaIndex = null;
+    document.getElementById('editClienteSection').style.display = 'none';
+    mostrarAdvertencia('Edición cancelada');
+}
+
+// Agregar nuevo cliente
+function agregarNuevoCliente() {
+    const nuevoCliente = {};
+    let camposCompletos = true;
+
+    columnas.forEach(col => {
+        const input = document.getElementById(`new_${col}`);
+        if (input) {
+            nuevoCliente[col] = input.value || '';
+            if (input.required && !input.value) {
+                camposCompletos = false;
+            }
+        }
+    });
+
+    if (!camposCompletos) {
+        mostrarError('Por favor completa todos los campos requeridos');
+        return;
+    }
+
+    // Agregar al array
+    datosOriginal.push(nuevoCliente);
+
+    // Limpiar formulario
+    columnas.forEach(col => {
+        const input = document.getElementById(`new_${col}`);
+        if (input) input.value = '';
+    });
+
+    // Actualizar tabla
+    buscar();
+
+    mostrarExito('Cliente agregado correctamente');
+}
+
+// Mostrar formulario para agregar cliente
+function mostrarAgregarCliente() {
+    document.getElementById('addClienteSection').style.display = 'block';
+    document.getElementById('editClienteSection').style.display = 'none';
+}
+
+// Cancelar agregar cliente
+function cancelarAgregar() {
+    document.getElementById('addClienteSection').style.display = 'none';
+    // Limpiar formulario
+    columnas.forEach(col => {
+        const input = document.getElementById(`new_${col}`);
+        if (input) input.value = '';
+    });
+}
+
+// Exportar datos a CSV
+function exportarCSV() {
+    if (datosOriginal.length === 0) {
+        mostrarError('No hay datos para exportar');
+        return;
+    }
+
+    // Crear contenido CSV
+    const encabezados = columnas.join(',');
+    const filas = datosOriginal.map(row =>
+        columnas.map(col => {
+            const valor = row[col] || '';
+            // Escapar valores que contengan comas o comillas
+            if (valor.includes(',') || valor.includes('"') || valor.includes('\n')) {
+                return `"${valor.replace(/"/g, '""')}"`;
+            }
+            return valor;
+        }).join(',')
+    );
+
+    const csvContent = [encabezados, ...filas].join('\n');
+
+    // Crear Blob y descargar
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute('href', url);
+    link.setAttribute('download', `clientes_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    mostrarExito('Archivo CSV exportado correctamente');
 }

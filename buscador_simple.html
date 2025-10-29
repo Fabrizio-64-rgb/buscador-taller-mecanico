@@ -21,6 +21,7 @@
             <div class="tabs">
                 <button class="tab-btn active" onclick="cambiarTab(event, 'archivo')">📁 Cargar Archivo</button>
                 <button class="tab-btn" onclick="cambiarTab(event, 'pegar')">📋 Pegar Datos</button>
+                <button class="tab-btn" onclick="cambiarTab(event, 'gestion')">👥 Gestión de Clientes</button>
                 <button class="tab-btn" onclick="cambiarTab(event, 'configuracion')">⚙️ Configuración</button>
                 <button class="tab-btn" onclick="cambiarTab(event, 'certificado')">📄 Certificado</button>
             </div>
@@ -66,7 +67,46 @@
                 </div>
             </div>
 
-            <!-- TAB 3: Configuración -->
+            <!-- TAB 3: Gestión de Clientes -->
+            <div id="gestion" class="tab-content">
+                <h2 style="margin-bottom: 20px; color: #2c3e50;">👥 Gestión de Clientes</h2>
+
+                <div class="instructions">
+                    <strong>ℹ️ Información:</strong><br>
+                    Desde aquí puedes agregar nuevos clientes o editar los existentes. Los cambios se guardan en memoria y puedes exportarlos a CSV.
+                </div>
+
+                <div class="gestion-buttons" style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn" onclick="mostrarAgregarCliente();">➕ Agregar Nuevo Cliente</button>
+                    <button class="btn btn-secondary" onclick="exportarCSV();">💾 Exportar a CSV</button>
+                </div>
+
+                <!-- Sección para agregar nuevo cliente -->
+                <div id="addClienteSection" style="display: none; margin: 20px 0; padding: 20px; background: var(--bg-section); border-radius: 8px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">Agregar Nuevo Cliente</h3>
+                    <form id="addClienteForm" class="config-form" style="max-width: 100%;"></form>
+                    <div class="form-buttons" style="margin-top: 15px;">
+                        <button class="btn" onclick="agregarNuevoCliente();">💾 Guardar Cliente</button>
+                        <button class="btn btn-secondary" onclick="cancelarAgregar();">❌ Cancelar</button>
+                    </div>
+                </div>
+
+                <!-- Sección para editar cliente -->
+                <div id="editClienteSection" style="display: none; margin: 20px 0; padding: 20px; background: var(--bg-section); border-radius: 8px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">Editar Cliente</h3>
+                    <form id="editClienteForm" class="config-form" style="max-width: 100%;"></form>
+                    <div class="form-buttons" style="margin-top: 15px;">
+                        <button class="btn" onclick="guardarEdicionCliente();">💾 Guardar Cambios</button>
+                        <button class="btn btn-secondary" onclick="cancelarEdicion();">❌ Cancelar</button>
+                    </div>
+                </div>
+
+                <p style="color: var(--text-secondary); font-size: 13px; margin-top: 20px;">
+                    💡 Tip: También puedes editar o eliminar clientes directamente desde la tabla de resultados de búsqueda.
+                </p>
+            </div>
+
+            <!-- TAB 4: Configuración -->
             <div id="configuracion" class="tab-content">
                 <div class="config-section">
                     <h2 style="margin-bottom: 20px; color: #2c3e50;">⚙️ Configuración del Taller</h2>

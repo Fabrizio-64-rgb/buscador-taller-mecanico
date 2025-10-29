@@ -224,6 +224,35 @@
                             </div>
                         </div>
 
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="lubriexperto">Lubriexperto (Nombre del técnico):</label>
+                                <input type="text" id="lubriexperto" placeholder="Ej: SEBASTIAN ZUBER" required>
+                            </div>
+                        </div>
+
+                        <h3 style="color: #667eea; margin: 20px 0 15px 0;">Productos Consumidos</h3>
+
+                        <div class="instructions" style="margin-bottom: 15px;">
+                            <strong>ℹ️ Instrucciones:</strong><br>
+                            Agrega los productos consumidos durante el servicio.
+                        </div>
+
+                        <div id="productosContainer" class="productos-container">
+                            <div class="productos-header">
+                                <div>Nombre de Producto</div>
+                                <div>Nro. de Partida</div>
+                                <div>Cantidad</div>
+                                <div>Acciones</div>
+                            </div>
+                            <div id="productosLista" class="productos-lista">
+                                <!-- Se llenará dinámicamente -->
+                            </div>
+                            <button type="button" class="btn btn-small" onclick="agregarProducto();" style="margin-top: 10px;">
+                                ➕ Agregar Producto
+                            </button>
+                        </div>
+
                         <h3 style="color: #667eea; margin: 20px 0 15px 0;">Puntos de Revisión</h3>
 
                         <div class="instructions" style="margin-bottom: 20px;">

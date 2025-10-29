@@ -96,6 +96,9 @@ const CATEGORIAS_INSPECCION = [
 // Objeto para almacenar el estado de cada item (inicializado vacío)
 let datosInspeccion = {};
 
+// Array para almacenar productos consumidos
+let productosConsumidos = [];
+
 // Función para normalizar texto (quitar acentos y caracteres especiales)
 function normalizarTexto(texto) {
     return texto
@@ -898,6 +901,70 @@ function limpiarTodosEstados() {
 }
 
 // ============================================
+// FUNCIONES PARA PRODUCTOS CONSUMIDOS
+// ============================================
+
+function agregarProducto() {
+    const producto = {
+        id: Date.now(),
+        nombre: '',
+        partida: '',
+        cantidad: ''
+    };
+
+    productosConsumidos.push(producto);
+    renderizarProductos();
+}
+
+function eliminarProducto(id) {
+    productosConsumidos = productosConsumidos.filter(p => p.id !== id);
+    renderizarProductos();
+}
+
+function actualizarProducto(id, campo, valor) {
+    const producto = productosConsumidos.find(p => p.id === id);
+    if (producto) {
+        producto[campo] = valor;
+    }
+}
+
+function renderizarProductos() {
+    const lista = document.getElementById('productosLista');
+    if (!lista) return;
+
+    if (productosConsumidos.length === 0) {
+        lista.innerHTML = '<div class="productos-vacio">No hay productos agregados</div>';
+        return;
+    }
+
+    lista.innerHTML = productosConsumidos.map(producto => `
+        <div class="producto-item">
+            <input type="text"
+                   class="producto-input"
+                   placeholder="Nombre del producto"
+                   value="${producto.nombre}"
+                   onchange="actualizarProducto(${producto.id}, 'nombre', this.value)">
+            <input type="text"
+                   class="producto-input"
+                   placeholder="Nro. partida"
+                   value="${producto.partida}"
+                   onchange="actualizarProducto(${producto.id}, 'partida', this.value)">
+            <input type="text"
+                   class="producto-input"
+                   placeholder="Cantidad"
+                   value="${producto.cantidad}"
+                   onchange="actualizarProducto(${producto.id}, 'cantidad', this.value)">
+            <button type="button"
+                    class="btn-eliminar-producto"
+                    onclick="eliminarProducto(${producto.id})"
+                    title="Eliminar producto">
+                🗑️
+            </button>
+        </div>
+    `).join('');
+}
+
+// ============================================
 // FUNCIONES PARA GENERAR CERTIFICADO
 // ============================================
 
@@ -934,6 +1001,7 @@ function generarCertificado() {
     const kilometrajeActual = document.getElementById('kilometrajeActual').value.trim();
     const proximoServicioKm = document.getElementById('proximoServicioKm').value.trim();
     const fechaProximoServicio = document.getElementById('fechaProximoServicio').value;
+    const lubriexperto = document.getElementById('lubriexperto').value.trim();
 
     // Validar campos requeridos con mensajes específicos
     const camposFaltantes = [];
@@ -942,6 +1010,7 @@ function generarCertificado() {
     if (!marcaVehiculo) camposFaltantes.push('Marca del vehículo');
     if (!modeloVehiculo) camposFaltantes.push('Modelo del vehículo');
     if (!kilometrajeActual) camposFaltantes.push('Kilometraje actual');
+    if (!lubriexperto) camposFaltantes.push('Nombre del Lubriexperto');
 
     if (camposFaltantes.length > 0) {
         mostrarError(`⚠️ Faltan datos requeridos:<br>• ${camposFaltantes.join('<br>• ')}`);
@@ -991,18 +1060,22 @@ function generarCertificado() {
             categoriasHTML += `
                 <div class="cert-categoria">
                     <div class="cert-categoria-titulo">★ ${categoria.nombre}</div>
-                    <div class="cert-tabla">
-                        <div class="cert-tabla-header">
-                            <div class="cert-tabla-col-item">Puntos de Revisión</div>
-                            <div class="cert-tabla-col-estado">Estado</div>
-                        </div>
-                        ${itemsConEstado.map(item => `
-                            <div class="cert-tabla-row">
-                                <div class="cert-tabla-col-item">${item.nombre}</div>
-                                <div class="cert-tabla-col-estado">${item.estado}</div>
-                            </div>
-                        `).join('')}
-                    </div>
+                    <table class="cert-tabla">
+                        <thead>
+                            <tr class="cert-tabla-header">
+                                <th class="cert-tabla-col-item">Puntos de Revisión</th>
+                                <th class="cert-tabla-col-estado">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${itemsConEstado.map(item => `
+                                <tr class="cert-tabla-row">
+                                    <td class="cert-tabla-col-item">${item.nombre}</td>
+                                    <td class="cert-tabla-col-estado">${item.estado}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
                 </div>
             `;
         }
@@ -1013,6 +1086,99 @@ function generarCertificado() {
         mostrarAdvertencia('⚠️ No has seleccionado ningún punto de inspección. El certificado no tendrá información de revisión.');
         categoriasHTML = '<div class="cert-warning">⚠️ Sin puntos de inspección configurados</div>';
     }
+
+    // Generar sección de referencias
+    const referenciasHTML = `
+        <div class="cert-referencias">
+            <h3 class="cert-referencias-titulo">REFERENCIAS</h3>
+            <div class="cert-referencias-grid">
+                <div class="cert-referencia-item">
+                    <span class="cert-referencia-icono bien">✓</span>
+                    <strong>BIEN:</strong> No Requiere Atención Inmediata
+                </div>
+                <div class="cert-referencia-item">
+                    <span class="cert-referencia-icono regular">⚠</span>
+                    <strong>REGULAR:</strong> Podría Requerir Atención Futura
+                </div>
+                <div class="cert-referencia-item">
+                    <span class="cert-referencia-icono mal">✕</span>
+                    <strong>MAL:</strong> Requiere Atención Inmediata
+                </div>
+                <div class="cert-referencia-item">
+                    <span class="cert-referencia-icono na">⊗</span>
+                    <strong>N/A:</strong> No accesible, se recomienda revisar con su mecánico
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Generar tabla de productos consumidos
+    let productosHTML = '';
+    if (productosConsumidos.length > 0) {
+        const productosConDatos = productosConsumidos.filter(p => p.nombre || p.partida || p.cantidad);
+        if (productosConDatos.length > 0) {
+            productosHTML = `
+                <table class="cert-tabla-productos">
+                    <thead>
+                        <tr>
+                            <th>Nombre de Producto</th>
+                            <th>Nro. de Partida</th>
+                            <th>Cantidad Consumida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${productosConDatos.map(p => `
+                            <tr>
+                                <td>${p.nombre || '-'}</td>
+                                <td>${p.partida || '-'}</td>
+                                <td>${p.cantidad || '-'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+    }
+
+    if (!productosHTML) {
+        productosHTML = '<p style="text-align: center; color: #7f8c8d; padding: 20px;">No se registraron productos consumidos</p>';
+    }
+
+    // Generar sección de certificado de producto
+    const certificadoProductoHTML = `
+        <div class="cert-producto">
+            <h2 class="cert-producto-titulo">CERTIFICADO DE PRODUCTO</h2>
+            <p class="cert-producto-texto">
+                Se certifica que el servicio en el vehículo patente: <strong>${patenteVehiculo}</strong>,
+                Lubriexperto: <strong>${lubriexperto}</strong> ha sido realizado con los insumos:
+            </p>
+            <h4 style="margin: 20px 0 10px 0; color: #2c3e50;">Producto consumido</h4>
+            ${productosHTML}
+        </div>
+    `;
+
+    // Disclaimer legal
+    const disclaimerHTML = `
+        <div class="cert-disclaimer">
+            <h4>Disclaimer</h4>
+            <p>
+                El Servicio de LUBRICACION + DIAGNOSTICO comprende únicamente los puntos enumerados arriba.
+                El DIAGNOSTICO se limita a una inspección meramente externa de los puntos de control enumerados,
+                y refleja el estado de los mismos exclusivamente al momento de la inspección, sin que implique
+                garantía explícita o implícita alguna respecto de dicho estado una vez finalizado el DIAGNOSTICO.
+                La empresa no se responsabiliza por deficiencias o defectos detectados o detectables con posterioridad
+                al DIAGNOSTICO, y excluye expresamente cualquier responsabilidad que pudiera derivarse de deficiencias
+                y/o defectos en los puntos de control que no fueran detectables a simple vista al momento del DIAGNOSTICO.
+            </p>
+        </div>
+    `;
+
+    // Pie de página
+    const footerHTML = `
+        <div class="cert-footer">
+            ELAION TS 1040 4/4 1
+        </div>
+    `;
 
     // Crear HTML del certificado
     const certificadoHTML = `
@@ -1076,6 +1242,14 @@ function generarCertificado() {
             </div>
 
             ${categoriasHTML}
+
+            ${referenciasHTML}
+
+            ${certificadoProductoHTML}
+
+            ${disclaimerHTML}
+
+            ${footerHTML}
         </div>
     `;
 
@@ -1105,6 +1279,8 @@ function limpiarFormularioCertificado() {
     document.getElementById('certificadoForm').reset();
     clienteSeleccionado = null;
     limpiarTodosEstados();
+    productosConsumidos = [];
+    renderizarProductos();
     mostrarAdvertencia('Formulario limpiado');
 }
 

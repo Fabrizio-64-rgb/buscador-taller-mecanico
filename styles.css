@@ -1433,6 +1433,84 @@ td:hover {
 }
 
 /* ============================================
+   ESTILOS PARA PRODUCTOS CONSUMIDOS
+   ============================================ */
+
+.productos-container {
+    background: var(--bg-section);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.productos-header {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 100px;
+    gap: 10px;
+    padding: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.productos-lista {
+    min-height: 60px;
+}
+
+.productos-vacio {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 30px;
+    font-style: italic;
+}
+
+.producto-item {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 100px;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: var(--bg-container);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    align-items: center;
+}
+
+.producto-input {
+    padding: 10px;
+    border: 1px solid var(--border-input);
+    border-radius: 4px;
+    font-size: 14px;
+    background: var(--bg-container);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.producto-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.btn-eliminar-producto {
+    padding: 8px 12px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-eliminar-producto:hover {
+    background: #c0392b;
+    transform: scale(1.05);
+}
+
+/* ============================================
    ESTILOS PARA CERTIFICADO MEJORADO
    ============================================ */
 
@@ -1452,21 +1530,29 @@ td:hover {
 }
 
 .cert-tabla {
+    width: 100%;
     border: 2px solid #667eea;
+    border-collapse: collapse;
     border-radius: 0 0 6px 6px;
-    overflow: hidden;
 }
 
 .cert-tabla-header {
-    display: flex;
     background: #f8f9fa;
     font-weight: 700;
+}
+
+.cert-tabla-header th {
+    padding: 12px 15px;
+    text-align: left;
     border-bottom: 2px solid #667eea;
-    color: #2c3e50;
+    border-right: 1px solid #ecf0f1;
+}
+
+.cert-tabla-header th:last-child {
+    border-right: none;
 }
 
 .cert-tabla-row {
-    display: flex;
     border-bottom: 1px solid #ecf0f1;
     transition: background 0.2s ease;
 }
@@ -1480,13 +1566,11 @@ td:hover {
 }
 
 .cert-tabla-col-item {
-    flex: 2;
     padding: 12px 15px;
     border-right: 1px solid #ecf0f1;
 }
 
 .cert-tabla-col-estado {
-    flex: 1;
     padding: 12px 15px;
     font-weight: 600;
     text-align: center;
@@ -1501,6 +1585,170 @@ td:hover {
     text-align: center;
     font-weight: 600;
     margin: 20px 0;
+}
+
+/* Referencias de estados */
+.cert-referencias {
+    margin: 40px 0 30px 0;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px solid #ecf0f1;
+    page-break-inside: avoid;
+}
+
+.cert-referencias-titulo {
+    color: #2c3e50;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.cert-referencias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.cert-referencia-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #ecf0f1;
+}
+
+.cert-referencia-icono {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.cert-referencia-icono.bien {
+    background: #27ae60;
+    color: white;
+}
+
+.cert-referencia-icono.regular {
+    background: #f39c12;
+    color: white;
+}
+
+.cert-referencia-icono.mal {
+    background: #e74c3c;
+    color: white;
+}
+
+.cert-referencia-icono.na {
+    background: #95a5a6;
+    color: white;
+}
+
+/* Certificado de Producto */
+.cert-producto {
+    margin: 40px 0;
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px solid #667eea;
+    page-break-before: always;
+}
+
+.cert-producto-titulo {
+    color: #2c3e50;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 1.5px;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 15px;
+}
+
+.cert-producto-texto {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.cert-tabla-productos {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+}
+
+.cert-tabla-productos thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.cert-tabla-productos th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid #ecf0f1;
+}
+
+.cert-tabla-productos td {
+    padding: 12px 15px;
+    border: 1px solid #ecf0f1;
+}
+
+.cert-tabla-productos tbody tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.cert-tabla-productos tbody tr:hover {
+    background: #e8f4f8;
+}
+
+/* Disclaimer */
+.cert-disclaimer {
+    margin: 30px 0;
+    padding: 25px;
+    background: #fff3cd;
+    border-left: 5px solid #f39c12;
+    border-radius: 6px;
+    page-break-inside: avoid;
+}
+
+.cert-disclaimer h4 {
+    color: #856404;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cert-disclaimer p {
+    color: #856404;
+    font-size: 13px;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+/* Footer */
+.cert-footer {
+    margin-top: 40px;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #7f8c8d;
+    border-top: 2px solid #ecf0f1;
+    page-break-inside: avoid;
 }
 
 /* Estilos para impresión del certificado mejorado */
@@ -1519,7 +1767,7 @@ td:hover {
         border-color: #667eea !important;
     }
 
-    .cert-tabla-header {
+    .cert-tabla-header th {
         background: #f8f9fa !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
@@ -1532,6 +1780,61 @@ td:hover {
     .cert-tabla-col-item,
     .cert-tabla-col-estado {
         border-right: 1px solid #ecf0f1 !important;
+    }
+
+    .cert-referencias {
+        page-break-inside: avoid;
+        background: #f8f9fa !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .cert-referencia-icono.bien {
+        background: #27ae60 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .cert-referencia-icono.regular {
+        background: #f39c12 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .cert-referencia-icono.mal {
+        background: #e74c3c !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .cert-referencia-icono.na {
+        background: #95a5a6 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .cert-producto {
+        page-break-before: always;
+        background: #f8f9fa !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .cert-tabla-productos thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .cert-disclaimer {
+        page-break-inside: avoid;
+        background: #fff3cd !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .cert-footer {
+        page-break-inside: avoid;
     }
 }
 
@@ -1565,15 +1868,38 @@ td:hover {
         min-width: auto;
     }
 
-    .cert-tabla-header,
-    .cert-tabla-row {
-        flex-direction: column;
+    .productos-header,
+    .producto-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
     }
 
-    .cert-tabla-col-item,
-    .cert-tabla-col-estado {
-        border-right: none;
-        border-bottom: 1px solid #ecf0f1;
-        text-align: left;
+    .productos-header {
+        display: none; /* Ocultar headers en mobile */
+    }
+
+    .producto-item {
+        padding: 15px;
+    }
+
+    .producto-input {
+        width: 100%;
+    }
+
+    .btn-eliminar-producto {
+        width: 100%;
+    }
+
+    .cert-referencias-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cert-tabla-productos {
+        font-size: 12px;
+    }
+
+    .cert-tabla-productos th,
+    .cert-tabla-productos td {
+        padding: 8px;
     }
 }

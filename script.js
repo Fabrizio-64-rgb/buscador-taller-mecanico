@@ -717,6 +717,7 @@ window.addEventListener('DOMContentLoaded', () => {
     cargarConfiguracion();
     inicializarInspeccion();
     inicializarFechaServicio();
+    renderizarBorradores();
 });
 
 // Inicializar fecha del servicio con la fecha actual
@@ -727,6 +728,182 @@ function inicializarFechaServicio() {
         const fechaStr = hoy.toISOString().split('T')[0];
         fechaServicioInput.value = fechaStr;
     }
+}
+
+// ============================================
+// FUNCIONES PARA BORRADORES
+// ============================================
+
+function guardarBorrador() {
+    // Capturar todos los datos del formulario
+    const borrador = {
+        id: Date.now(),
+        fecha: new Date().toLocaleString('es-AR'),
+        datos: {
+            nombreCliente: document.getElementById('nombreCliente').value,
+            patenteVehiculo: document.getElementById('patenteVehiculo').value,
+            marcaVehiculo: document.getElementById('marcaVehiculo').value,
+            modeloVehiculo: document.getElementById('modeloVehiculo').value,
+            tipoTecnico: document.getElementById('tipoTecnico').value,
+            kilometrajeActual: document.getElementById('kilometrajeActual').value,
+            proximoServicioKm: document.getElementById('proximoServicioKm').value,
+            fechaProximoServicio: document.getElementById('fechaProximoServicio').value,
+            lubriexperto: document.getElementById('lubriexperto').value,
+            numeroOrden: document.getElementById('numeroOrden').value,
+            fechaServicio: document.getElementById('fechaServicio').value,
+            garantiaServicio: document.getElementById('garantiaServicio').value,
+            mecanicoAsignado: document.getElementById('mecanicoAsignado').value,
+            metodoPago: document.getElementById('metodoPago').value,
+            observaciones: document.getElementById('observaciones').value
+        },
+        productos: [...productosConsumidos],
+        inspeccion: {...datosInspeccion}
+    };
+
+    // Obtener borradores existentes
+    const borradoresGuardados = JSON.parse(localStorage.getItem('borradores') || '[]');
+
+    // Agregar nuevo borrador
+    borradoresGuardados.push(borrador);
+
+    // Guardar en localStorage
+    localStorage.setItem('borradores', JSON.stringify(borradoresGuardados));
+
+    // Actualizar lista
+    renderizarBorradores();
+
+    mostrarExito(`✓ Borrador guardado (${borrador.fecha})`);
+}
+
+function renderizarBorradores() {
+    const lista = document.getElementById('listaBorradores');
+    if (!lista) return;
+
+    const borradores = JSON.parse(localStorage.getItem('borradores') || '[]');
+
+    if (borradores.length === 0) {
+        lista.innerHTML = '<div style="text-align: center; color: #7f8c8d; padding: 20px; font-style: italic;">No hay borradores guardados</div>';
+        return;
+    }
+
+    // Ordenar por fecha (más reciente primero)
+    borradores.sort((a, b) => b.id - a.id);
+
+    lista.innerHTML = borradores.map(borrador => {
+        const nombre = borrador.datos.nombreCliente || 'Sin nombre';
+        const patente = borrador.datos.patenteVehiculo || 'Sin patente';
+
+        return `
+            <div class="borrador-item">
+                <div class="borrador-info">
+                    <div class="borrador-titulo">${nombre} - ${patente}</div>
+                    <div class="borrador-fecha">${borrador.fecha}</div>
+                </div>
+                <div class="borrador-acciones">
+                    <button type="button" class="btn-action btn-select" onclick="cargarBorrador(${borrador.id})" title="Cargar borrador">
+                        📂 Cargar
+                    </button>
+                    <button type="button" class="btn-action btn-delete" onclick="eliminarBorrador(${borrador.id})" title="Eliminar borrador">
+                        🗑️
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function cargarBorrador(id) {
+    const borradores = JSON.parse(localStorage.getItem('borradores') || '[]');
+    const borrador = borradores.find(b => b.id === id);
+
+    if (!borrador) {
+        mostrarError('Borrador no encontrado');
+        return;
+    }
+
+    if (!confirm('¿Cargar este borrador? Los datos actuales se perderán si no los has guardado.')) {
+        return;
+    }
+
+    // Cargar datos del formulario
+    const datos = borrador.datos;
+    document.getElementById('nombreCliente').value = datos.nombreCliente || '';
+    document.getElementById('patenteVehiculo').value = datos.patenteVehiculo || '';
+    document.getElementById('marcaVehiculo').value = datos.marcaVehiculo || '';
+    document.getElementById('modeloVehiculo').value = datos.modeloVehiculo || '';
+    document.getElementById('tipoTecnico').value = datos.tipoTecnico || '';
+    document.getElementById('kilometrajeActual').value = datos.kilometrajeActual || '';
+    document.getElementById('proximoServicioKm').value = datos.proximoServicioKm || '';
+    document.getElementById('fechaProximoServicio').value = datos.fechaProximoServicio || '';
+    document.getElementById('lubriexperto').value = datos.lubriexperto || '';
+    document.getElementById('numeroOrden').value = datos.numeroOrden || '';
+    document.getElementById('fechaServicio').value = datos.fechaServicio || '';
+    document.getElementById('garantiaServicio').value = datos.garantiaServicio || '';
+    document.getElementById('mecanicoAsignado').value = datos.mecanicoAsignado || '';
+    document.getElementById('metodoPago').value = datos.metodoPago || '';
+    document.getElementById('observaciones').value = datos.observaciones || '';
+
+    // Cargar productos
+    productosConsumidos = borrador.productos || [];
+    renderizarProductos();
+
+    // Cargar inspección
+    datosInspeccion = borrador.inspeccion || {};
+    restaurarEstadosInspeccion();
+
+    mostrarExito('✓ Borrador cargado correctamente');
+}
+
+function restaurarEstadosInspeccion() {
+    // Limpiar todos los estados primero
+    document.querySelectorAll('.btn-estado').forEach(btn => btn.classList.remove('selected'));
+    document.querySelectorAll('.input-personalizado').forEach(input => {
+        input.style.display = 'none';
+        input.value = '';
+    });
+
+    // Restaurar estados guardados
+    Object.keys(datosInspeccion).forEach(itemId => {
+        const dato = datosInspeccion[itemId];
+
+        if (dato.estado === 'PERSONALIZADO') {
+            const customInput = document.getElementById(`${itemId}_custom`);
+            if (customInput) {
+                customInput.style.display = 'block';
+                customInput.value = dato.valor;
+            }
+        }
+
+        // Marcar botón correspondiente
+        const container = document.getElementById(`${itemId}_container`);
+        if (container) {
+            const btnSelector = {
+                'BIEN': '.btn-bien',
+                'REGULAR': '.btn-regular',
+                'MAL': '.btn-mal',
+                'NA': '.btn-na',
+                'PERSONALIZADO': '.btn-personalizado'
+            };
+
+            const btn = container.querySelector(btnSelector[dato.estado]);
+            if (btn) {
+                btn.classList.add('selected');
+            }
+        }
+    });
+}
+
+function eliminarBorrador(id) {
+    if (!confirm('¿Eliminar este borrador?')) {
+        return;
+    }
+
+    let borradores = JSON.parse(localStorage.getItem('borradores') || '[]');
+    borradores = borradores.filter(b => b.id !== id);
+    localStorage.setItem('borradores', JSON.stringify(borradores));
+
+    renderizarBorradores();
+    mostrarExito('✓ Borrador eliminado');
 }
 
 // ============================================

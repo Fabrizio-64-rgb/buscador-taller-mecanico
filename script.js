@@ -2267,3 +2267,70 @@ async function eliminarServicioHistorial(patente, servicioId) {
         mostrarExito('✓ Servicio eliminado del historial');
     }
 }
+
+// ============================================
+// FUNCIONES DE NAVEGACIÓN Y UI
+// ============================================
+
+/**
+ * Toggle para mostrar/ocultar la sección de búsqueda de clientes
+ */
+function toggleBusquedaClientes() {
+    const container = document.getElementById('busquedaClientesContainer');
+    const icon = document.getElementById('iconBusquedaToggle');
+
+    if (!container || !icon) return;
+
+    if (container.style.display === 'none') {
+        container.style.display = 'block';
+        icon.textContent = '▼';
+    } else {
+        container.style.display = 'none';
+        icon.textContent = '▶';
+    }
+}
+
+/**
+ * Toggle genérico para paneles colapsables
+ * @param {string} panelId - ID del panel a colapsar/expandir
+ */
+function togglePanel(panelId) {
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+
+    // Buscar el ícono correspondiente
+    const header = panel.previousElementSibling;
+    const icon = header ? header.querySelector('.panel-icon') : null;
+
+    if (panel.classList.contains('collapsed')) {
+        panel.classList.remove('collapsed');
+        if (icon) icon.classList.remove('rotated');
+    } else {
+        panel.classList.add('collapsed');
+        if (icon) icon.classList.add('rotated');
+    }
+}
+
+/**
+ * Scroll suave al inicio de la sección de inspección
+ */
+function scrollToInspeccionTop() {
+    const section = document.getElementById('puntosRevisionSection');
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+/**
+ * Scroll suave al final de la sección de inspección
+ */
+function scrollToInspeccionBottom() {
+    const container = document.getElementById('inspeccionContainer');
+    if (container) {
+        // Buscar el último elemento de la inspección
+        const lastCategory = container.lastElementChild;
+        if (lastCategory) {
+            lastCategory.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+    }
+}

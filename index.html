@@ -205,60 +205,69 @@
                             </div>
                         </div>
 
-                        <h3 style="color: #667eea; margin: 20px 0 15px 0;">Datos del Cliente y Vehículo</h3>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="nombreCliente">Nombre Cliente:</label>
-                                <input type="text" id="nombreCliente" placeholder="Ej: MAURO MOLINA" required>
+                        <!-- Panel Colapsable: Datos del Cliente y Vehículo -->
+                        <div class="collapsible-panel">
+                            <div class="collapsible-header" onclick="togglePanel('datosClientePanel')">
+                                <h3 style="color: #667eea; margin: 0; display: flex; align-items: center; gap: 10px;">
+                                    <span id="iconDatosCliente" class="panel-icon">▼</span>
+                                    🚗 Datos del Cliente y Vehículo
+                                </h3>
                             </div>
+                            <div id="datosClientePanel" class="collapsible-content">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="nombreCliente">Nombre Cliente:</label>
+                                        <input type="text" id="nombreCliente" placeholder="Ej: MAURO MOLINA" required>
+                                    </div>
 
-                            <div class="form-group">
-                                <label for="patenteVehiculo">Patente:</label>
-                                <input type="text" id="patenteVehiculo" placeholder="Ej: HST338" required>
-                            </div>
-                        </div>
+                                    <div class="form-group">
+                                        <label for="patenteVehiculo">Patente:</label>
+                                        <input type="text" id="patenteVehiculo" placeholder="Ej: HST338" required>
+                                    </div>
+                                </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="marcaVehiculo">Marca:</label>
-                                <input type="text" id="marcaVehiculo" placeholder="Ej: VOLKSWAGEN" required>
-                            </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="marcaVehiculo">Marca:</label>
+                                        <input type="text" id="marcaVehiculo" placeholder="Ej: VOLKSWAGEN" required>
+                                    </div>
 
-                            <div class="form-group">
-                                <label for="modeloVehiculo">Modelo:</label>
-                                <input type="text" id="modeloVehiculo" placeholder="Ej: GOL TREND" required>
-                            </div>
-                        </div>
+                                    <div class="form-group">
+                                        <label for="modeloVehiculo">Modelo:</label>
+                                        <input type="text" id="modeloVehiculo" placeholder="Ej: GOL TREND" required>
+                                    </div>
+                                </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="tipoTecnico">Tipo Técnico:</label>
-                                <input type="text" id="tipoTecnico" placeholder="Ej: 168VNAFTA">
-                            </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="tipoTecnico">Tipo Técnico:</label>
+                                        <input type="text" id="tipoTecnico" placeholder="Ej: 168VNAFTA">
+                                    </div>
 
-                            <div class="form-group">
-                                <label for="kilometrajeActual">Kilometraje Actual:</label>
-                                <input type="number" id="kilometrajeActual" placeholder="Ej: 156000" required>
-                            </div>
-                        </div>
+                                    <div class="form-group">
+                                        <label for="kilometrajeActual">Kilometraje Actual:</label>
+                                        <input type="number" id="kilometrajeActual" placeholder="Ej: 156000" required>
+                                    </div>
+                                </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="proximoServicioKm">Próximo Servicio (Km):</label>
-                                <input type="number" id="proximoServicioKm" placeholder="Ej: 166000">
-                            </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="proximoServicioKm">Próximo Servicio (Km):</label>
+                                        <input type="number" id="proximoServicioKm" placeholder="Ej: 166000">
+                                    </div>
 
-                            <div class="form-group">
-                                <label for="fechaProximoServicio">Fecha Próximo Servicio:</label>
-                                <input type="date" id="fechaProximoServicio">
-                            </div>
-                        </div>
+                                    <div class="form-group">
+                                        <label for="fechaProximoServicio">Fecha Próximo Servicio:</label>
+                                        <input type="date" id="fechaProximoServicio">
+                                    </div>
+                                </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="lubriexperto">Lubriexperto (Nombre del técnico):</label>
-                                <input type="text" id="lubriexperto" placeholder="Ej: SEBASTIAN ZUBER" required>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="lubriexperto">Lubriexperto (Nombre del técnico):</label>
+                                        <input type="text" id="lubriexperto" placeholder="Ej: SEBASTIAN ZUBER" required>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -341,22 +350,34 @@
 - Batería en buen estado, vida útil estimada: 1 año más"></textarea>
                         </div>
 
-                        <h3 style="color: #667eea; margin: 20px 0 15px 0;">Puntos de Revisión</h3>
+                        <div id="puntosRevisionSection" style="scroll-margin-top: 80px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0 15px 0;">
+                                <h3 style="color: #667eea; margin: 0;">📋 Puntos de Revisión</h3>
+                                <div class="navigation-arrows">
+                                    <button type="button" class="btn-nav" onclick="scrollToInspeccionTop();" title="Ir al inicio de la sección">
+                                        ⬆️ Inicio
+                                    </button>
+                                    <button type="button" class="btn-nav" onclick="scrollToInspeccionBottom();" title="Ir al final de la sección">
+                                        ⬇️ Final
+                                    </button>
+                                </div>
+                            </div>
 
-                        <div class="instructions" style="margin-bottom: 20px;">
-                            <strong>ℹ️ Instrucciones:</strong><br>
-                            Para cada item de inspección, selecciona el estado correspondiente. Si eliges "PERSONALIZADO", podrás ingresar un texto personalizado.
-                        </div>
+                            <div class="instructions" style="margin-bottom: 20px;">
+                                <strong>ℹ️ Instrucciones:</strong><br>
+                                Para cada item de inspección, selecciona el estado correspondiente. Si eliges "PERSONALIZADO", podrás ingresar un texto personalizado.
+                            </div>
 
-                        <!-- Botones para completar rápidamente -->
-                        <div class="quick-fill-buttons" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
-                            <button type="button" class="btn btn-small" onclick="completarTodosEstado('BIEN');" title="Marcar todos como BIEN">✓ Todos BIEN</button>
-                            <button type="button" class="btn btn-small btn-secondary" onclick="limpiarTodosEstados();" title="Limpiar todos los estados">🗑️ Limpiar Todo</button>
-                        </div>
+                            <!-- Botones para completar rápidamente -->
+                            <div class="quick-fill-buttons" style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                                <button type="button" class="btn btn-small" onclick="completarTodosEstado('BIEN');" title="Marcar todos como BIEN">✓ Todos BIEN</button>
+                                <button type="button" class="btn btn-small btn-secondary" onclick="limpiarTodosEstados();" title="Limpiar todos los estados">🗑️ Limpiar Todo</button>
+                            </div>
 
-                        <!-- Contenedor de categorías e items -->
-                        <div id="inspeccionContainer" class="inspeccion-container">
-                            <!-- Se llenará dinámicamente con JavaScript -->
+                            <!-- Contenedor de categorías e items -->
+                            <div id="inspeccionContainer" class="inspeccion-container">
+                                <!-- Se llenará dinámicamente con JavaScript -->
+                            </div>
                         </div>
 
                         <div class="form-buttons" style="margin-top: 30px;">
@@ -370,24 +391,29 @@
             <!-- Sección de búsqueda (oculta hasta cargar datos) -->
             <div class="search-section" id="searchSection">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
-                    <h2 style="margin: 0; color: #2c3e50;">Buscar</h2>
+                    <h2 style="margin: 0; color: #2c3e50; cursor: pointer; user-select: none;" onclick="toggleBusquedaClientes();">
+                        <span id="iconBusquedaToggle">▶</span> Búsqueda de Clientes
+                    </h2>
                     <button class="btn-encoding" onclick="cambiarCodificacion();" title="Si ves caracteres extraños (�, Ã), usa este botón">
                         🔄 Cambiar Codificación
                     </button>
                 </div>
-                <p style="margin-bottom: 15px; font-size: 13px; color: var(--text-secondary);">
-                    💡 La búsqueda se actualiza automáticamente mientras escribes (busca con o sin acentos)
-                </p>
 
-                <div class="search-box">
-                    <select id="columnSelect">
-                        <option value="">-- Selecciona campo --</option>
-                    </select>
-                    <input type="text" id="searchInput" placeholder="Escribe para buscar...">
-                </div>
+                <div id="busquedaClientesContainer" style="display: none;">
+                    <p style="margin-bottom: 15px; font-size: 13px; color: var(--text-secondary);">
+                        💡 La búsqueda se actualiza automáticamente mientras escribes (busca con o sin acentos)
+                    </p>
 
-                <div class="search-buttons">
-                    <button class="btn-search btn-clear" onclick="limpiar();">✕ Limpiar búsqueda</button>
+                    <div class="search-box">
+                        <select id="columnSelect">
+                            <option value="">-- Selecciona campo --</option>
+                        </select>
+                        <input type="text" id="searchInput" placeholder="Escribe para buscar...">
+                    </div>
+
+                    <div class="search-buttons">
+                        <button class="btn-search btn-clear" onclick="limpiar();">✕ Limpiar búsqueda</button>
+                    </div>
                 </div>
             </div>
 

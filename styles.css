@@ -1699,6 +1699,80 @@ td:hover {
 }
 
 /* ============================================
+   ESTILOS PARA PANELES COLAPSABLES
+   ============================================ */
+
+.collapsible-panel {
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-section);
+    transition: all 0.3s ease;
+}
+
+.collapsible-header {
+    padding: 15px 20px;
+    cursor: pointer;
+    user-select: none;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.collapsible-header:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+}
+
+.panel-icon {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 14px;
+}
+
+.panel-icon.rotated {
+    transform: rotate(-90deg);
+}
+
+.collapsible-content {
+    padding: 20px;
+    background: var(--bg-container);
+    transition: all 0.3s ease;
+}
+
+.collapsible-content.collapsed {
+    display: none;
+}
+
+/* Botones de navegación */
+.navigation-arrows {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-nav {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-nav:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-nav:active {
+    transform: translateY(0);
+}
+
+/* ============================================
    ESTILOS PARA BORRADORES
    ============================================ */
 

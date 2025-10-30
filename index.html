@@ -354,9 +354,6 @@
                             <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0 15px 0;">
                                 <h3 style="color: #667eea; margin: 0;">📋 Puntos de Revisión</h3>
                                 <div class="navigation-arrows">
-                                    <button type="button" class="btn-nav" onclick="scrollToInspeccionTop();" title="Ir al inicio de la sección">
-                                        ⬆️ Inicio
-                                    </button>
                                     <button type="button" class="btn-nav" onclick="scrollToInspeccionBottom();" title="Ir al final de la sección">
                                         ⬇️ Final
                                     </button>
@@ -377,6 +374,13 @@
                             <!-- Contenedor de categorías e items -->
                             <div id="inspeccionContainer" class="inspeccion-container">
                                 <!-- Se llenará dinámicamente con JavaScript -->
+                            </div>
+
+                            <!-- Botón para volver al inicio -->
+                            <div style="display: flex; justify-content: center; margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--border-color);">
+                                <button type="button" class="btn-nav" onclick="scrollToInspeccionTop();" title="Volver al inicio de la sección">
+                                    ⬆️ Volver al Inicio
+                                </button>
                             </div>
                         </div>
 
@@ -414,47 +418,47 @@
                     <div class="search-buttons">
                         <button class="btn-search btn-clear" onclick="limpiar();">✕ Limpiar búsqueda</button>
                     </div>
-                </div>
-            </div>
 
-            <!-- Estadísticas -->
-            <div class="stats" id="stats" style="display: none;">
-                <div class="stat-card">
-                    <h4>Total registros</h4>
-                    <div class="number" id="totalRecords">0</div>
-                </div>
-                <div class="stat-card">
-                    <h4>Resultados encontrados</h4>
-                    <div class="number" id="resultCount">0</div>
-                </div>
-            </div>
-
-            <!-- Sección de resultados (oculta hasta buscar) -->
-            <div class="results-section" id="resultsSection">
-                <div class="results-header">
-                    <h2 style="color: #2c3e50;">Resultados</h2>
-                    <div class="results-info">
-                        <strong id="showingCount">0</strong> de <strong id="totalCount">0</strong> registros
+                    <!-- Estadísticas -->
+                    <div class="stats" id="stats" style="display: none;">
+                        <div class="stat-card">
+                            <h4>Total registros</h4>
+                            <div class="number" id="totalRecords">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Resultados encontrados</h4>
+                            <div class="number" id="resultCount">0</div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Scroll horizontal superior -->
-                <div class="table-scroll-top" id="tableScrollTop" style="display: none;">
-                    <div id="tableScrollTopInner"></div>
-                </div>
+                    <!-- Sección de resultados (oculta hasta buscar) -->
+                    <div class="results-section" id="resultsSection">
+                        <div class="results-header">
+                            <h2 style="color: #2c3e50;">Resultados</h2>
+                            <div class="results-info">
+                                <strong id="showingCount">0</strong> de <strong id="totalCount">0</strong> registros
+                            </div>
+                        </div>
 
-                <!-- Tabla con scroll sincronizado -->
-                <div class="table-responsive" id="tableResponsive">
-                    <table id="resultsTable">
-                        <thead id="tableHead"></thead>
-                        <tbody id="tableBody"></tbody>
-                    </table>
-                </div>
+                        <!-- Scroll horizontal superior -->
+                        <div class="table-scroll-top" id="tableScrollTop" style="display: none;">
+                            <div id="tableScrollTopInner"></div>
+                        </div>
 
-                <div class="no-results" id="noResults" style="display: none;">
-                    <div style="font-size: 48px; margin-bottom: 10px;">🔍</div>
-                    <h3>Sin resultados</h3>
-                    <p>No se encontraron registros con ese criterio de búsqueda.</p>
+                        <!-- Tabla con scroll sincronizado -->
+                        <div class="table-responsive" id="tableResponsive">
+                            <table id="resultsTable">
+                                <thead id="tableHead"></thead>
+                                <tbody id="tableBody"></tbody>
+                            </table>
+                        </div>
+
+                        <div class="no-results" id="noResults" style="display: none;">
+                            <div style="font-size: 48px; margin-bottom: 10px;">🔍</div>
+                            <h3>Sin resultados</h3>
+                            <p>No se encontraron registros con ese criterio de búsqueda.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

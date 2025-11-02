@@ -374,6 +374,261 @@
             display: block;
         }
 
+        /* Estilos para fotos */
+        .photo-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .photo-btn:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .photo-badge {
+            background: #e74c3c;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Modal para fotos */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .modal-header h2 {
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #95a5a6;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-btn:hover {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .upload-photos-section {
+            background: #f8f9fa;
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .upload-photos-section input {
+            display: none;
+        }
+
+        .upload-photos-section .btn {
+            margin: 5px;
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .photo-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .photo-item .delete-photo-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .photo-item:hover .delete-photo-btn {
+            opacity: 1;
+        }
+
+        .photo-item .delete-photo-btn:hover {
+            background: #c0392b;
+        }
+
+        .no-photos {
+            text-align: center;
+            padding: 40px;
+            color: #95a5a6;
+        }
+
+        /* Visor de imagen completa */
+        .image-viewer {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .image-viewer.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-viewer img {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .image-viewer .close-viewer {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: #2c3e50;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-viewer .nav-btn {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            color: #2c3e50;
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .image-viewer .nav-btn.prev {
+            left: 20px;
+        }
+
+        .image-viewer .nav-btn.next {
+            right: 20px;
+        }
+
+        .thumbnail-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 11px;
+            color: #3498db;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 20px;
@@ -416,6 +671,19 @@
             .tab-btn {
                 padding: 10px 15px;
                 font-size: 12px;
+            }
+
+            .modal-content {
+                padding: 20px;
+                width: 95%;
+            }
+
+            .photos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .photo-item img {
+                height: 120px;
             }
         }
     </style>
@@ -529,10 +797,371 @@
         </div>
     </div>
 
+    <!-- Modal para gestionar fotos -->
+    <div class="modal" id="photosModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📸 Fotos del Vehículo</h2>
+                <button class="close-btn" onclick="cerrarModalFotos()">×</button>
+            </div>
+
+            <div id="vehicleInfo" style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                <!-- Información del vehículo se llenará dinámicamente -->
+            </div>
+
+            <div class="upload-photos-section">
+                <div style="font-size: 36px; margin-bottom: 10px;">📷</div>
+                <h3 style="color: #2c3e50; margin-bottom: 10px;">Agregar Fotos</h3>
+                <p style="color: #7f8c8d; font-size: 14px; margin-bottom: 15px;">Sube fotos del vehículo o tómalas con la cámara</p>
+                <input type="file" id="photoInput" accept="image/*" multiple onchange="subirFotos(event)">
+                <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="subirFotos(event)">
+                <button class="btn" onclick="document.getElementById('photoInput').click()">
+                    📁 Subir desde archivo
+                </button>
+                <button class="btn" onclick="document.getElementById('cameraInput').click()">
+                    📷 Tomar foto
+                </button>
+            </div>
+
+            <div id="photosContainer">
+                <!-- Las fotos se mostrarán aquí -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Visor de imagen completa -->
+    <div class="image-viewer" id="imageViewer">
+        <button class="close-viewer" onclick="cerrarVisorImagen()">×</button>
+        <button class="nav-btn prev" onclick="navegarImagen(-1)">‹</button>
+        <button class="nav-btn next" onclick="navegarImagen(1)">›</button>
+        <img id="viewerImage" src="" alt="Imagen completa">
+    </div>
+
     <script>
         let datosOriginal = [];
         let columnas = [];
         let codificacionActual = 'UTF-8';
+
+        // Variables para fotos
+        let db;
+        let registroActual = null;
+        let fotosActuales = [];
+        let indiceImagenActual = 0;
+
+        // ============================================
+        // SISTEMA DE ALMACENAMIENTO DE FOTOS (IndexedDB)
+        // ============================================
+
+        // Inicializar IndexedDB
+        function inicializarDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open('TallerMecanicoDB', 1);
+
+                request.onerror = () => reject('Error al abrir la base de datos');
+
+                request.onsuccess = (event) => {
+                    db = event.target.result;
+                    resolve(db);
+                };
+
+                request.onupgradeneeded = (event) => {
+                    db = event.target.result;
+                    if (!db.objectStoreNames.contains('fotos')) {
+                        const objectStore = db.createObjectStore('fotos', { keyPath: 'id', autoIncrement: true });
+                        objectStore.createIndex('vehiculoId', 'vehiculoId', { unique: false });
+                    }
+                };
+            });
+        }
+
+        // Generar ID único para cada registro (usando DNI + Patente o los primeros campos disponibles)
+        function generarVehiculoId(registro) {
+            const campos = Object.values(registro).filter(v => v).slice(0, 3);
+            return campos.join('_').replace(/[^a-zA-Z0-9]/g, '_');
+        }
+
+        // Guardar foto en IndexedDB
+        function guardarFotoEnDB(vehiculoId, imagenBase64) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['fotos'], 'readwrite');
+                const objectStore = transaction.objectStore('fotos');
+
+                const foto = {
+                    vehiculoId: vehiculoId,
+                    imagen: imagenBase64,
+                    fecha: new Date().toISOString()
+                };
+
+                const request = objectStore.add(foto);
+
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject('Error al guardar foto');
+            });
+        }
+
+        // Obtener todas las fotos de un vehículo
+        function obtenerFotosVehiculo(vehiculoId) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['fotos'], 'readonly');
+                const objectStore = transaction.objectStore('fotos');
+                const index = objectStore.index('vehiculoId');
+                const request = index.getAll(vehiculoId);
+
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject('Error al obtener fotos');
+            });
+        }
+
+        // Eliminar una foto
+        function eliminarFotoDeDB(fotoId) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['fotos'], 'readwrite');
+                const objectStore = transaction.objectStore('fotos');
+                const request = objectStore.delete(fotoId);
+
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject('Error al eliminar foto');
+            });
+        }
+
+        // Contar fotos de un vehículo
+        async function contarFotosVehiculo(vehiculoId) {
+            try {
+                const fotos = await obtenerFotosVehiculo(vehiculoId);
+                return fotos.length;
+            } catch (error) {
+                return 0;
+            }
+        }
+
+        // ============================================
+        // FUNCIONES DE INTERFAZ PARA FOTOS
+        // ============================================
+
+        // Abrir modal de fotos
+        async function abrirModalFotos(registro) {
+            registroActual = registro;
+            const vehiculoId = generarVehiculoId(registro);
+
+            // Mostrar información del vehículo
+            const vehicleInfo = document.getElementById('vehicleInfo');
+            vehicleInfo.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                    ${columnas.slice(0, 4).map(col => `
+                        <div>
+                            <strong style="color: #667eea;">${col}:</strong>
+                            <div style="color: #2c3e50; margin-top: 5px;">${registro[col] || '-'}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Cargar fotos existentes
+            await cargarFotosDelVehiculo(vehiculoId);
+
+            // Mostrar modal
+            document.getElementById('photosModal').classList.add('active');
+        }
+
+        // Cerrar modal de fotos
+        function cerrarModalFotos() {
+            document.getElementById('photosModal').classList.remove('active');
+            registroActual = null;
+        }
+
+        // Cargar y mostrar fotos del vehículo
+        async function cargarFotosDelVehiculo(vehiculoId) {
+            try {
+                fotosActuales = await obtenerFotosVehiculo(vehiculoId);
+                mostrarFotosEnModal(fotosActuales);
+            } catch (error) {
+                console.error('Error al cargar fotos:', error);
+                mostrarError('Error al cargar las fotos');
+            }
+        }
+
+        // Mostrar fotos en el modal
+        function mostrarFotosEnModal(fotos) {
+            const container = document.getElementById('photosContainer');
+
+            if (fotos.length === 0) {
+                container.innerHTML = `
+                    <div class="no-photos">
+                        <div style="font-size: 48px; margin-bottom: 10px;">📷</div>
+                        <h3>Sin fotos</h3>
+                        <p>Aún no hay fotos para este vehículo.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <h3 style="color: #2c3e50; margin-bottom: 15px;">Fotos guardadas (${fotos.length})</h3>
+                <div class="photos-grid">
+                    ${fotos.map((foto, index) => `
+                        <div class="photo-item">
+                            <img src="${foto.imagen}" alt="Foto ${index + 1}" onclick="abrirVisorImagen(${index})">
+                            <button class="delete-photo-btn" onclick="eliminarFoto(${foto.id})" title="Eliminar foto">×</button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Subir fotos
+        async function subirFotos(event) {
+            const files = event.target.files;
+            if (!files || files.length === 0 || !registroActual) return;
+
+            const vehiculoId = generarVehiculoId(registroActual);
+
+            for (let file of files) {
+                if (!file.type.startsWith('image/')) {
+                    mostrarError('Solo se permiten archivos de imagen');
+                    continue;
+                }
+
+                // Convertir a base64 y comprimir
+                const imagenBase64 = await convertirImagenABase64(file);
+
+                try {
+                    await guardarFotoEnDB(vehiculoId, imagenBase64);
+                } catch (error) {
+                    console.error('Error al guardar foto:', error);
+                    mostrarError('Error al guardar la foto');
+                }
+            }
+
+            // Recargar fotos
+            await cargarFotosDelVehiculo(vehiculoId);
+            mostrarExito(`${files.length} foto(s) agregada(s) correctamente`);
+
+            // Limpiar input
+            event.target.value = '';
+
+            // Actualizar tabla
+            const resultados = datosOriginal.filter(row => {
+                const columnaSeleccionada = document.getElementById('columnSelect').value;
+                const textoBusqueda = document.getElementById('searchInput').value.toLowerCase();
+                if (!columnaSeleccionada || !textoBusqueda) return true;
+                const valorCelda = String(row[columnaSeleccionada] || '').toLowerCase();
+                return valorCelda.includes(textoBusqueda);
+            });
+            mostrarResultados(resultados);
+        }
+
+        // Convertir imagen a base64 con compresión
+        function convertirImagenABase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        // Comprimir imagen si es muy grande
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        // Limitar tamaño máximo
+                        const maxSize = 1200;
+                        if (width > height && width > maxSize) {
+                            height *= maxSize / width;
+                            width = maxSize;
+                        } else if (height > maxSize) {
+                            width *= maxSize / height;
+                            height = maxSize;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Convertir a base64 con calidad 0.8
+                        resolve(canvas.toDataURL('image/jpeg', 0.8));
+                    };
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Eliminar foto
+        async function eliminarFoto(fotoId) {
+            if (!confirm('¿Estás seguro de eliminar esta foto?')) return;
+
+            try {
+                await eliminarFotoDeDB(fotoId);
+                const vehiculoId = generarVehiculoId(registroActual);
+                await cargarFotosDelVehiculo(vehiculoId);
+                mostrarExito('Foto eliminada correctamente');
+
+                // Actualizar tabla
+                const resultados = datosOriginal.filter(row => {
+                    const columnaSeleccionada = document.getElementById('columnSelect').value;
+                    const textoBusqueda = document.getElementById('searchInput').value.toLowerCase();
+                    if (!columnaSeleccionada || !textoBusqueda) return true;
+                    const valorCelda = String(row[columnaSeleccionada] || '').toLowerCase();
+                    return valorCelda.includes(textoBusqueda);
+                });
+                mostrarResultados(resultados);
+            } catch (error) {
+                console.error('Error al eliminar foto:', error);
+                mostrarError('Error al eliminar la foto');
+            }
+        }
+
+        // ============================================
+        // VISOR DE IMÁGENES
+        // ============================================
+
+        // Abrir visor de imagen
+        function abrirVisorImagen(indice) {
+            indiceImagenActual = indice;
+            mostrarImagenEnVisor();
+            document.getElementById('imageViewer').classList.add('active');
+        }
+
+        // Cerrar visor de imagen
+        function cerrarVisorImagen() {
+            document.getElementById('imageViewer').classList.remove('active');
+        }
+
+        // Mostrar imagen en el visor
+        function mostrarImagenEnVisor() {
+            if (fotosActuales.length === 0) return;
+            const foto = fotosActuales[indiceImagenActual];
+            document.getElementById('viewerImage').src = foto.imagen;
+        }
+
+        // Navegar entre imágenes
+        function navegarImagen(direccion) {
+            indiceImagenActual += direccion;
+            if (indiceImagenActual < 0) indiceImagenActual = fotosActuales.length - 1;
+            if (indiceImagenActual >= fotosActuales.length) indiceImagenActual = 0;
+            mostrarImagenEnVisor();
+        }
+
+        // Cerrar modales con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                cerrarModalFotos();
+                cerrarVisorImagen();
+            }
+            if (e.key === 'ArrowLeft' && document.getElementById('imageViewer').classList.contains('active')) {
+                navegarImagen(-1);
+            }
+            if (e.key === 'ArrowRight' && document.getElementById('imageViewer').classList.contains('active')) {
+                navegarImagen(1);
+            }
+        });
+
+        // Inicializar DB al cargar la página
+        inicializarDB().catch(error => {
+            console.error('Error al inicializar la base de datos:', error);
+            mostrarError('Error al inicializar el sistema de fotos');
+        });
 
         // TAB: Cambiar entre pestañas
         function cambiarTab(event, tab) {
@@ -710,7 +1339,7 @@
             mostrarResultados(resultados);
         }
 
-        function mostrarResultados(resultados) {
+        async function mostrarResultados(resultados) {
             const resultsSection = document.getElementById('resultsSection');
             const tableHead = document.getElementById('tableHead');
             const tableBody = document.getElementById('tableBody');
@@ -729,17 +1358,31 @@
 
             noResults.style.display = 'none';
 
-            // Crear encabezados
-            if (tableHead.innerHTML === '') {
-                tableHead.innerHTML = columnas.map(col => `<th>${col}</th>`).join('');
-            }
+            // Crear encabezados con columna de Fotos
+            tableHead.innerHTML = `
+                ${columnas.map(col => `<th>${col}</th>`).join('')}
+                <th style="text-align: center; min-width: 100px;">Fotos</th>
+            `;
 
-            // Crear filas
-            tableBody.innerHTML = resultados.map(row => `
-                <tr>
-                    ${columnas.map(col => `<td>${row[col] || '-'}</td>`).join('')}
-                </tr>
-            `).join('');
+            // Crear filas con contadores de fotos
+            const filasConFotos = await Promise.all(resultados.map(async (row, index) => {
+                const vehiculoId = generarVehiculoId(row);
+                const numFotos = await contarFotosVehiculo(vehiculoId);
+
+                return `
+                    <tr>
+                        ${columnas.map(col => `<td>${row[col] || '-'}</td>`).join('')}
+                        <td style="text-align: center;">
+                            <button class="photo-btn" onclick='abrirModalFotos(${JSON.stringify(row).replace(/'/g, "&#39;")})'>
+                                📸 Ver
+                                ${numFotos > 0 ? `<span class="photo-badge">${numFotos}</span>` : ''}
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }));
+
+            tableBody.innerHTML = filasConFotos.join('');
         }
 
         function limpiar() {

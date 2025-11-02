@@ -1,6 +1,6 @@
 # 🔧 Buscador Taller Mecánico - Sistema Completo de Gestión
 
-Sistema completo y profesional de gestión para talleres mecánicos. Permite cargar una base de datos en Excel/CSV, buscar clientes y vehículos, gestionar fotos, llevar historial de reparaciones y realizar búsquedas avanzadas con múltiples filtros.
+Sistema completo y profesional de gestión para talleres mecánicos. Permite cargar una base de datos en Excel/CSV, buscar clientes y vehículos, gestionar fotos, llevar historial de reparaciones, crear presupuestos y realizar búsquedas avanzadas con múltiples filtros.
 
 ## ✨ Características Principales
 
@@ -42,8 +42,22 @@ Sistema completo y profesional de gestión para talleres mecánicos. Permite car
 - ✅ **Edición inline** - Modifica reparaciones directamente
 - ✅ **Contador de reparaciones** - Badge visual en cada registro
 
+### 💰 **Sistema de Presupuestos**
+- ✅ **Crear presupuestos** - Con múltiples items (descripción, cantidad, precio)
+- ✅ **Cálculo automático** - Subtotales y total general en tiempo real
+- ✅ **Estados de presupuesto**:
+  - ⏳ Pendiente (amarillo)
+  - ✅ Aceptado (verde)
+  - ❌ Rechazado (rojo)
+- ✅ **CRUD completo** - Crear, editar y eliminar presupuestos
+- ✅ **Conversión a reparación** - Convierte presupuestos aceptados en reparaciones
+- ✅ **Items detallados** - Descripción, cantidad, precio unitario y subtotal
+- ✅ **Historial de presupuestos** - Todos los presupuestos por vehículo
+- ✅ **Contador de presupuestos** - Badge naranja en cada registro
+- ✅ **Notas adicionales** - Campo de observaciones en cada presupuesto
+
 ### 💾 **Almacenamiento y Datos**
-- ✅ **IndexedDB** - Persistencia local de fotos y reparaciones
+- ✅ **IndexedDB** - Persistencia local de fotos, reparaciones y presupuestos
 - ✅ **Sin instalación** - Solo necesitas abrir el archivo HTML en tu navegador
 - ✅ **Funciona offline** - No requiere internet ni servidores
 - ✅ **Manejo de tildes** - Soporta correctamente caracteres acentuados (á, é, í, ó, ú, ñ)
@@ -147,6 +161,34 @@ Sistema completo y profesional de gestión para talleres mecánicos. Permite car
    - Haz clic en **🗑️ Eliminar**
    - Confirma la eliminación
 
+### Gestionar Presupuestos
+
+1. Busca un vehículo en la tabla
+2. Haz clic en el botón **💰 Presupuestos** (naranja) en la columna Presupuestos
+3. Se abrirá el modal de presupuestos del vehículo
+4. Para crear un nuevo presupuesto:
+   - Selecciona la **fecha** del presupuesto
+   - Agrega items usando el botón **➕ Agregar Item**:
+     - Descripción del servicio o repuesto
+     - Cantidad
+     - Precio unitario
+   - El subtotal de cada item se calcula automáticamente
+   - El **total general** se actualiza en tiempo real
+   - Selecciona el **estado** (Pendiente, Aceptado, Rechazado)
+   - Agrega **notas** adicionales si es necesario
+   - Haz clic en **💾 Guardar Presupuesto**
+5. Para editar un presupuesto:
+   - Haz clic en **✏️ Editar** en el presupuesto deseado
+   - Modifica los campos y items
+   - El botón cambiará a **Actualizar Presupuesto**
+6. Para eliminar un presupuesto:
+   - Haz clic en **🗑️ Eliminar**
+   - Confirma la eliminación
+7. Para convertir un presupuesto aceptado en reparación:
+   - Haz clic en **🔧 Convertir a Reparación**
+   - Solo disponible para presupuestos con estado "Aceptado"
+   - Se creará automáticamente una reparación completada con todos los detalles
+
 ### Exportar Datos
 
 **Exportar resultados de búsqueda a Excel:**
@@ -201,6 +243,7 @@ buscador-taller-mecanico/
 - 🔍 **Búsqueda rápida** - Por DNI, patente, nombre o cualquier campo
 - 📋 **Historial completo** - Registro detallado de todas las reparaciones
 - 💰 **Control de gastos** - Seguimiento del gasto total por vehículo
+- 💵 **Presupuestos profesionales** - Crea, gestiona y convierte presupuestos en reparaciones
 - 📸 **Documentación visual** - Fotos del antes y después de reparaciones
 - 🚗 **Localizar vehículos** - Por modelo, año, color, etc.
 - 📊 **Búsquedas complejas** - Combina múltiples criterios (ej: Toyota del 2020 con más de $5000 en reparaciones)
@@ -322,14 +365,16 @@ Para problemas o preguntas:
 - **HTML5** - Estructura y semántica
 - **CSS3** - Diseño responsive con flexbox y grid
 - **JavaScript ES6+** - Lógica de aplicación
-- **IndexedDB** - Base de datos local del navegador para fotos y reparaciones
+- **IndexedDB** - Base de datos local del navegador para fotos, reparaciones y presupuestos
 - **FileReader API** - Lectura de archivos CSV y fotos
 - **Canvas API** - Compresión de imágenes
 - **Media Capture API** - Acceso a cámara en dispositivos móviles
+- **jsPDF** - Generación de documentos PDF
+- **jsPDF-AutoTable** - Tablas profesionales en PDF
 
 ## 📊 Capacidades Técnicas
 
-- ✅ Almacenamiento ilimitado de fotos y reparaciones (según espacio del navegador)
+- ✅ Almacenamiento ilimitado de fotos, reparaciones y presupuestos (según espacio del navegador)
 - ✅ Compresión automática de imágenes (máximo 1200px, calidad 80%)
 - ✅ Soporte para archivos CSV grandes (miles de registros)
 - ✅ Búsqueda y filtrado en tiempo real
@@ -339,7 +384,19 @@ Para problemas o preguntas:
 
 ## 📈 Historial de Versiones
 
-### Versión 2.1.0 (Enero 2025) - **ACTUAL**
+### Versión 2.2.0 (Noviembre 2025) - **ACTUAL**
+- ✨ **NUEVO:** Sistema completo de presupuestos (Cotizaciones)
+- ✨ **NUEVO:** Crear presupuestos con múltiples items (descripción, cantidad, precio)
+- ✨ **NUEVO:** Cálculo automático de subtotales y total general
+- ✨ **NUEVO:** Estados de presupuesto: Pendiente, Aceptado, Rechazado
+- ✨ **NUEVO:** Conversión automática de presupuestos aceptados a reparaciones
+- ✨ **NUEVO:** Historial completo de presupuestos por vehículo
+- ✨ **NUEVO:** Contador de presupuestos con badge naranja en tabla
+- ✨ **NUEVO:** IndexedDB v3 con almacenamiento de presupuestos
+- ✨ **NUEVO:** Visualización de número de versión en footer de la página
+- 💰 Sistema profesional para gestión de cotizaciones
+
+### Versión 2.1.0 (Enero 2025)
 - ✨ **NUEVO:** Sistema completo de exportación a PDF y Excel
 - ✨ **NUEVO:** Exportar resultados de búsqueda a CSV/Excel
 - ✨ **NUEVO:** Exportar ficha individual de vehículo a PDF profesional
@@ -379,6 +436,6 @@ Para problemas o preguntas:
 
 ---
 
-**Última actualización:** Enero 2025
-**Versión:** 2.1.0
+**Última actualización:** Noviembre 2025
+**Versión:** 2.2.0
 **Licencia:** MIT - Uso libre y gratuito

@@ -49,6 +49,20 @@
             opacity: 0.9;
         }
 
+        .version-footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+
+        .version-footer strong {
+            color: #667eea;
+            font-weight: 600;
+        }
+
         .content {
             padding: 30px 20px;
         }
@@ -898,6 +912,193 @@
             color: #95a5a6;
         }
 
+        /* Estilos para presupuestos */
+        .budget-btn {
+            background: #e67e22;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .budget-btn:hover {
+            background: #d35400;
+            transform: translateY(-1px);
+        }
+
+        .budget-badge {
+            background: #8e44ad;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .budget-item-row {
+            display: grid;
+            grid-template-columns: 3fr 1fr 1.5fr auto;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #ecf0f1;
+        }
+
+        .budget-item-row input {
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .budget-item-row input:focus {
+            outline: none;
+            border-color: #e67e22;
+            box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.1);
+        }
+
+        .btn-remove-item {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove-item:hover {
+            background: #c0392b;
+        }
+
+        .budget-total {
+            background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .budget-total .total-label {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .budget-total .total-amount {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .budget-list-item {
+            background: white;
+            border: 1px solid #ecf0f1;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .budget-list-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .budget-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .budget-status.pendiente {
+            background: #fff3cd;
+            color: #f39c12;
+        }
+
+        .budget-status.aceptado {
+            background: #d5f4e6;
+            color: #27ae60;
+        }
+
+        .budget-status.rechazado {
+            background: #f8d7da;
+            color: #e74c3c;
+        }
+
+        .budget-items-list {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        .budget-items-list table {
+            width: 100%;
+            font-size: 12px;
+        }
+
+        .budget-items-list th {
+            text-align: left;
+            padding: 5px;
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+
+        .budget-items-list td {
+            padding: 5px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .btn-convert {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-convert:hover {
+            background: #229954;
+        }
+
+        .no-budgets {
+            text-align: center;
+            padding: 40px;
+            color: #95a5a6;
+        }
+
         /* Estilos para búsqueda avanzada */
         .advanced-search-toggle {
             background: #9b59b6;
@@ -1296,6 +1497,11 @@
                 </div>
             </div>
         </div>
+
+        <!-- Footer con versión -->
+        <div class="version-footer">
+            🔧 Buscador Taller Mecánico - <strong>Versión 2.2.0</strong> | Noviembre 2025 | Sistema Completo de Gestión
+        </div>
     </div>
 
     <!-- Modal para gestionar fotos -->
@@ -1413,7 +1619,80 @@
         </div>
     </div>
 
+    <!-- Modal para presupuestos -->
+    <div class="modal" id="budgetModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💰 Presupuestos del Vehículo</h2>
+                <button class="close-btn" onclick="cerrarModalPresupuestos()">×</button>
+            </div>
+
+            <div id="budgetVehicleInfo" style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                <!-- Información del vehículo se llenará dinámicamente -->
+            </div>
+
+            <!-- Formulario para nuevo presupuesto -->
+            <div class="repair-form">
+                <h3 style="color: #2c3e50; margin-bottom: 15px;">➕ Nuevo Presupuesto</h3>
+                <form id="budgetForm" onsubmit="return false;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="budgetDate">Fecha *</label>
+                            <input type="date" id="budgetDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="budgetStatus">Estado *</label>
+                            <select id="budgetStatus" required>
+                                <option value="pendiente">Pendiente</option>
+                                <option value="aceptado">Aceptado</option>
+                                <option value="rechazado">Rechazado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="budgetNotes">Notas</label>
+                        <textarea id="budgetNotes" placeholder="Notas adicionales del presupuesto..." rows="2"></textarea>
+                    </div>
+
+                    <!-- Sección de ítems del presupuesto -->
+                    <div style="margin-top: 20px;">
+                        <label style="font-weight: 600; color: #2c3e50; margin-bottom: 10px; display: block;">Ítems del Presupuesto *</label>
+                        <div id="budgetItemsContainer">
+                            <!-- Los ítems se agregarán aquí dinámicamente -->
+                        </div>
+                        <button type="button" class="btn-add-filter" onclick="agregarItemPresupuesto()" style="margin-top: 10px;">
+                            ➕ Agregar Ítem
+                        </button>
+                    </div>
+
+                    <!-- Total calculado -->
+                    <div class="budget-total">
+                        <span class="total-label">TOTAL DEL PRESUPUESTO:</span>
+                        <span class="total-amount" id="budgetTotalAmount">$0.00</span>
+                    </div>
+
+                    <input type="hidden" id="budgetEditId">
+                    <button type="button" class="btn" onclick="guardarPresupuesto()">
+                        ✓ <span id="btnBudgetText">Guardar Presupuesto</span>
+                    </button>
+                    <button type="button" class="btn" onclick="cancelarEdicionPresupuesto()" id="btnCancelEditBudget" style="display: none; background: #95a5a6;">
+                        ✕ Cancelar
+                    </button>
+                </form>
+            </div>
+
+            <!-- Lista de presupuestos -->
+            <div id="budgetsContainer" style="margin-top: 30px;">
+                <!-- Los presupuestos se mostrarán aquí -->
+            </div>
+        </div>
+    </div>
+
     <script>
+        // VERSIÓN DEL SISTEMA (actualizar aquí en cada release)
+        const VERSION_SISTEMA = '2.2.0';
+        const FECHA_VERSION = 'Noviembre 2025';
+
         let datosOriginal = [];
         let columnas = [];
         let codificacionActual = 'UTF-8';
@@ -1431,7 +1710,7 @@
         // Inicializar IndexedDB
         function inicializarDB() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open('TallerMecanicoDB', 2);
+                const request = indexedDB.open('TallerMecanicoDB', 3);
 
                 request.onerror = () => reject('Error al abrir la base de datos');
 
@@ -1454,6 +1733,14 @@
                         const reparacionesStore = db.createObjectStore('reparaciones', { keyPath: 'id', autoIncrement: true });
                         reparacionesStore.createIndex('vehiculoId', 'vehiculoId', { unique: false });
                         reparacionesStore.createIndex('fecha', 'fecha', { unique: false });
+                    }
+
+                    // Object store para presupuestos
+                    if (!db.objectStoreNames.contains('presupuestos')) {
+                        const presupuestosStore = db.createObjectStore('presupuestos', { keyPath: 'id', autoIncrement: true });
+                        presupuestosStore.createIndex('vehiculoId', 'vehiculoId', { unique: false });
+                        presupuestosStore.createIndex('fecha', 'fecha', { unique: false });
+                        presupuestosStore.createIndex('estado', 'estado', { unique: false });
                     }
                 };
             });
@@ -2058,6 +2345,499 @@
             };
             return textos[estado] || estado;
         }
+
+        // ============================================
+        // SISTEMA DE PRESUPUESTOS
+        // ============================================
+
+        let itemsPresupuesto = [];
+        let contadorItems = 0;
+
+        // Guardar presupuesto en IndexedDB
+        function guardarPresupuestoEnDB(presupuesto) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['presupuestos'], 'readwrite');
+                const objectStore = transaction.objectStore('presupuestos');
+
+                const request = objectStore.add(presupuesto);
+
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject('Error al guardar presupuesto');
+            });
+        }
+
+        // Actualizar presupuesto existente
+        function actualizarPresupuestoEnDB(presupuesto) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['presupuestos'], 'readwrite');
+                const objectStore = transaction.objectStore('presupuestos');
+
+                const request = objectStore.put(presupuesto);
+
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject('Error al actualizar presupuesto');
+            });
+        }
+
+        // Obtener todos los presupuestos de un vehículo
+        function obtenerPresupuestosVehiculo(vehiculoId) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['presupuestos'], 'readonly');
+                const objectStore = transaction.objectStore('presupuestos');
+                const index = objectStore.index('vehiculoId');
+                const request = index.getAll(vehiculoId);
+
+                request.onsuccess = () => {
+                    // Ordenar por fecha descendente
+                    const presupuestos = request.result.sort((a, b) => {
+                        return new Date(b.fecha) - new Date(a.fecha);
+                    });
+                    resolve(presupuestos);
+                };
+                request.onerror = () => reject('Error al obtener presupuestos');
+            });
+        }
+
+        // Eliminar un presupuesto
+        function eliminarPresupuestoDeDB(presupuestoId) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['presupuestos'], 'readwrite');
+                const objectStore = transaction.objectStore('presupuestos');
+                const request = objectStore.delete(presupuestoId);
+
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject('Error al eliminar presupuesto');
+            });
+        }
+
+        // Contar presupuestos de un vehículo
+        async function contarPresupuestosVehiculo(vehiculoId) {
+            try {
+                const presupuestos = await obtenerPresupuestosVehiculo(vehiculoId);
+                return presupuestos.length;
+            } catch (error) {
+                return 0;
+            }
+        }
+
+        // Abrir modal de presupuestos
+        async function abrirModalPresupuestos(registro) {
+            registroActual = registro;
+            const vehiculoId = generarVehiculoId(registro);
+
+            // Mostrar información del vehículo
+            const vehicleInfo = document.getElementById('budgetVehicleInfo');
+            vehicleInfo.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                    ${columnas.slice(0, 4).map(col => `
+                        <div>
+                            <strong style="color: #e67e22;">${col}:</strong>
+                            <div style="color: #2c3e50; margin-top: 5px;">${registro[col] || '-'}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Establecer fecha de hoy por defecto
+            document.getElementById('budgetDate').valueAsDate = new Date();
+
+            // Limpiar ítems y agregar uno por defecto
+            itemsPresupuesto = [];
+            contadorItems = 0;
+            document.getElementById('budgetItemsContainer').innerHTML = '';
+            agregarItemPresupuesto();
+
+            // Cargar presupuestos existentes
+            await cargarPresupuestosDelVehiculo(vehiculoId);
+
+            // Mostrar modal
+            document.getElementById('budgetModal').classList.add('active');
+        }
+
+        // Cerrar modal de presupuestos
+        function cerrarModalPresupuestos() {
+            document.getElementById('budgetModal').classList.remove('active');
+            registroActual = null;
+            limpiarFormularioPresupuesto();
+        }
+
+        // Agregar ítem al presupuesto
+        function agregarItemPresupuesto() {
+            const itemId = contadorItems++;
+            const container = document.getElementById('budgetItemsContainer');
+
+            const itemRow = document.createElement('div');
+            itemRow.className = 'budget-item-row';
+            itemRow.id = `budget-item-${itemId}`;
+            itemRow.innerHTML = `
+                <input type="text" class="item-descripcion" data-item-id="${itemId}" placeholder="Descripción del ítem" required>
+                <input type="number" class="item-cantidad" data-item-id="${itemId}" value="1" min="1" step="1" placeholder="Cant." required onchange="calcularTotalPresupuesto()">
+                <input type="number" class="item-precio" data-item-id="${itemId}" value="0" min="0" step="0.01" placeholder="Precio unitario" required onchange="calcularTotalPresupuesto()">
+                <button class="btn-remove-item" onclick="eliminarItemPresupuesto(${itemId})" title="Eliminar ítem">×</button>
+            `;
+
+            container.appendChild(itemRow);
+            itemsPresupuesto.push(itemId);
+            calcularTotalPresupuesto();
+        }
+
+        // Eliminar ítem del presupuesto
+        function eliminarItemPresupuesto(itemId) {
+            const itemRow = document.getElementById(`budget-item-${itemId}`);
+            if (itemRow) {
+                itemRow.remove();
+                itemsPresupuesto = itemsPresupuesto.filter(id => id !== itemId);
+                calcularTotalPresupuesto();
+            }
+        }
+
+        // Calcular total del presupuesto
+        function calcularTotalPresupuesto() {
+            let total = 0;
+            itemsPresupuesto.forEach(itemId => {
+                const cantidad = parseFloat(document.querySelector(`.item-cantidad[data-item-id="${itemId}"]`)?.value) || 0;
+                const precio = parseFloat(document.querySelector(`.item-precio[data-item-id="${itemId}"]`)?.value) || 0;
+                total += cantidad * precio;
+            });
+
+            document.getElementById('budgetTotalAmount').textContent = `$${total.toFixed(2)}`;
+            return total;
+        }
+
+        // Guardar presupuesto
+        async function guardarPresupuesto() {
+            const fecha = document.getElementById('budgetDate').value;
+            const estado = document.getElementById('budgetStatus').value;
+            const notas = document.getElementById('budgetNotes').value;
+            const editId = document.getElementById('budgetEditId').value;
+
+            if (!fecha || !estado) {
+                mostrarError('Por favor completa todos los campos obligatorios');
+                return;
+            }
+
+            // Recopilar ítems
+            const items = [];
+            for (const itemId of itemsPresupuesto) {
+                const descripcion = document.querySelector(`.item-descripcion[data-item-id="${itemId}"]`)?.value;
+                const cantidad = parseFloat(document.querySelector(`.item-cantidad[data-item-id="${itemId}"]`)?.value) || 0;
+                const precio = parseFloat(document.querySelector(`.item-precio[data-item-id="${itemId}"]`)?.value) || 0;
+
+                if (!descripcion || cantidad <= 0 || precio < 0) {
+                    mostrarError('Por favor completa todos los ítems correctamente');
+                    return;
+                }
+
+                items.push({
+                    descripcion: descripcion,
+                    cantidad: cantidad,
+                    precioUnitario: precio,
+                    subtotal: cantidad * precio
+                });
+            }
+
+            if (items.length === 0) {
+                mostrarError('Debes agregar al menos un ítem al presupuesto');
+                return;
+            }
+
+            const vehiculoId = generarVehiculoId(registroActual);
+            const total = calcularTotalPresupuesto();
+
+            const presupuesto = {
+                vehiculoId: vehiculoId,
+                fecha: fecha,
+                estado: estado,
+                notas: notas,
+                items: items,
+                total: total
+            };
+
+            try {
+                if (editId) {
+                    // Actualizar presupuesto existente
+                    presupuesto.id = parseInt(editId);
+                    await actualizarPresupuestoEnDB(presupuesto);
+                    mostrarExito('Presupuesto actualizado correctamente');
+                } else {
+                    // Guardar nuevo presupuesto
+                    await guardarPresupuestoEnDB(presupuesto);
+                    mostrarExito('Presupuesto guardado correctamente');
+                }
+
+                // Recargar lista
+                await cargarPresupuestosDelVehiculo(vehiculoId);
+
+                // Limpiar formulario
+                limpiarFormularioPresupuesto();
+
+                // Actualizar tabla principal
+                const resultados = datosOriginal.filter(row => {
+                    const columnaSeleccionada = document.getElementById('columnSelect').value;
+                    const textoBusqueda = document.getElementById('searchInput').value.toLowerCase();
+                    if (!columnaSeleccionada || !textoBusqueda) return true;
+                    const valorCelda = String(row[columnaSeleccionada] || '').toLowerCase();
+                    return valorCelda.includes(textoBusqueda);
+                });
+                mostrarResultados(resultados);
+            } catch (error) {
+                console.error('Error al guardar presupuesto:', error);
+                mostrarError('Error al guardar el presupuesto');
+            }
+        }
+
+        // Cargar y mostrar presupuestos del vehículo
+        async function cargarPresupuestosDelVehiculo(vehiculoId) {
+            try {
+                const presupuestos = await obtenerPresupuestosVehiculo(vehiculoId);
+                mostrarPresupuestosEnLista(presupuestos);
+            } catch (error) {
+                console.error('Error al cargar presupuestos:', error);
+                mostrarError('Error al cargar los presupuestos');
+            }
+        }
+
+        // Mostrar presupuestos en lista
+        function mostrarPresupuestosEnLista(presupuestos) {
+            const container = document.getElementById('budgetsContainer');
+
+            if (presupuestos.length === 0) {
+                container.innerHTML = `
+                    <div class="no-budgets">
+                        <div style="font-size: 48px; margin-bottom: 10px;">💰</div>
+                        <h3>Sin presupuestos</h3>
+                        <p>Aún no hay presupuestos registrados para este vehículo.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <h3 style="color: #2c3e50; margin-bottom: 15px;">📋 Presupuestos Guardados (${presupuestos.length})</h3>
+                ${presupuestos.map(pres => `
+                    <div class="budget-list-item">
+                        <div class="budget-header">
+                            <div>
+                                <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">
+                                    ${formatearFecha(pres.fecha)}
+                                </div>
+                                <span class="budget-status ${pres.estado}">${obtenerTextoEstadoPresupuesto(pres.estado)}</span>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 24px; font-weight: bold; color: #e67e22;">
+                                    $${pres.total.toFixed(2)}
+                                </div>
+                            </div>
+                        </div>
+
+                        ${pres.notas ? `
+                            <div style="color: #7f8c8d; font-size: 13px; margin: 10px 0; font-style: italic;">
+                                "${pres.notas}"
+                            </div>
+                        ` : ''}
+
+                        <div class="budget-items-list">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Descripción</th>
+                                        <th style="text-align: center;">Cant.</th>
+                                        <th style="text-align: right;">P. Unit.</th>
+                                        <th style="text-align: right;">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${pres.items.map(item => `
+                                        <tr>
+                                            <td>${item.descripcion}</td>
+                                            <td style="text-align: center;">${item.cantidad}</td>
+                                            <td style="text-align: right;">$${item.precioUnitario.toFixed(2)}</td>
+                                            <td style="text-align: right; font-weight: 600;">$${item.subtotal.toFixed(2)}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="timeline-actions" style="margin-top: 10px; justify-content: flex-start;">
+                            ${pres.estado === 'aceptado' ? `
+                                <button class="btn-convert" onclick="convertirPresupuestoAReparacion(${pres.id})">
+                                    ✓ Convertir a Reparación
+                                </button>
+                            ` : ''}
+                            <button class="btn-edit" onclick="editarPresupuesto(${pres.id})">✏️ Editar</button>
+                            <button class="btn-delete" onclick="eliminarPresupuesto(${pres.id})">🗑️ Eliminar</button>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        // Editar presupuesto
+        async function editarPresupuesto(presupuestoId) {
+            try {
+                const vehiculoId = generarVehiculoId(registroActual);
+                const presupuestos = await obtenerPresupuestosVehiculo(vehiculoId);
+                const presupuesto = presupuestos.find(p => p.id === presupuestoId);
+
+                if (presupuesto) {
+                    document.getElementById('budgetDate').value = presupuesto.fecha;
+                    document.getElementById('budgetStatus').value = presupuesto.estado;
+                    document.getElementById('budgetNotes').value = presupuesto.notas || '';
+                    document.getElementById('budgetEditId').value = presupuesto.id;
+                    document.getElementById('btnBudgetText').textContent = 'Actualizar Presupuesto';
+                    document.getElementById('btnCancelEditBudget').style.display = 'inline-block';
+
+                    // Cargar ítems
+                    itemsPresupuesto = [];
+                    contadorItems = 0;
+                    document.getElementById('budgetItemsContainer').innerHTML = '';
+
+                    presupuesto.items.forEach(item => {
+                        const itemId = contadorItems++;
+                        const container = document.getElementById('budgetItemsContainer');
+
+                        const itemRow = document.createElement('div');
+                        itemRow.className = 'budget-item-row';
+                        itemRow.id = `budget-item-${itemId}`;
+                        itemRow.innerHTML = `
+                            <input type="text" class="item-descripcion" data-item-id="${itemId}" placeholder="Descripción del ítem" value="${item.descripcion}" required>
+                            <input type="number" class="item-cantidad" data-item-id="${itemId}" value="${item.cantidad}" min="1" step="1" placeholder="Cant." required onchange="calcularTotalPresupuesto()">
+                            <input type="number" class="item-precio" data-item-id="${itemId}" value="${item.precioUnitario}" min="0" step="0.01" placeholder="Precio unitario" required onchange="calcularTotalPresupuesto()">
+                            <button class="btn-remove-item" onclick="eliminarItemPresupuesto(${itemId})" title="Eliminar ítem">×</button>
+                        `;
+
+                        container.appendChild(itemRow);
+                        itemsPresupuesto.push(itemId);
+                    });
+
+                    calcularTotalPresupuesto();
+
+                    // Scroll al formulario
+                    document.querySelector('.repair-form').scrollIntoView({ behavior: 'smooth' });
+                }
+            } catch (error) {
+                console.error('Error al cargar presupuesto:', error);
+                mostrarError('Error al cargar el presupuesto');
+            }
+        }
+
+        // Eliminar presupuesto
+        async function eliminarPresupuesto(presupuestoId) {
+            if (!confirm('¿Estás seguro de eliminar este presupuesto?')) return;
+
+            try {
+                await eliminarPresupuestoDeDB(presupuestoId);
+                const vehiculoId = generarVehiculoId(registroActual);
+                await cargarPresupuestosDelVehiculo(vehiculoId);
+                mostrarExito('Presupuesto eliminado correctamente');
+
+                // Actualizar tabla principal
+                const resultados = datosOriginal.filter(row => {
+                    const columnaSeleccionada = document.getElementById('columnSelect').value;
+                    const textoBusqueda = document.getElementById('searchInput').value.toLowerCase();
+                    if (!columnaSeleccionada || !textoBusqueda) return true;
+                    const valorCelda = String(row[columnaSeleccionada] || '').toLowerCase();
+                    return valorCelda.includes(textoBusqueda);
+                });
+                mostrarResultados(resultados);
+            } catch (error) {
+                console.error('Error al eliminar presupuesto:', error);
+                mostrarError('Error al eliminar el presupuesto');
+            }
+        }
+
+        // Convertir presupuesto aceptado a reparación
+        async function convertirPresupuestoAReparacion(presupuestoId) {
+            if (!confirm('¿Convertir este presupuesto en una reparación completada?')) return;
+
+            try {
+                const vehiculoId = generarVehiculoId(registroActual);
+                const presupuestos = await obtenerPresupuestosVehiculo(vehiculoId);
+                const presupuesto = presupuestos.find(p => p.id === presupuestoId);
+
+                if (!presupuesto) {
+                    mostrarError('Presupuesto no encontrado');
+                    return;
+                }
+
+                // Crear descripción detallada
+                let descripcion = 'Trabajos realizados:\n';
+                presupuesto.items.forEach(item => {
+                    descripcion += `- ${item.descripcion} (${item.cantidad}x $${item.precioUnitario.toFixed(2)})\n`;
+                });
+                if (presupuesto.notas) {
+                    descripcion += `\nNotas: ${presupuesto.notas}`;
+                }
+
+                // Crear reparación
+                const reparacion = {
+                    vehiculoId: vehiculoId,
+                    fecha: presupuesto.fecha,
+                    costo: presupuesto.total,
+                    descripcion: descripcion,
+                    mecanico: '',
+                    estado: 'completada'
+                };
+
+                await guardarReparacionEnDB(reparacion);
+                mostrarExito('¡Presupuesto convertido a reparación exitosamente!');
+
+                // Cerrar modal de presupuestos
+                cerrarModalPresupuestos();
+
+            } catch (error) {
+                console.error('Error al convertir presupuesto:', error);
+                mostrarError('Error al convertir el presupuesto a reparación');
+            }
+        }
+
+        // Limpiar formulario de presupuesto
+        function limpiarFormularioPresupuesto() {
+            document.getElementById('budgetForm').reset();
+            document.getElementById('budgetDate').valueAsDate = new Date();
+            document.getElementById('budgetEditId').value = '';
+            document.getElementById('btnBudgetText').textContent = 'Guardar Presupuesto';
+            document.getElementById('btnCancelEditBudget').style.display = 'none';
+
+            // Limpiar ítems y agregar uno por defecto
+            itemsPresupuesto = [];
+            contadorItems = 0;
+            document.getElementById('budgetItemsContainer').innerHTML = '';
+            agregarItemPresupuesto();
+        }
+
+        // Cancelar edición de presupuesto
+        function cancelarEdicionPresupuesto() {
+            limpiarFormularioPresupuesto();
+        }
+
+        // Obtener texto del estado del presupuesto
+        function obtenerTextoEstadoPresupuesto(estado) {
+            const textos = {
+                'pendiente': 'Pendiente',
+                'aceptado': 'Aceptado',
+                'rechazado': 'Rechazado'
+            };
+            return textos[estado] || estado;
+        }
+
+        // Actualizar función de cerrar modales con ESC
+        const cerrarModalesOriginal = document.addEventListener;
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                cerrarModalFotos();
+                cerrarVisorImagen();
+                cerrarModalHistorial();
+                cerrarModalPresupuestos();
+            }
+            if (e.key === 'ArrowLeft' && document.getElementById('imageViewer').classList.contains('active')) {
+                navegarImagen(-1);
+            }
+            if (e.key === 'ArrowRight' && document.getElementById('imageViewer').classList.contains('active')) {
+                navegarImagen(1);
+            }
+        });
 
         // ============================================
         // SISTEMA DE BÚSQUEDA AVANZADA
@@ -2716,18 +3496,20 @@
 
             noResults.style.display = 'none';
 
-            // Crear encabezados con columnas de Fotos, Historial y Exportar
+            // Crear encabezados con columnas de Fotos, Presupuestos, Historial y Exportar
             tableHead.innerHTML = `
                 ${columnas.map(col => `<th>${col}</th>`).join('')}
                 <th style="text-align: center; min-width: 100px;">Fotos</th>
+                <th style="text-align: center; min-width: 130px;">Presupuestos</th>
                 <th style="text-align: center; min-width: 120px;">Historial</th>
                 <th style="text-align: center; min-width: 100px;">Exportar</th>
             `;
 
-            // Crear filas con contadores de fotos y reparaciones
+            // Crear filas con contadores de fotos, presupuestos y reparaciones
             const filasConDatos = await Promise.all(resultados.map(async (row, index) => {
                 const vehiculoId = generarVehiculoId(row);
                 const numFotos = await contarFotosVehiculo(vehiculoId);
+                const numPresupuestos = await contarPresupuestosVehiculo(vehiculoId);
                 const numReparaciones = await contarReparacionesVehiculo(vehiculoId);
 
                 return `
@@ -2737,6 +3519,12 @@
                             <button class="photo-btn" onclick='abrirModalFotos(${JSON.stringify(row).replace(/'/g, "&#39;")})'>
                                 📸 Ver
                                 ${numFotos > 0 ? `<span class="photo-badge">${numFotos}</span>` : ''}
+                            </button>
+                        </td>
+                        <td style="text-align: center;">
+                            <button class="budget-btn" onclick='abrirModalPresupuestos(${JSON.stringify(row).replace(/'/g, "&#39;")})'>
+                                💰 Presupuestos
+                                ${numPresupuestos > 0 ? `<span class="budget-badge">${numPresupuestos}</span>` : ''}
                             </button>
                         </td>
                         <td style="text-align: center;">

@@ -629,6 +629,411 @@
             color: #3498db;
         }
 
+        /* Estilos para historial de reparaciones */
+        .history-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .history-btn:hover {
+            background: #229954;
+            transform: translateY(-1px);
+        }
+
+        .history-badge {
+            background: #e67e22;
+            color: white;
+            border-radius: 10px;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .repair-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Timeline de reparaciones */
+        .repairs-timeline {
+            margin-top: 20px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 40px;
+            padding-bottom: 30px;
+            border-left: 2px solid #ecf0f1;
+            margin-left: 10px;
+        }
+
+        .timeline-item:last-child {
+            border-left: none;
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -11px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #667eea;
+        }
+
+        .timeline-content {
+            background: white;
+            border: 1px solid #ecf0f1;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateX(5px);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .timeline-date {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .timeline-cost {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .timeline-description {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .timeline-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .timeline-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .timeline-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit:hover {
+            background: #2980b9;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-badge.completada {
+            background: #d5f4e6;
+            color: #27ae60;
+        }
+
+        .status-badge.en-proceso {
+            background: #fff3cd;
+            color: #f39c12;
+        }
+
+        .status-badge.pendiente {
+            background: #f8d7da;
+            color: #e74c3c;
+        }
+
+        /* Estadísticas de reparaciones */
+        .repairs-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-box.green {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+
+        .stat-box.orange {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+
+        .stat-box h4 {
+            font-size: 11px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .stat-box .value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .no-repairs {
+            text-align: center;
+            padding: 40px;
+            color: #95a5a6;
+        }
+
+        /* Estilos para búsqueda avanzada */
+        .advanced-search-toggle {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .advanced-search-toggle:hover {
+            background: #8e44ad;
+            transform: translateY(-1px);
+        }
+
+        .advanced-search-panel {
+            display: none;
+            background: #f8f9fa;
+            border: 2px solid #9b59b6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .advanced-search-panel.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 2fr auto;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #ecf0f1;
+        }
+
+        .filter-row select,
+        .filter-row input {
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .filter-row select:focus,
+        .filter-row input:focus {
+            outline: none;
+            border-color: #9b59b6;
+            box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.1);
+        }
+
+        .btn-remove-filter {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove-filter:hover {
+            background: #c0392b;
+        }
+
+        .filter-logic {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: #fff;
+            border-radius: 6px;
+        }
+
+        .filter-logic label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+
+        .filter-logic input[type="radio"] {
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .btn-add-filter {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-add-filter:hover {
+            background: #2980b9;
+        }
+
+        .advanced-search-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 20px;
@@ -684,6 +1089,19 @@
 
             .photo-item img {
                 height: 120px;
+            }
+
+            .filter-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .advanced-search-actions {
+                flex-direction: column;
+            }
+
+            .advanced-search-actions button {
+                width: 100%;
             }
         }
     </style>
@@ -757,6 +1175,42 @@
                 <div class="search-buttons">
                     <button class="btn-search" onclick="buscar();">🔍 Buscar</button>
                     <button class="btn-search btn-clear" onclick="limpiar();">✕ Limpiar</button>
+                    <button class="advanced-search-toggle" onclick="toggleAdvancedSearch();">
+                        🔬 Búsqueda Avanzada
+                    </button>
+                </div>
+            </div>
+
+            <!-- Panel de búsqueda avanzada -->
+            <div class="advanced-search-panel" id="advancedSearchPanel">
+                <h3 style="color: #2c3e50; margin-bottom: 15px;">🔬 Búsqueda Avanzada con Múltiples Filtros</h3>
+
+                <div id="filtersContainer">
+                    <!-- Los filtros se agregarán aquí dinámicamente -->
+                </div>
+
+                <div class="filter-logic">
+                    <label>Combinar filtros con:</label>
+                    <label>
+                        <input type="radio" name="filterLogic" value="AND" checked>
+                        Y (AND) - Cumple todos los filtros
+                    </label>
+                    <label>
+                        <input type="radio" name="filterLogic" value="OR">
+                        O (OR) - Cumple al menos uno
+                    </label>
+                </div>
+
+                <div class="advanced-search-actions">
+                    <button class="btn-add-filter" onclick="agregarFiltro();">
+                        ➕ Agregar Filtro
+                    </button>
+                    <button class="btn-search" onclick="buscarAvanzado();">
+                        🔍 Buscar con Filtros
+                    </button>
+                    <button class="btn-search btn-clear" onclick="limpiarFiltros();">
+                        🗑️ Limpiar Filtros
+                    </button>
                 </div>
             </div>
 
@@ -837,6 +1291,81 @@
         <img id="viewerImage" src="" alt="Imagen completa">
     </div>
 
+    <!-- Modal para historial de reparaciones -->
+    <div class="modal" id="historyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔧 Historial de Reparaciones</h2>
+                <button class="close-btn" onclick="cerrarModalHistorial()">×</button>
+            </div>
+
+            <div id="historyVehicleInfo" style="background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                <!-- Información del vehículo se llenará dinámicamente -->
+            </div>
+
+            <!-- Estadísticas -->
+            <div class="repairs-stats" id="repairsStats">
+                <div class="stat-box green">
+                    <h4>Total Gastado</h4>
+                    <div class="value" id="totalGastado">$0</div>
+                </div>
+                <div class="stat-box orange">
+                    <h4>Reparaciones</h4>
+                    <div class="value" id="totalReparaciones">0</div>
+                </div>
+                <div class="stat-box">
+                    <h4>Última Visita</h4>
+                    <div class="value" id="ultimaVisita" style="font-size: 14px;">-</div>
+                </div>
+            </div>
+
+            <!-- Formulario para nueva reparación -->
+            <div class="repair-form">
+                <h3 style="color: #2c3e50; margin-bottom: 15px;">➕ Nueva Reparación</h3>
+                <form id="repairForm" onsubmit="return false;">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="repairDate">Fecha *</label>
+                            <input type="date" id="repairDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="repairCost">Costo ($) *</label>
+                            <input type="number" id="repairCost" step="0.01" min="0" placeholder="0.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="repairMechanic">Mecánico</label>
+                            <input type="text" id="repairMechanic" placeholder="Nombre del mecánico">
+                        </div>
+                        <div class="form-group">
+                            <label for="repairStatus">Estado *</label>
+                            <select id="repairStatus" required>
+                                <option value="completada">Completada</option>
+                                <option value="en-proceso">En Proceso</option>
+                                <option value="pendiente">Pendiente</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="repairDescription">Descripción *</label>
+                        <textarea id="repairDescription" placeholder="Describe la reparación realizada..." required></textarea>
+                    </div>
+                    <input type="hidden" id="repairEditId">
+                    <button type="button" class="btn" onclick="guardarReparacion()">
+                        ✓ <span id="btnRepairText">Guardar Reparación</span>
+                    </button>
+                    <button type="button" class="btn" onclick="cancelarEdicion()" id="btnCancelEdit" style="display: none; background: #95a5a6;">
+                        ✕ Cancelar
+                    </button>
+                </form>
+            </div>
+
+            <!-- Timeline de reparaciones -->
+            <div id="repairsContainer">
+                <!-- Las reparaciones se mostrarán aquí -->
+            </div>
+        </div>
+    </div>
+
     <script>
         let datosOriginal = [];
         let columnas = [];
@@ -855,7 +1384,7 @@
         // Inicializar IndexedDB
         function inicializarDB() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open('TallerMecanicoDB', 1);
+                const request = indexedDB.open('TallerMecanicoDB', 2);
 
                 request.onerror = () => reject('Error al abrir la base de datos');
 
@@ -866,9 +1395,18 @@
 
                 request.onupgradeneeded = (event) => {
                     db = event.target.result;
+
+                    // Object store para fotos
                     if (!db.objectStoreNames.contains('fotos')) {
                         const objectStore = db.createObjectStore('fotos', { keyPath: 'id', autoIncrement: true });
                         objectStore.createIndex('vehiculoId', 'vehiculoId', { unique: false });
+                    }
+
+                    // Object store para reparaciones
+                    if (!db.objectStoreNames.contains('reparaciones')) {
+                        const reparacionesStore = db.createObjectStore('reparaciones', { keyPath: 'id', autoIncrement: true });
+                        reparacionesStore.createIndex('vehiculoId', 'vehiculoId', { unique: false });
+                        reparacionesStore.createIndex('fecha', 'fecha', { unique: false });
                     }
                 };
             });
@@ -1143,11 +1681,489 @@
             mostrarImagenEnVisor();
         }
 
-        // Cerrar modales con ESC
+        // Inicializar DB al cargar la página
+        inicializarDB().catch(error => {
+            console.error('Error al inicializar la base de datos:', error);
+            mostrarError('Error al inicializar el sistema de fotos');
+        });
+
+        // ============================================
+        // SISTEMA DE REPARACIONES
+        // ============================================
+
+        // Guardar reparación en IndexedDB
+        function guardarReparacionEnDB(reparacion) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['reparaciones'], 'readwrite');
+                const objectStore = transaction.objectStore('reparaciones');
+
+                const request = objectStore.add(reparacion);
+
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject('Error al guardar reparación');
+            });
+        }
+
+        // Actualizar reparación existente
+        function actualizarReparacionEnDB(reparacion) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['reparaciones'], 'readwrite');
+                const objectStore = transaction.objectStore('reparaciones');
+
+                const request = objectStore.put(reparacion);
+
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject('Error al actualizar reparación');
+            });
+        }
+
+        // Obtener todas las reparaciones de un vehículo
+        function obtenerReparacionesVehiculo(vehiculoId) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['reparaciones'], 'readonly');
+                const objectStore = transaction.objectStore('reparaciones');
+                const index = objectStore.index('vehiculoId');
+                const request = index.getAll(vehiculoId);
+
+                request.onsuccess = () => {
+                    // Ordenar por fecha descendente
+                    const reparaciones = request.result.sort((a, b) => {
+                        return new Date(b.fecha) - new Date(a.fecha);
+                    });
+                    resolve(reparaciones);
+                };
+                request.onerror = () => reject('Error al obtener reparaciones');
+            });
+        }
+
+        // Eliminar una reparación
+        function eliminarReparacionDeDB(reparacionId) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['reparaciones'], 'readwrite');
+                const objectStore = transaction.objectStore('reparaciones');
+                const request = objectStore.delete(reparacionId);
+
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject('Error al eliminar reparación');
+            });
+        }
+
+        // Contar reparaciones de un vehículo
+        async function contarReparacionesVehiculo(vehiculoId) {
+            try {
+                const reparaciones = await obtenerReparacionesVehiculo(vehiculoId);
+                return reparaciones.length;
+            } catch (error) {
+                return 0;
+            }
+        }
+
+        // ============================================
+        // FUNCIONES DE INTERFAZ PARA HISTORIAL
+        // ============================================
+
+        // Abrir modal de historial
+        async function abrirModalHistorial(registro) {
+            registroActual = registro;
+            const vehiculoId = generarVehiculoId(registro);
+
+            // Mostrar información del vehículo
+            const vehicleInfo = document.getElementById('historyVehicleInfo');
+            vehicleInfo.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                    ${columnas.slice(0, 4).map(col => `
+                        <div>
+                            <strong style="color: #667eea;">${col}:</strong>
+                            <div style="color: #2c3e50; margin-top: 5px;">${registro[col] || '-'}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Establecer fecha de hoy por defecto
+            document.getElementById('repairDate').valueAsDate = new Date();
+
+            // Cargar reparaciones existentes
+            await cargarReparacionesDelVehiculo(vehiculoId);
+
+            // Mostrar modal
+            document.getElementById('historyModal').classList.add('active');
+        }
+
+        // Cerrar modal de historial
+        function cerrarModalHistorial() {
+            document.getElementById('historyModal').classList.remove('active');
+            registroActual = null;
+            limpiarFormularioReparacion();
+        }
+
+        // Cargar y mostrar reparaciones del vehículo
+        async function cargarReparacionesDelVehiculo(vehiculoId) {
+            try {
+                const reparaciones = await obtenerReparacionesVehiculo(vehiculoId);
+                mostrarReparacionesEnTimeline(reparaciones);
+                actualizarEstadisticasReparaciones(reparaciones);
+            } catch (error) {
+                console.error('Error al cargar reparaciones:', error);
+                mostrarError('Error al cargar el historial de reparaciones');
+            }
+        }
+
+        // Actualizar estadísticas
+        function actualizarEstadisticasReparaciones(reparaciones) {
+            const totalGastado = reparaciones.reduce((sum, rep) => sum + parseFloat(rep.costo || 0), 0);
+            const totalReparaciones = reparaciones.length;
+            const ultimaVisita = reparaciones.length > 0
+                ? formatearFecha(reparaciones[0].fecha)
+                : '-';
+
+            document.getElementById('totalGastado').textContent = `$${totalGastado.toFixed(2)}`;
+            document.getElementById('totalReparaciones').textContent = totalReparaciones;
+            document.getElementById('ultimaVisita').textContent = ultimaVisita;
+        }
+
+        // Mostrar reparaciones en timeline
+        function mostrarReparacionesEnTimeline(reparaciones) {
+            const container = document.getElementById('repairsContainer');
+
+            if (reparaciones.length === 0) {
+                container.innerHTML = `
+                    <div class="no-repairs">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🔧</div>
+                        <h3>Sin reparaciones</h3>
+                        <p>Aún no hay reparaciones registradas para este vehículo.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <h3 style="color: #2c3e50; margin-bottom: 20px;">📋 Historial (${reparaciones.length})</h3>
+                <div class="repairs-timeline">
+                    ${reparaciones.map(rep => `
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <div>
+                                        <div class="timeline-date">${formatearFecha(rep.fecha)}</div>
+                                        <span class="status-badge ${rep.estado}">${obtenerTextoEstado(rep.estado)}</span>
+                                    </div>
+                                    <div class="timeline-cost">$${parseFloat(rep.costo).toFixed(2)}</div>
+                                </div>
+                                <div class="timeline-description">${rep.descripcion}</div>
+                                ${rep.mecanico ? `
+                                    <div class="timeline-meta">
+                                        <span>👨‍🔧 ${rep.mecanico}</span>
+                                    </div>
+                                ` : ''}
+                                <div class="timeline-actions">
+                                    <button class="btn-edit" onclick="editarReparacion(${rep.id})">✏️ Editar</button>
+                                    <button class="btn-delete" onclick="eliminarReparacion(${rep.id})">🗑️ Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Guardar o actualizar reparación
+        async function guardarReparacion() {
+            const fecha = document.getElementById('repairDate').value;
+            const costo = document.getElementById('repairCost').value;
+            const descripcion = document.getElementById('repairDescription').value;
+            const mecanico = document.getElementById('repairMechanic').value;
+            const estado = document.getElementById('repairStatus').value;
+            const editId = document.getElementById('repairEditId').value;
+
+            if (!fecha || !costo || !descripcion || !estado) {
+                mostrarError('Por favor completa todos los campos obligatorios');
+                return;
+            }
+
+            const vehiculoId = generarVehiculoId(registroActual);
+
+            const reparacion = {
+                vehiculoId: vehiculoId,
+                fecha: fecha,
+                costo: parseFloat(costo),
+                descripcion: descripcion,
+                mecanico: mecanico,
+                estado: estado
+            };
+
+            try {
+                if (editId) {
+                    // Actualizar reparación existente
+                    reparacion.id = parseInt(editId);
+                    await actualizarReparacionEnDB(reparacion);
+                    mostrarExito('Reparación actualizada correctamente');
+                } else {
+                    // Guardar nueva reparación
+                    await guardarReparacionEnDB(reparacion);
+                    mostrarExito('Reparación agregada correctamente');
+                }
+
+                // Recargar timeline
+                await cargarReparacionesDelVehiculo(vehiculoId);
+
+                // Limpiar formulario
+                limpiarFormularioReparacion();
+
+                // Actualizar tabla principal
+                const resultados = datosOriginal.filter(row => {
+                    const columnaSeleccionada = document.getElementById('columnSelect').value;
+                    const textoBusqueda = document.getElementById('searchInput').value.toLowerCase();
+                    if (!columnaSeleccionada || !textoBusqueda) return true;
+                    const valorCelda = String(row[columnaSeleccionada] || '').toLowerCase();
+                    return valorCelda.includes(textoBusqueda);
+                });
+                mostrarResultados(resultados);
+            } catch (error) {
+                console.error('Error al guardar reparación:', error);
+                mostrarError('Error al guardar la reparación');
+            }
+        }
+
+        // Editar reparación
+        async function editarReparacion(reparacionId) {
+            try {
+                const vehiculoId = generarVehiculoId(registroActual);
+                const reparaciones = await obtenerReparacionesVehiculo(vehiculoId);
+                const reparacion = reparaciones.find(r => r.id === reparacionId);
+
+                if (reparacion) {
+                    document.getElementById('repairDate').value = reparacion.fecha;
+                    document.getElementById('repairCost').value = reparacion.costo;
+                    document.getElementById('repairDescription').value = reparacion.descripcion;
+                    document.getElementById('repairMechanic').value = reparacion.mecanico || '';
+                    document.getElementById('repairStatus').value = reparacion.estado;
+                    document.getElementById('repairEditId').value = reparacion.id;
+                    document.getElementById('btnRepairText').textContent = 'Actualizar Reparación';
+                    document.getElementById('btnCancelEdit').style.display = 'inline-block';
+
+                    // Scroll al formulario
+                    document.querySelector('.repair-form').scrollIntoView({ behavior: 'smooth' });
+                }
+            } catch (error) {
+                console.error('Error al cargar reparación:', error);
+                mostrarError('Error al cargar la reparación');
+            }
+        }
+
+        // Cancelar edición
+        function cancelarEdicion() {
+            limpiarFormularioReparacion();
+        }
+
+        // Limpiar formulario de reparación
+        function limpiarFormularioReparacion() {
+            document.getElementById('repairForm').reset();
+            document.getElementById('repairDate').valueAsDate = new Date();
+            document.getElementById('repairEditId').value = '';
+            document.getElementById('btnRepairText').textContent = 'Guardar Reparación';
+            document.getElementById('btnCancelEdit').style.display = 'none';
+        }
+
+        // Eliminar reparación
+        async function eliminarReparacion(reparacionId) {
+            if (!confirm('¿Estás seguro de eliminar esta reparación?')) return;
+
+            try {
+                await eliminarReparacionDeDB(reparacionId);
+                const vehiculoId = generarVehiculoId(registroActual);
+                await cargarReparacionesDelVehiculo(vehiculoId);
+                mostrarExito('Reparación eliminada correctamente');
+
+                // Actualizar tabla principal
+                const resultados = datosOriginal.filter(row => {
+                    const columnaSeleccionada = document.getElementById('columnSelect').value;
+                    const textoBusqueda = document.getElementById('searchInput').value.toLowerCase();
+                    if (!columnaSeleccionada || !textoBusqueda) return true;
+                    const valorCelda = String(row[columnaSeleccionada] || '').toLowerCase();
+                    return valorCelda.includes(textoBusqueda);
+                });
+                mostrarResultados(resultados);
+            } catch (error) {
+                console.error('Error al eliminar reparación:', error);
+                mostrarError('Error al eliminar la reparación');
+            }
+        }
+
+        // ============================================
+        // FUNCIONES AUXILIARES
+        // ============================================
+
+        // Formatear fecha
+        function formatearFecha(fechaStr) {
+            const fecha = new Date(fechaStr + 'T00:00:00');
+            const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+            return fecha.toLocaleDateString('es-ES', opciones);
+        }
+
+        // Obtener texto del estado
+        function obtenerTextoEstado(estado) {
+            const textos = {
+                'completada': 'Completada',
+                'en-proceso': 'En Proceso',
+                'pendiente': 'Pendiente'
+            };
+            return textos[estado] || estado;
+        }
+
+        // ============================================
+        // SISTEMA DE BÚSQUEDA AVANZADA
+        // ============================================
+
+        let filtrosActivos = [];
+        let contadorFiltros = 0;
+
+        // Toggle panel de búsqueda avanzada
+        function toggleAdvancedSearch() {
+            const panel = document.getElementById('advancedSearchPanel');
+            panel.classList.toggle('active');
+
+            // Si se abre y no hay filtros, agregar uno por defecto
+            if (panel.classList.contains('active') && filtrosActivos.length === 0) {
+                agregarFiltro();
+            }
+        }
+
+        // Agregar nuevo filtro
+        function agregarFiltro() {
+            const filterId = contadorFiltros++;
+            const container = document.getElementById('filtersContainer');
+
+            const filterRow = document.createElement('div');
+            filterRow.className = 'filter-row';
+            filterRow.id = `filter-${filterId}`;
+            filterRow.innerHTML = `
+                <select class="filter-field" data-filter-id="${filterId}">
+                    <option value="">-- Selecciona campo --</option>
+                    ${columnas.map(col => `<option value="${col}">${col}</option>`).join('')}
+                </select>
+                <select class="filter-operator" data-filter-id="${filterId}">
+                    <option value="contains">Contiene</option>
+                    <option value="equals">Es igual a</option>
+                    <option value="starts">Comienza con</option>
+                    <option value="ends">Termina con</option>
+                    <option value="greater">Mayor que</option>
+                    <option value="less">Menor que</option>
+                    <option value="not">No contiene</option>
+                </select>
+                <input type="text" class="filter-value" data-filter-id="${filterId}" placeholder="Valor a buscar...">
+                <button class="btn-remove-filter" onclick="eliminarFiltro(${filterId})" title="Eliminar filtro">
+                    ×
+                </button>
+            `;
+
+            container.appendChild(filterRow);
+            filtrosActivos.push(filterId);
+        }
+
+        // Eliminar filtro
+        function eliminarFiltro(filterId) {
+            const filterRow = document.getElementById(`filter-${filterId}`);
+            if (filterRow) {
+                filterRow.remove();
+                filtrosActivos = filtrosActivos.filter(id => id !== filterId);
+            }
+        }
+
+        // Limpiar todos los filtros
+        function limpiarFiltros() {
+            document.getElementById('filtersContainer').innerHTML = '';
+            filtrosActivos = [];
+            contadorFiltros = 0;
+            document.getElementById('resultsSection').classList.remove('active');
+
+            // Agregar un filtro por defecto
+            agregarFiltro();
+        }
+
+        // Aplicar un filtro individual a un registro
+        function aplicarFiltro(registro, campo, operador, valor) {
+            const valorCelda = String(registro[campo] || '').toLowerCase();
+            const valorBusqueda = valor.toLowerCase();
+
+            switch (operador) {
+                case 'contains':
+                    return valorCelda.includes(valorBusqueda);
+                case 'equals':
+                    return valorCelda === valorBusqueda;
+                case 'starts':
+                    return valorCelda.startsWith(valorBusqueda);
+                case 'ends':
+                    return valorCelda.endsWith(valorBusqueda);
+                case 'greater':
+                    return parseFloat(valorCelda) > parseFloat(valorBusqueda);
+                case 'less':
+                    return parseFloat(valorCelda) < parseFloat(valorBusqueda);
+                case 'not':
+                    return !valorCelda.includes(valorBusqueda);
+                default:
+                    return true;
+            }
+        }
+
+        // Buscar con múltiples filtros
+        function buscarAvanzado() {
+            if (filtrosActivos.length === 0) {
+                mostrarError('Por favor agrega al menos un filtro');
+                return;
+            }
+
+            // Recopilar todos los filtros
+            const filtros = [];
+            for (const filterId of filtrosActivos) {
+                const campo = document.querySelector(`.filter-field[data-filter-id="${filterId}"]`)?.value;
+                const operador = document.querySelector(`.filter-operator[data-filter-id="${filterId}"]`)?.value;
+                const valor = document.querySelector(`.filter-value[data-filter-id="${filterId}"]`)?.value;
+
+                if (!campo || !valor) {
+                    mostrarError('Por favor completa todos los filtros (campo y valor)');
+                    return;
+                }
+
+                filtros.push({ campo, operador, valor });
+            }
+
+            // Obtener lógica de combinación (AND/OR)
+            const logica = document.querySelector('input[name="filterLogic"]:checked')?.value || 'AND';
+
+            // Aplicar filtros
+            let resultados;
+            if (logica === 'AND') {
+                // Todos los filtros deben cumplirse
+                resultados = datosOriginal.filter(registro => {
+                    return filtros.every(filtro =>
+                        aplicarFiltro(registro, filtro.campo, filtro.operador, filtro.valor)
+                    );
+                });
+            } else {
+                // Al menos un filtro debe cumplirse
+                resultados = datosOriginal.filter(registro => {
+                    return filtros.some(filtro =>
+                        aplicarFiltro(registro, filtro.campo, filtro.operador, filtro.valor)
+                    );
+                });
+            }
+
+            // Mostrar resultados
+            mostrarResultados(resultados);
+
+            // Mostrar mensaje informativo
+            const logicaTexto = logica === 'AND' ? 'todos los filtros' : 'al menos un filtro';
+            mostrarExito(`Búsqueda avanzada: ${resultados.length} resultado(s) que cumplen ${logicaTexto}`);
+        }
+
+        // Cerrar modales con ESC (actualizado)
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 cerrarModalFotos();
                 cerrarVisorImagen();
+                cerrarModalHistorial();
             }
             if (e.key === 'ArrowLeft' && document.getElementById('imageViewer').classList.contains('active')) {
                 navegarImagen(-1);
@@ -1155,12 +2171,6 @@
             if (e.key === 'ArrowRight' && document.getElementById('imageViewer').classList.contains('active')) {
                 navegarImagen(1);
             }
-        });
-
-        // Inicializar DB al cargar la página
-        inicializarDB().catch(error => {
-            console.error('Error al inicializar la base de datos:', error);
-            mostrarError('Error al inicializar el sistema de fotos');
         });
 
         // TAB: Cambiar entre pestañas
@@ -1358,16 +2368,18 @@
 
             noResults.style.display = 'none';
 
-            // Crear encabezados con columna de Fotos
+            // Crear encabezados con columnas de Fotos e Historial
             tableHead.innerHTML = `
                 ${columnas.map(col => `<th>${col}</th>`).join('')}
                 <th style="text-align: center; min-width: 100px;">Fotos</th>
+                <th style="text-align: center; min-width: 120px;">Historial</th>
             `;
 
-            // Crear filas con contadores de fotos
-            const filasConFotos = await Promise.all(resultados.map(async (row, index) => {
+            // Crear filas con contadores de fotos y reparaciones
+            const filasConDatos = await Promise.all(resultados.map(async (row, index) => {
                 const vehiculoId = generarVehiculoId(row);
                 const numFotos = await contarFotosVehiculo(vehiculoId);
+                const numReparaciones = await contarReparacionesVehiculo(vehiculoId);
 
                 return `
                     <tr>
@@ -1378,11 +2390,17 @@
                                 ${numFotos > 0 ? `<span class="photo-badge">${numFotos}</span>` : ''}
                             </button>
                         </td>
+                        <td style="text-align: center;">
+                            <button class="history-btn" onclick='abrirModalHistorial(${JSON.stringify(row).replace(/'/g, "&#39;")})'>
+                                🔧 Historial
+                                ${numReparaciones > 0 ? `<span class="history-badge">${numReparaciones}</span>` : ''}
+                            </button>
+                        </td>
                     </tr>
                 `;
             }));
 
-            tableBody.innerHTML = filasConFotos.join('');
+            tableBody.innerHTML = filasConDatos.join('');
         }
 
         function limpiar() {

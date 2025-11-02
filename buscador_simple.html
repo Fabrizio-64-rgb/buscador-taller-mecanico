@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscador Taller Mecánico</title>
+
+    <!-- Librerías para exportar PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -1034,6 +1039,41 @@
             flex-wrap: wrap;
         }
 
+        /* Estilos para botones de exportación */
+        .export-btn {
+            background: #16a085;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover {
+            background: #138d75;
+            transform: translateY(-1px);
+        }
+
+        .export-btn.excel {
+            background: #27ae60;
+        }
+
+        .export-btn.excel:hover {
+            background: #229954;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 20px;
@@ -1229,7 +1269,14 @@
             <!-- Sección de resultados (oculta hasta buscar) -->
             <div class="results-section" id="resultsSection">
                 <div class="results-header">
-                    <h2 style="color: #2c3e50;">Resultados</h2>
+                    <div>
+                        <h2 style="color: #2c3e50;">Resultados</h2>
+                        <div class="export-buttons">
+                            <button class="export-btn excel" onclick="exportarAExcel()">
+                                📊 Exportar a Excel
+                            </button>
+                        </div>
+                    </div>
                     <div class="results-info">
                         <strong id="showingCount">0</strong> de <strong id="totalCount">0</strong> registros
                     </div>
@@ -2173,6 +2220,307 @@
             }
         });
 
+        // ============================================
+        // SISTEMA DE EXPORTACIÓN
+        // ============================================
+
+        // Exportar resultados de búsqueda a Excel (CSV)
+        function exportarAExcel() {
+            const tableBody = document.getElementById('tableBody');
+            if (!tableBody || !tableBody.rows.length) {
+                mostrarError('No hay resultados para exportar');
+                return;
+            }
+
+            // Obtener resultados actuales mostrados en la tabla
+            const resultadosMostrados = Array.from(tableBody.rows).map(row => {
+                const registro = {};
+                columnas.forEach((col, index) => {
+                    registro[col] = row.cells[index].textContent;
+                });
+                return registro;
+            });
+
+            // Crear CSV
+            let csv = '';
+
+            // Encabezados
+            csv += columnas.join(',') + '\n';
+
+            // Datos
+            resultadosMostrados.forEach(row => {
+                const valores = columnas.map(col => {
+                    let valor = row[col] || '';
+                    // Escapar comillas y comas
+                    if (valor.includes(',') || valor.includes('"') || valor.includes('\n')) {
+                        valor = '"' + valor.replace(/"/g, '""') + '"';
+                    }
+                    return valor;
+                });
+                csv += valores.join(',') + '\n';
+            });
+
+            // Crear blob y descargar
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+
+            const fecha = new Date().toISOString().split('T')[0];
+            link.setAttribute('href', url);
+            link.setAttribute('download', `resultados_taller_${fecha}.csv`);
+            link.style.visibility = 'hidden';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            mostrarExito(`${resultadosMostrados.length} registros exportados a Excel`);
+        }
+
+        // Exportar ficha completa de vehículo a PDF
+        async function exportarFichaAPDF(registro) {
+            try {
+                // Obtener datos del vehículo
+                const vehiculoId = generarVehiculoId(registro);
+                const reparaciones = await obtenerReparacionesVehiculo(vehiculoId);
+                const fotos = await obtenerFotosVehiculo(vehiculoId);
+
+                // Calcular estadísticas
+                const totalGastado = reparaciones.reduce((sum, rep) => sum + parseFloat(rep.costo || 0), 0);
+                const ultimaVisita = reparaciones.length > 0 ? formatearFecha(reparaciones[0].fecha) : 'Sin visitas';
+
+                // Crear PDF con jsPDF
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Configuración
+                let yPos = 20;
+                const margenIzq = 15;
+                const anchoUtil = 180;
+
+                // ENCABEZADO
+                doc.setFillColor(102, 126, 234);
+                doc.rect(0, 0, 210, 40, 'F');
+
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(22);
+                doc.setFont(undefined, 'bold');
+                doc.text('FICHA DE VEHÍCULO', 105, 20, { align: 'center' });
+
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'normal');
+                doc.text('Taller Mecánico', 105, 30, { align: 'center' });
+
+                yPos = 50;
+                doc.setTextColor(0, 0, 0);
+
+                // INFORMACIÓN DEL VEHÍCULO
+                doc.setFillColor(236, 240, 241);
+                doc.rect(margenIzq, yPos, anchoUtil, 10, 'F');
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text('Información del Vehículo', margenIzq + 3, yPos + 7);
+
+                yPos += 15;
+                doc.setFontSize(10);
+                doc.setFont(undefined, 'normal');
+
+                // Mostrar datos del vehículo en dos columnas
+                const datosVehiculo = [];
+                columnas.forEach(col => {
+                    if (registro[col]) {
+                        datosVehiculo.push([col, registro[col]]);
+                    }
+                });
+
+                // Dividir en dos columnas
+                const mitad = Math.ceil(datosVehiculo.length / 2);
+                const columna1 = datosVehiculo.slice(0, mitad);
+                const columna2 = datosVehiculo.slice(mitad);
+
+                const maxFilas = Math.max(columna1.length, columna2.length);
+
+                for (let i = 0; i < maxFilas; i++) {
+                    if (columna1[i]) {
+                        doc.setFont(undefined, 'bold');
+                        doc.text(columna1[i][0] + ':', margenIzq, yPos);
+                        doc.setFont(undefined, 'normal');
+                        doc.text(String(columna1[i][1]), margenIzq + 40, yPos);
+                    }
+
+                    if (columna2[i]) {
+                        doc.setFont(undefined, 'bold');
+                        doc.text(columna2[i][0] + ':', 110, yPos);
+                        doc.setFont(undefined, 'normal');
+                        doc.text(String(columna2[i][1]), 150, yPos);
+                    }
+
+                    yPos += 6;
+                }
+
+                yPos += 5;
+
+                // ESTADÍSTICAS
+                doc.setFillColor(236, 240, 241);
+                doc.rect(margenIzq, yPos, anchoUtil, 10, 'F');
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text('Estadísticas', margenIzq + 3, yPos + 7);
+
+                yPos += 15;
+                doc.setFontSize(10);
+
+                // Cajas de estadísticas
+                const statBoxWidth = (anchoUtil - 10) / 3;
+
+                // Total Gastado
+                doc.setFillColor(39, 174, 96);
+                doc.rect(margenIzq, yPos, statBoxWidth, 20, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(8);
+                doc.text('TOTAL GASTADO', margenIzq + statBoxWidth / 2, yPos + 6, { align: 'center' });
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text('$' + totalGastado.toFixed(2), margenIzq + statBoxWidth / 2, yPos + 15, { align: 'center' });
+
+                // Total Reparaciones
+                doc.setFillColor(243, 156, 18);
+                doc.rect(margenIzq + statBoxWidth + 5, yPos, statBoxWidth, 20, 'F');
+                doc.setFontSize(8);
+                doc.setFont(undefined, 'normal');
+                doc.text('REPARACIONES', margenIzq + statBoxWidth + 5 + statBoxWidth / 2, yPos + 6, { align: 'center' });
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text(String(reparaciones.length), margenIzq + statBoxWidth + 5 + statBoxWidth / 2, yPos + 15, { align: 'center' });
+
+                // Última Visita
+                doc.setFillColor(102, 126, 234);
+                doc.rect(margenIzq + (statBoxWidth + 5) * 2, yPos, statBoxWidth, 20, 'F');
+                doc.setFontSize(8);
+                doc.setFont(undefined, 'normal');
+                doc.text('ÚLTIMA VISITA', margenIzq + (statBoxWidth + 5) * 2 + statBoxWidth / 2, yPos + 6, { align: 'center' });
+                doc.setFontSize(9);
+                doc.setFont(undefined, 'bold');
+                const textoUltimaVisita = ultimaVisita.length > 15 ? ultimaVisita.substring(0, 15) + '...' : ultimaVisita;
+                doc.text(textoUltimaVisita, margenIzq + (statBoxWidth + 5) * 2 + statBoxWidth / 2, yPos + 15, { align: 'center' });
+
+                yPos += 30;
+                doc.setTextColor(0, 0, 0);
+                doc.setFont(undefined, 'normal');
+
+                // HISTORIAL DE REPARACIONES
+                if (reparaciones.length > 0) {
+                    doc.setFillColor(236, 240, 241);
+                    doc.rect(margenIzq, yPos, anchoUtil, 10, 'F');
+                    doc.setFontSize(14);
+                    doc.setFont(undefined, 'bold');
+                    doc.text('Historial de Reparaciones', margenIzq + 3, yPos + 7);
+
+                    yPos += 15;
+
+                    // Tabla de reparaciones
+                    const tablaReparaciones = reparaciones.map(rep => [
+                        formatearFecha(rep.fecha),
+                        rep.descripcion.substring(0, 40) + (rep.descripcion.length > 40 ? '...' : ''),
+                        '$' + parseFloat(rep.costo).toFixed(2),
+                        obtenerTextoEstado(rep.estado)
+                    ]);
+
+                    doc.autoTable({
+                        startY: yPos,
+                        head: [['Fecha', 'Descripción', 'Costo', 'Estado']],
+                        body: tablaReparaciones,
+                        theme: 'striped',
+                        headStyles: {
+                            fillColor: [102, 126, 234],
+                            fontSize: 10,
+                            fontStyle: 'bold'
+                        },
+                        styles: {
+                            fontSize: 9,
+                            cellPadding: 3
+                        },
+                        columnStyles: {
+                            0: { cellWidth: 35 },
+                            1: { cellWidth: 80 },
+                            2: { cellWidth: 30 },
+                            3: { cellWidth: 30 }
+                        },
+                        margin: { left: margenIzq, right: margenIzq }
+                    });
+
+                    yPos = doc.lastAutoTable.finalY + 10;
+                }
+
+                // FOTOS
+                if (fotos.length > 0) {
+                    // Verificar si necesitamos nueva página
+                    if (yPos > 240) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+
+                    doc.setFillColor(236, 240, 241);
+                    doc.rect(margenIzq, yPos, anchoUtil, 10, 'F');
+                    doc.setFontSize(14);
+                    doc.setFont(undefined, 'bold');
+                    doc.text('Galería de Fotos', margenIzq + 3, yPos + 7);
+
+                    yPos += 15;
+
+                    // Mostrar hasta 4 fotos (2x2)
+                    const fotosAMostrar = fotos.slice(0, 4);
+                    const tamanoFoto = 40;
+                    const espacioEntreFotos = 5;
+
+                    for (let i = 0; i < fotosAMostrar.length; i++) {
+                        const fila = Math.floor(i / 2);
+                        const columna = i % 2;
+
+                        const x = margenIzq + columna * (tamanoFoto + espacioEntreFotos);
+                        const y = yPos + fila * (tamanoFoto + espacioEntreFotos);
+
+                        try {
+                            doc.addImage(fotosAMostrar[i].imagen, 'JPEG', x, y, tamanoFoto, tamanoFoto);
+                        } catch (error) {
+                            console.error('Error al agregar foto al PDF:', error);
+                        }
+                    }
+
+                    if (fotos.length > 4) {
+                        yPos += (tamanoFoto + espacioEntreFotos) * 2 + 5;
+                        doc.setFontSize(9);
+                        doc.setTextColor(128, 128, 128);
+                        doc.text(`+ ${fotos.length - 4} foto(s) más`, margenIzq, yPos);
+                    }
+                }
+
+                // PIE DE PÁGINA
+                const totalPaginas = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= totalPaginas; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(8);
+                    doc.setTextColor(128, 128, 128);
+                    doc.text(
+                        `Página ${i} de ${totalPaginas} - Generado el ${new Date().toLocaleDateString('es-ES')}`,
+                        105,
+                        290,
+                        { align: 'center' }
+                    );
+                }
+
+                // Guardar PDF
+                const nombreArchivo = `ficha_vehiculo_${vehiculoId}_${new Date().toISOString().split('T')[0]}.pdf`;
+                doc.save(nombreArchivo);
+
+                mostrarExito('PDF generado exitosamente');
+
+            } catch (error) {
+                console.error('Error al generar PDF:', error);
+                mostrarError('Error al generar el PDF: ' + error.message);
+            }
+        }
+
         // TAB: Cambiar entre pestañas
         function cambiarTab(event, tab) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -2368,11 +2716,12 @@
 
             noResults.style.display = 'none';
 
-            // Crear encabezados con columnas de Fotos e Historial
+            // Crear encabezados con columnas de Fotos, Historial y Exportar
             tableHead.innerHTML = `
                 ${columnas.map(col => `<th>${col}</th>`).join('')}
                 <th style="text-align: center; min-width: 100px;">Fotos</th>
                 <th style="text-align: center; min-width: 120px;">Historial</th>
+                <th style="text-align: center; min-width: 100px;">Exportar</th>
             `;
 
             // Crear filas con contadores de fotos y reparaciones
@@ -2394,6 +2743,11 @@
                             <button class="history-btn" onclick='abrirModalHistorial(${JSON.stringify(row).replace(/'/g, "&#39;")})'>
                                 🔧 Historial
                                 ${numReparaciones > 0 ? `<span class="history-badge">${numReparaciones}</span>` : ''}
+                            </button>
+                        </td>
+                        <td style="text-align: center;">
+                            <button class="export-btn" onclick='exportarFichaAPDF(${JSON.stringify(row).replace(/'/g, "&#39;")})' title="Exportar ficha completa a PDF">
+                                📄 PDF
                             </button>
                         </td>
                     </tr>

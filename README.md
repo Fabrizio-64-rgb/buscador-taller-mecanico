@@ -51,12 +51,25 @@ Sistema completo y profesional de gestión para talleres mecánicos. Permite car
   - Cargar archivo CSV
   - Copiar y pegar directamente desde Excel
 
+### 📄 **Exportación de Datos**
+- ✅ **Exportar a Excel/CSV** - Exporta resultados de búsqueda completos
+- ✅ **Exportar ficha individual a PDF** - Genera reportes profesionales por vehículo
+- ✅ **PDF con diseño profesional**:
+  - Encabezado con branding
+  - Información completa del vehículo
+  - Estadísticas visuales con colores
+  - Tabla de historial de reparaciones
+  - Galería de fotos (hasta 4 fotos)
+  - Pie de página con paginación
+- ✅ **Nombres descriptivos** - Archivos con fecha automática
+- ✅ **Codificación UTF-8** - Soporte para tildes en exportaciones
+
 ### 🎨 **Interfaz y UX**
 - ✅ **Resultados en tabla** - Muestra todos los registros que coinciden
 - ✅ **Interfaz responsive** - Funciona en computadora, tablet y celular
 - ✅ **Animaciones suaves** - Mejora la experiencia de usuario
 - ✅ **Navegación por teclado** - ESC para cerrar, flechas para navegar imágenes
-- ✅ **Gratuito y sin dependencias** - No requiere librerías externas
+- ✅ **Botones visuales** - Con iconos y colores distintivos
 
 ## 🚀 Cómo usar
 
@@ -133,6 +146,28 @@ Sistema completo y profesional de gestión para talleres mecánicos. Permite car
 7. Para eliminar una reparación:
    - Haz clic en **🗑️ Eliminar**
    - Confirma la eliminación
+
+### Exportar Datos
+
+**Exportar resultados de búsqueda a Excel:**
+1. Realiza una búsqueda (simple o avanzada)
+2. En la sección de resultados, haz clic en **📊 Exportar a Excel**
+3. Se descargará un archivo CSV con todos los resultados mostrados
+4. Nombre del archivo: `resultados_taller_YYYY-MM-DD.csv`
+5. Abre con Excel, Google Sheets o LibreOffice
+
+**Exportar ficha individual a PDF:**
+1. Busca un vehículo en la tabla
+2. Haz clic en el botón **📄 PDF** en la columna Exportar
+3. Se generará automáticamente un PDF profesional con:
+   - Encabezado con logo del taller
+   - Todos los datos del vehículo
+   - Estadísticas (total gastado, reparaciones, última visita)
+   - Historial completo de reparaciones en tabla
+   - Fotos del vehículo (hasta 4)
+   - Numeración de páginas
+4. Nombre del archivo: `ficha_vehiculo_{id}_{fecha}.pdf`
+5. Ideal para entregar al cliente o archivar
 
 ## 📋 Estructura del proyecto
 
@@ -304,7 +339,16 @@ Para problemas o preguntas:
 
 ## 📈 Historial de Versiones
 
-### Versión 2.0.0 (Enero 2025) - **ACTUAL**
+### Versión 2.1.0 (Enero 2025) - **ACTUAL**
+- ✨ **NUEVO:** Sistema completo de exportación a PDF y Excel
+- ✨ **NUEVO:** Exportar resultados de búsqueda a CSV/Excel
+- ✨ **NUEVO:** Exportar ficha individual de vehículo a PDF profesional
+- ✨ **NUEVO:** PDF incluye: datos, estadísticas, historial y fotos
+- ✨ **NUEVO:** Diseño profesional en PDF con colores y tablas
+- ✨ **NUEVO:** Librerías jsPDF y jsPDF-AutoTable integradas
+- 📄 Ideal para entregar reportes a clientes
+
+### Versión 2.0.0 (Enero 2025)
 - ✨ **NUEVO:** Sistema completo de búsqueda avanzada con múltiples filtros
 - ✨ **NUEVO:** 7 operadores de búsqueda (contiene, igual, mayor, menor, etc.)
 - ✨ **NUEVO:** Lógica AND/OR para combinar filtros
@@ -336,5 +380,5 @@ Para problemas o preguntas:
 ---
 
 **Última actualización:** Enero 2025
-**Versión:** 2.0.0
+**Versión:** 2.1.0
 **Licencia:** MIT - Uso libre y gratuito

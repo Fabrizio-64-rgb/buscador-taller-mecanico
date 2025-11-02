@@ -893,6 +893,147 @@
             color: #95a5a6;
         }
 
+        /* Estilos para búsqueda avanzada */
+        .advanced-search-toggle {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .advanced-search-toggle:hover {
+            background: #8e44ad;
+            transform: translateY(-1px);
+        }
+
+        .advanced-search-panel {
+            display: none;
+            background: #f8f9fa;
+            border: 2px solid #9b59b6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .advanced-search-panel.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 2fr auto;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #ecf0f1;
+        }
+
+        .filter-row select,
+        .filter-row input {
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .filter-row select:focus,
+        .filter-row input:focus {
+            outline: none;
+            border-color: #9b59b6;
+            box-shadow: 0 0 0 2px rgba(155, 89, 182, 0.1);
+        }
+
+        .btn-remove-filter {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove-filter:hover {
+            background: #c0392b;
+        }
+
+        .filter-logic {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background: #fff;
+            border-radius: 6px;
+        }
+
+        .filter-logic label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+
+        .filter-logic input[type="radio"] {
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .btn-add-filter {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-add-filter:hover {
+            background: #2980b9;
+        }
+
+        .advanced-search-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 20px;
@@ -948,6 +1089,19 @@
 
             .photo-item img {
                 height: 120px;
+            }
+
+            .filter-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .advanced-search-actions {
+                flex-direction: column;
+            }
+
+            .advanced-search-actions button {
+                width: 100%;
             }
         }
     </style>
@@ -1021,6 +1175,42 @@
                 <div class="search-buttons">
                     <button class="btn-search" onclick="buscar();">🔍 Buscar</button>
                     <button class="btn-search btn-clear" onclick="limpiar();">✕ Limpiar</button>
+                    <button class="advanced-search-toggle" onclick="toggleAdvancedSearch();">
+                        🔬 Búsqueda Avanzada
+                    </button>
+                </div>
+            </div>
+
+            <!-- Panel de búsqueda avanzada -->
+            <div class="advanced-search-panel" id="advancedSearchPanel">
+                <h3 style="color: #2c3e50; margin-bottom: 15px;">🔬 Búsqueda Avanzada con Múltiples Filtros</h3>
+
+                <div id="filtersContainer">
+                    <!-- Los filtros se agregarán aquí dinámicamente -->
+                </div>
+
+                <div class="filter-logic">
+                    <label>Combinar filtros con:</label>
+                    <label>
+                        <input type="radio" name="filterLogic" value="AND" checked>
+                        Y (AND) - Cumple todos los filtros
+                    </label>
+                    <label>
+                        <input type="radio" name="filterLogic" value="OR">
+                        O (OR) - Cumple al menos uno
+                    </label>
+                </div>
+
+                <div class="advanced-search-actions">
+                    <button class="btn-add-filter" onclick="agregarFiltro();">
+                        ➕ Agregar Filtro
+                    </button>
+                    <button class="btn-search" onclick="buscarAvanzado();">
+                        🔍 Buscar con Filtros
+                    </button>
+                    <button class="btn-search btn-clear" onclick="limpiarFiltros();">
+                        🗑️ Limpiar Filtros
+                    </button>
                 </div>
             </div>
 
@@ -1820,6 +2010,152 @@
                 'pendiente': 'Pendiente'
             };
             return textos[estado] || estado;
+        }
+
+        // ============================================
+        // SISTEMA DE BÚSQUEDA AVANZADA
+        // ============================================
+
+        let filtrosActivos = [];
+        let contadorFiltros = 0;
+
+        // Toggle panel de búsqueda avanzada
+        function toggleAdvancedSearch() {
+            const panel = document.getElementById('advancedSearchPanel');
+            panel.classList.toggle('active');
+
+            // Si se abre y no hay filtros, agregar uno por defecto
+            if (panel.classList.contains('active') && filtrosActivos.length === 0) {
+                agregarFiltro();
+            }
+        }
+
+        // Agregar nuevo filtro
+        function agregarFiltro() {
+            const filterId = contadorFiltros++;
+            const container = document.getElementById('filtersContainer');
+
+            const filterRow = document.createElement('div');
+            filterRow.className = 'filter-row';
+            filterRow.id = `filter-${filterId}`;
+            filterRow.innerHTML = `
+                <select class="filter-field" data-filter-id="${filterId}">
+                    <option value="">-- Selecciona campo --</option>
+                    ${columnas.map(col => `<option value="${col}">${col}</option>`).join('')}
+                </select>
+                <select class="filter-operator" data-filter-id="${filterId}">
+                    <option value="contains">Contiene</option>
+                    <option value="equals">Es igual a</option>
+                    <option value="starts">Comienza con</option>
+                    <option value="ends">Termina con</option>
+                    <option value="greater">Mayor que</option>
+                    <option value="less">Menor que</option>
+                    <option value="not">No contiene</option>
+                </select>
+                <input type="text" class="filter-value" data-filter-id="${filterId}" placeholder="Valor a buscar...">
+                <button class="btn-remove-filter" onclick="eliminarFiltro(${filterId})" title="Eliminar filtro">
+                    ×
+                </button>
+            `;
+
+            container.appendChild(filterRow);
+            filtrosActivos.push(filterId);
+        }
+
+        // Eliminar filtro
+        function eliminarFiltro(filterId) {
+            const filterRow = document.getElementById(`filter-${filterId}`);
+            if (filterRow) {
+                filterRow.remove();
+                filtrosActivos = filtrosActivos.filter(id => id !== filterId);
+            }
+        }
+
+        // Limpiar todos los filtros
+        function limpiarFiltros() {
+            document.getElementById('filtersContainer').innerHTML = '';
+            filtrosActivos = [];
+            contadorFiltros = 0;
+            document.getElementById('resultsSection').classList.remove('active');
+
+            // Agregar un filtro por defecto
+            agregarFiltro();
+        }
+
+        // Aplicar un filtro individual a un registro
+        function aplicarFiltro(registro, campo, operador, valor) {
+            const valorCelda = String(registro[campo] || '').toLowerCase();
+            const valorBusqueda = valor.toLowerCase();
+
+            switch (operador) {
+                case 'contains':
+                    return valorCelda.includes(valorBusqueda);
+                case 'equals':
+                    return valorCelda === valorBusqueda;
+                case 'starts':
+                    return valorCelda.startsWith(valorBusqueda);
+                case 'ends':
+                    return valorCelda.endsWith(valorBusqueda);
+                case 'greater':
+                    return parseFloat(valorCelda) > parseFloat(valorBusqueda);
+                case 'less':
+                    return parseFloat(valorCelda) < parseFloat(valorBusqueda);
+                case 'not':
+                    return !valorCelda.includes(valorBusqueda);
+                default:
+                    return true;
+            }
+        }
+
+        // Buscar con múltiples filtros
+        function buscarAvanzado() {
+            if (filtrosActivos.length === 0) {
+                mostrarError('Por favor agrega al menos un filtro');
+                return;
+            }
+
+            // Recopilar todos los filtros
+            const filtros = [];
+            for (const filterId of filtrosActivos) {
+                const campo = document.querySelector(`.filter-field[data-filter-id="${filterId}"]`)?.value;
+                const operador = document.querySelector(`.filter-operator[data-filter-id="${filterId}"]`)?.value;
+                const valor = document.querySelector(`.filter-value[data-filter-id="${filterId}"]`)?.value;
+
+                if (!campo || !valor) {
+                    mostrarError('Por favor completa todos los filtros (campo y valor)');
+                    return;
+                }
+
+                filtros.push({ campo, operador, valor });
+            }
+
+            // Obtener lógica de combinación (AND/OR)
+            const logica = document.querySelector('input[name="filterLogic"]:checked')?.value || 'AND';
+
+            // Aplicar filtros
+            let resultados;
+            if (logica === 'AND') {
+                // Todos los filtros deben cumplirse
+                resultados = datosOriginal.filter(registro => {
+                    return filtros.every(filtro =>
+                        aplicarFiltro(registro, filtro.campo, filtro.operador, filtro.valor)
+                    );
+                });
+            } else {
+                // Al menos un filtro debe cumplirse
+                resultados = datosOriginal.filter(registro => {
+                    return filtros.some(filtro =>
+                        aplicarFiltro(registro, filtro.campo, filtro.operador, filtro.valor)
+                    );
+                });
+            }
+
+            // Mostrar resultados
+            mostrarResultados(resultados);
+
+            // Mostrar mensaje informativo
+            const logicaTexto = logica === 'AND' ? 'todos los filtros' : 'al menos un filtro';
+            mostrarExito(`Búsqueda avanzada: ${resultados.length} resultado(s) que cumplen ${logicaTexto}`);
         }
 
         // Cerrar modales con ESC (actualizado)
